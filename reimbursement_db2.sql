@@ -135,9 +135,18 @@ FOREIGN KEY(eg_a_id) REFERENCES APPLICATION(a_id)
 --DROP TABLE DEPARTMENT;
 
 
-
-
-
+CREATE OR REPLACE VIEW user_view AS
+SELECT usr.usr_id,usr.usr_firstname,usr.usr_lastname,usr.usr_username,usr.usr_email,usr.usr_password,usr.usr_salt,
+usr.usr_account_approved,usr.usr_has_email,usr.dept_name, usr.usr_t_permissions,usr.usr_t_name job,
+usr.usr_t_desc job_desc, ds.usr_firstname ds_firstname, ds.usr_lastname ds_lastname, 
+ds.usr_username ds_username, ds.usr_email ds_email, ds.dept_name ds_dept_name, ds.usr_t_permissions ds_usr_t_permissions,
+ds.usr_t_name ds_job, ds.usr_t_desc ds_job_desc
+FROM(
+(SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) INNER JOIN USER_TYPE ON usr_type = usr_t_id)usr
+LEFT JOIN
+(SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) INNER JOIN USER_TYPE ON usr_type = usr_t_id)ds
+ON usr.usr_id = ds.usr_id
+);
 
 CREATE SEQUENCE dept_id_seq
     START WITH 1
