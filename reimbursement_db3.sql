@@ -4,7 +4,6 @@ DROP TABLE APPLICATION_MATERIAL;
 DROP TABLE APPLICATION_APPROVAL;
 DROP TABLE APPLICATION_APPROVAL_TYPE;
 DROP TABLE EVENT_GRADE;
-DROP TABLE EVENT_GRADE_FORMAT;
 DROP TABLE APPLICATION;
 DROP TABLE USR;
 DROP TABLE USER_TYPE;
@@ -71,7 +70,6 @@ usr_direct_supervisor INTEGER NOT NULL,
 usr_department INTEGER NOT NULL,
 usr_type INTEGER NOT NULL,
 usr_password VARCHAR2(200) NOT NULL,
-usr_salt VARCHAR2(200) NOT NULL,
 usr_account_approved VARCHAR2(1) DEFAULT('Y') CHECK (usr_account_approved='Y' OR usr_account_approved='N')NOT NULL,
 usr_has_email VARCHAR2(1)DEFAULT('N') CHECK (usr_has_email='Y' OR usr_has_email='N' OR usr_has_email='U')NOT NULL,
 PRIMARY KEY(usr_id),
@@ -140,11 +138,12 @@ FOREIGN KEY(eg_a_id) REFERENCES APPLICATION(a_id)
 
 
 CREATE OR REPLACE VIEW user_view AS
-SELECT usr.usr_id,usr.usr_firstname,usr.usr_lastname,usr.usr_username,usr.usr_email,usr.usr_password,usr.usr_salt,
+SELECT usr.usr_id,usr.usr_firstname,usr.usr_lastname,usr.usr_username,usr.usr_email,usr.usr_password,
 usr.usr_account_approved,usr.usr_has_email,usr.dept_name, usr.usr_t_permissions,usr.usr_t_name job,
-usr.usr_t_desc job_desc, ds.usr_firstname ds_firstname, ds.usr_lastname ds_lastname, 
+usr.usr_t_desc job_desc,ds.usr_id ds_id, ds.usr_firstname ds_firstname, ds.usr_lastname ds_lastname, 
 ds.usr_username ds_username, ds.usr_email ds_email, ds.dept_name ds_dept_name, ds.usr_t_permissions ds_usr_t_permissions,
-ds.usr_t_name ds_job, ds.usr_t_desc ds_job_desc
+ds.usr_t_name ds_job, ds.usr_t_desc ds_job_desc, 
+usr.usr_type usr_type_id, usr.usr_department usr_department_id
 FROM(
 (SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) INNER JOIN USER_TYPE ON usr_type = usr_t_id)usr
 LEFT JOIN
