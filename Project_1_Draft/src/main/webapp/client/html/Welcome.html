@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Homepage</title>
+<title>Welcome</title>
 
 <!-- Bootstrap -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -88,23 +88,23 @@
                 <!-- Modal Body -->
                 <!-- Form -->
                 <div class="modal-body">
-                    <div class="form-group"> <!-- Ensures proper margins -->
-                        <label for="user">username</label>
-                        <input type="text" class="form-control" id="user"> <!-- id and label are same and form control ensurese 100 width -->
-                    </div>
-                    <div class="form-group">
-                        <label for="pass">password</label>
-                        <input type="password" class="form-control" id="pass">
-                    </div>
+                    <form id="login-form" method="POST" action="Login.do" role="form">
+                        <div class="form-group"> <!-- Ensures proper margins -->
+                            <label for="user">username</label>
+                            <input type="text" class="form-control" name= "user" id="user"> <!-- id and label are same and form control name is referenced in controllers-->
+                        </div>
+                        <div class="form-group">
+                            <label for="pass">password</label>
+                            <input type="password" class="form-control" name= "pass" id="pass">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="form-control btn-primary" id="LoginButton">
+                        </div>
+                    </form>
                 </div>
 
                 <!-- Modal Footer -->
                 <div class="container"> <!-- Adds a 1 margin -->
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-primary btn-block">submit</button>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col" align="center">
                             <p>new and want to
@@ -129,57 +129,56 @@
                 </div>
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="user">username</label>
-                        <input type="text" class="form-control" id="user">
+                    <form id="registerForm" method="POST" action="Register.do" id="form">
+                        <div class="form-group">
+                            <label for="preUser">username</label>
+                            <input type="text" class="form-control" name="preUser" id="preUser">
+                        </div>
+                        <div class="form-group">
+                            <label for="prePass">password</label>
+                            <input type="password" class="form-control" name="prePass" id="prePass">
+                        </div>
+                        <div class="form group">
+                            <label for="repPass">repeat password</label>
+                            <input type="password" class="form-control" name="repPass" id="repPass">
+                        </div>
+                        <div class="form-group">
+                            <label for="first">first name</label>
+                            <input type="text" class="form-control" name="first" id="first">
+                        </div>
+                        <div class="form-group">
+                            <label for="last">last name</label>
+                            <input type="text" class="form-control" name="last" id="last">
+                        </div>
+                        <div class="form group">
+                            <label for="email">email</label>
+                            <input type="email" class="form-control" name="email" id="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="dept">department (select one)</label>
+                            <select class="form-control" name="dept" id="dept"> <!-- Select class is form control for select list (as opposed to text email etc) -->
+                                <option>writing</option>
+                                <option>art</option>
+                                <option>editing</option>
+                                <option>production</option>
+                                <option>marketing</option>
+                                <option>benefits</option>
+                                <option>administration</option>
+                            </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="supervisor">direct supervisor</label>
+                                <select class="form-control" name="supervisor" id="supervisor">
+                                    <option>albert (writing)</option>
+                                    <option>benjamin (writing)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="form-control btn-primary" id="RegisterButton">
+                            </div>
                     </div>
-                    <div class="form-group">
-                        <label for="pass">password</label>
-                        <input type="password" class="form-control" id="pass">
-                    </div>
-                    <div class="form group">
-                        <label for="repPass">repeat password</label>
-                        <input type="password" class="form-control" id="repPass">
-                    </div>
-                    <div class="form-group">
-                        <label for="first">first name</label>
-                        <input type="text" class="form-control" id="first">
-                    </div>
-                    <div class="form-group">
-                        <label for="last">last name</label>
-                        <input type="text" class="form-control" id="last">
-                    </div>
-                    <div class="form group">
-                        <label for="email">email</label>
-                        <input type="email" class="form-control" id="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="dept">department (select one)</label>
-                        <select class="form-control" id="dept"> <!-- Select class is form control for select list (as opposed to text email etc) -->
-                            <option>writing</option>
-                            <option>art</option>
-                            <option>editing</option>
-                            <option>production</option>
-                            <option>marketing</option>
-                            <option>benefits</option>
-                            <option>administration</option>
-                        </select>
-                     </div>
-                     <div class="form-group">
-                         <label for="supervisor">direct supervisor</label>
-                         <select class="form-control" id="supervisor">
-                             <option>albert (writing)</option>
-                             <option>benjamin (writing)</option>
-                         </select>
-                     </div>
-                </div>
                 <!-- Modal Footer -->
                 <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-primary btn-block">submit</button>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col" align="center">
                             <p>return to
