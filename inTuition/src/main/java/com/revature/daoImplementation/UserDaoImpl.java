@@ -17,9 +17,11 @@ import oracle.jdbc.OracleTypes;
 public class UserDaoImpl implements UserDao {
 	private Connection conn;
 	private static UserDaoImpl userDao = new UserDaoImpl();
+
 	private UserDaoImpl() {
-		
+
 	}
+
 	public static UserDaoImpl getInstance() {
 		return userDao;
 	}
@@ -34,7 +36,7 @@ public class UserDaoImpl implements UserDao {
 					+ "usr_department,usr_type,usr_password)"
 					+ " VALUES(NULL,?,?,?,?,?,?,?,?) RETURNING usr_id INTO ?;  END;";
 //			String sql = "INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,usr_department,usr_type,usr_password) VALUES(NULL,?,?,?,?,?,?,?,?)";
-			//PreparedStatement ps = conn.prepareStatement(sql);
+			// PreparedStatement ps = conn.prepareStatement(sql);
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setString(1, user.getFirstname());
 			cs.setString(2, user.getLastname());
@@ -44,16 +46,16 @@ public class UserDaoImpl implements UserDao {
 			cs.setInt(6, user.getDeptID());
 			cs.setInt(7, user.getUserTypeID());
 			cs.setString(8, user.getPassword());
-			//ps.setString(9, accountApproved);
-			//ps.setString(10, hasEmail);
+			// ps.setString(9, accountApproved);
+			// ps.setString(10, hasEmail);
 
 			cs.registerOutParameter(9, OracleTypes.NUMBER); // specifies the index created by the trigger that
 															// references the employee inserted
 			cs.execute();
-			
+
 			int id = cs.getInt(9);
-			//System.out.println(id);
-			
+			// System.out.println(id);
+
 //			if (commit) {
 //				conn.commit();
 //			}
@@ -73,7 +75,7 @@ public class UserDaoImpl implements UserDao {
 	public ReimbursementUser getUser(ReimbursementUser user) {
 		// TODO Auto-generated method stub
 		try {
-			conn = ConnFactory.getInstance().getConnection(); 
+			conn = ConnFactory.getInstance().getConnection();
 			String sql = "SELECT usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_password,"
 					+ "usr_account_approved,usr_has_email,dept_name, usr_t_permissions,job,"
 					+ "job_desc, ds_id,ds_firstname,ds_lastname, ds_username,ds_email,ds_dept_name, ds_usr_t_permissions,"
@@ -82,7 +84,7 @@ public class UserDaoImpl implements UserDao {
 
 			ps.setString(1, user.getUsername());
 			ResultSet rs = ps.executeQuery();
-			conn.close();
+			user = null;
 			if (rs.next()) {
 				user = new ReimbursementUser();
 				user.setUserID(rs.getInt(1));
@@ -111,9 +113,10 @@ public class UserDaoImpl implements UserDao {
 				user.setUserTypeID(rs.getInt(22));
 				user.setDeptID(rs.getInt(23));
 
-				return user;
 
 			}
+			conn.close();
+			return user;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,9 +137,8 @@ public class UserDaoImpl implements UserDao {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
-			conn.close();
+			user = null;
 			if (rs.next()) {
-				System.out.println("WE BE HERE");
 				user = new ReimbursementUser();
 				user.setUserID(rs.getInt(1));
 				user.setFirstname(rs.getString(2));
@@ -163,16 +165,14 @@ public class UserDaoImpl implements UserDao {
 
 				user.setUserTypeID(rs.getInt(22));
 				user.setDeptID(rs.getInt(23));
-
-				return user;
-
 			}
+			conn.close();
+			return user;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
-
 
 }

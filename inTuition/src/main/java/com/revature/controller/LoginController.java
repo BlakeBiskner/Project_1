@@ -26,7 +26,7 @@ public class LoginController {
 		ReimbursementUser user = userDao.getUser(username);
 		if(user==null) {
 			//This happens when a user tries to login with an invalid username
-			return "/client/html/Home.html";
+			return "/client/html/Welcome.html";
 		}
 		boolean pwMatch = BCrypt.checkpw(password, user.getPassword());
 		if(pwMatch) {
