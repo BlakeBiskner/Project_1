@@ -14,10 +14,10 @@ public class TestDriver {
 		Connection conn = ConnFactory.getInstance().getConnection();
 		
 		UserDaoImpl userDao = new UserDaoImpl();
-		String password = "Arya";
+		String password = "Aryaa";
 		ReimbursementUser ds = new ReimbursementUser();
 		ds.setUsername("stanlee");
-		ds = userDao.getUser(ds);
+		//ds = userDao.getUser(ds);
 //		if (ds != null) {
 //			System.out.println(ds);
 //		}
@@ -36,8 +36,8 @@ public class TestDriver {
 		//user = userDao.insertUser(user);
 		//boolean success = RegisterController.register(user);
 		//System.out.println(user);
-		conn.close();
-		boolean success = LoginCont.login(user);
-		System.out.println(success);
+		//conn.close();
+		//boolean success = LoginCont.login(user);
+		//System.out.println(success);
 	}
 }

@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
 		}
 
 		try {
-			CONN.setAutoCommit(true);
+			//CONN.setAutoCommit(true);
 //			String sql = "BEGIN INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,"
 //					+ "usr_department,usr_type,usr_password)"
 //					+ " VALUES(NULL,?,?,?,?,?,?,?,?) RETURNING usr_id INTO ?;  END;";

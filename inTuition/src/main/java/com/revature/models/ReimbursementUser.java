@@ -15,7 +15,22 @@ public class ReimbursementUser {
 		dsID = 99999; //set default direct supervisor as stan lee
 		userTypeID = 22;
 	}
-	
+	public ReimbursementUser(String username,String password,String firstName,String lastName,String email,String department,String supervisor) {
+		this.username = username;
+		this.password = password;
+		this.firstname = firstName;
+		this.lastname = lastName;
+		this.email = email;
+		//this.dept = department;
+		//this.dsUsername = supervisor;
+		//PUT BACK IN WHEN ADD SUPERVISOR SELECTION FUNCTIONALITY
+		hasEmail = false;
+		hasUrgentEmail = false;
+		accountApproved = true;
+		deptID = 21;  //set default department as administration
+		dsID = 99999; //set default direct supervisor as stan lee
+		userTypeID = 22;
+	}
 	public void setDirectSupervisor(ReimbursementUser ds) {
 		dsUsername = ds.getUsername();
 		dsFirstname = ds.getFirstname();

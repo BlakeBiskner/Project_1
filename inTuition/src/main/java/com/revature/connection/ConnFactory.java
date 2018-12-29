@@ -14,7 +14,8 @@ import java.util.Properties;
 public class ConnFactory {
 	private static ConnFactory cf = new ConnFactory();
 
-	private ConnFactory() {}
+	private ConnFactory() {
+	}
 
 	public static synchronized ConnFactory getInstance() {
 		if (cf == null) {
@@ -27,22 +28,26 @@ public class ConnFactory {
 		Connection conn = null;
 		// Don't hardcode url, username, and password (BAD)
 		Properties prop = new Properties();
-		
-		try{
+
+		try {
 			// Create Connection using properties file
-			prop.load(new FileReader("database.properties"));
-			Class.forName(prop.getProperty("driver"));
-			conn = DriverManager.getConnection(prop.getProperty("url"),
-											   prop.getProperty("username"),
-											   prop.getProperty("password") );
-			conn.setAutoCommit(false);
-		} catch (IOException | ClassNotFoundException | SQLException e) {
+			String driver = "oracle.jdbc.driver.OracleDriver";
+			String url = "jdbc:oracle:thin:@octocatdb.cquzk1ryvr4n.us-east-2.rds.amazonaws.com:1521:ORCL";
+			String username = "reimbursement_db";
+			String password = "p4ssw0rd";
+			//prop.load(new FileReader("database.properties"));
+			//Class.forName(prop.getProperty("driver"));
+			Class.forName(driver);
+			//conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"),
+				//	prop.getProperty("password"));
+			conn = DriverManager.getConnection(url, username,password);
+			conn.setAutoCommit(true);
+		} catch (/*IOException |*/ ClassNotFoundException  | SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return conn;
-		
+
 	}
-	
-	
+
 }
