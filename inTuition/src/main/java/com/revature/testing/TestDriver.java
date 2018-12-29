@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.revature.connection.ConnFactory;
-import com.revature.controller.LoginCont;
-import com.revature.controller.RegisterCont;
 import com.revature.daoImplementation.UserDaoImpl;
 import com.revature.models.ReimbursementUser;
 
@@ -13,7 +11,7 @@ public class TestDriver {
 	public static void main(String[] args) throws SQLException {
 		Connection conn = ConnFactory.getInstance().getConnection();
 		
-		UserDaoImpl userDao = new UserDaoImpl();
+		UserDaoImpl userDao = UserDaoImpl.getInstance();
 		String password = "Aryaa";
 		ReimbursementUser ds = new ReimbursementUser();
 		ds.setUsername("stanlee");

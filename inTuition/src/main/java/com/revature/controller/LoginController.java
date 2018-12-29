@@ -19,16 +19,21 @@ public class LoginController {
 		String username=request.getParameter("user");
 		String password=request.getParameter("pass");
 		
-		System.out.println(username);
-		System.out.println(password);
-//		
-		UserDaoImpl userDao = new UserDaoImpl();//need to not do this everywhere
-		ReimbursementUser actualUser = userDao.getUser(username);
-		boolean pwMatch = BCrypt.checkpw(password, actualUser.getPassword());
-		if(pwMatch) {
+//		System.out.println(username);
+//		System.out.println(password);
+////		
+		UserDaoImpl userDao = UserDaoImpl.getInstance();
+		ReimbursementUser user = userDao.getUser(username);
+		if(user==null) {
+			//This happens when a user tries to login with an invalid username
 			return "/client/html/Home.html";
 		}
-		
+		boolean pwMatch = BCrypt.checkpw(password, user.getPassword());
+		if(pwMatch) {
+			//This means the user put in valid username and password
+			return "/client/html/Home.html";
+		}
+		//The user put in a valid username, but an invalid password
 		return "/client/html/Welcome.html";
 	}
 

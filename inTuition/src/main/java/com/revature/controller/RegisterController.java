@@ -39,17 +39,18 @@ public class RegisterController {
 		System.out.println(department);
 		System.out.println(supervisor);
 //		
-		UserDaoImpl userDao = new UserDaoImpl();  //we need to not make new dao objects all the time
+		UserDaoImpl userDao = UserDaoImpl.getInstance();  //we need to not make new dao objects all the time
 		ReimbursementUser user = new ReimbursementUser(username,password,firstName, lastName, email,department,supervisor);
+
 		
 		String hashedpw = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashedpw);
 		user = userDao.insertUser(user);
-		System.out.println(user);
-		if(user!=null) {
-			//return true;
-			//WERE GOOD
+		if(user==null) {
+			//This happens when for some reason the database is unable to insert this user into the table
+			return "/client/html/Welcome.html";
 		}
+
 		//return false;
 		//were  bad
 		
