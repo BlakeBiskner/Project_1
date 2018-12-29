@@ -145,6 +145,52 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public ReimbursementUser getUser(String username) {
 		// TODO Auto-generated method stub
+		ReimbursementUser user = new ReimbursementUser();
+		try {
+			String sql = "SELECT usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_password,"
+					+ "usr_account_approved,usr_has_email,dept_name, usr_t_permissions,job,"
+					+ "job_desc, ds_id,ds_firstname,ds_lastname, ds_username,ds_email,ds_dept_name, ds_usr_t_permissions,"
+					+ " ds_job,  ds_job_desc, usr_type_id,usr_department_id FROM user_view WHERE usr_username = ?";
+			PreparedStatement ps = CONN.prepareStatement(sql);
+			ps.setString(1, username);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				System.out.println("WE BE HERE");
+				user = new ReimbursementUser();
+				user.setUserID(rs.getInt(1));
+				user.setFirstname(rs.getString(2));
+				user.setLastname(rs.getString(3));
+				user.setUsername(rs.getString(4));
+				user.setEmail(rs.getString(5));
+				user.setPassword(rs.getString(6));
+				user.setAccountApproved(rs.getString(7).equals("Y"));
+				user.setHasEmail(rs.getString(8).equals('Y') || rs.getString(8).equals("U"));
+				user.setHasUrgentEmail(rs.getString(8).equals("U"));
+				user.setDept(rs.getString(9));
+				user.setPermissionType(rs.getInt(10));
+				user.setJob(rs.getString(11));
+				user.setJobDesc(rs.getString(12));
+				user.setDsID(rs.getInt(13));
+				user.setDsFirstname(rs.getString(14));
+				user.setDsLastname(rs.getString(15));
+				user.setDsUsername(rs.getString(16));
+				user.setDsEmail(rs.getString(17));
+				user.setDsDept(rs.getString(18));
+				user.setDsPermissionType(rs.getInt(19));
+				user.setDsJob(rs.getString(20));
+				user.setDsJobDesc(rs.getString(21));
+
+				user.setUserTypeID(rs.getInt(22));
+				user.setDeptID(rs.getInt(23));
+
+				return user;
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
