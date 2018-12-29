@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.revature.connection.ConnFactory;
-import com.revature.controller.LoginController;
-import com.revature.controller.RegisterController;
+import com.revature.controller.LoginCont;
+import com.revature.controller.RegisterCont;
 import com.revature.daoImplementation.UserDaoImpl;
 import com.revature.models.ReimbursementUser;
 
@@ -37,7 +37,7 @@ public class TestDriver {
 		//boolean success = RegisterController.register(user);
 		//System.out.println(user);
 		conn.close();
-		boolean success = LoginController.login(user);
+		boolean success = LoginCont.login(user);
 		System.out.println(success);
 	}
 }

@@ -5,7 +5,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.revature.daoImplementation.UserDaoImpl;
 import com.revature.models.ReimbursementUser;
 
-public class LoginController {
+public class LoginCont {
 	public static boolean login(ReimbursementUser user) {
 		UserDaoImpl userDao = new UserDaoImpl();//need to not do this everywhere
 		ReimbursementUser actualUser = userDao.getUser(user);
