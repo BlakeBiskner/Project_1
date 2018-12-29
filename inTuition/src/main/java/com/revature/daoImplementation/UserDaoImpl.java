@@ -36,30 +36,46 @@ public class UserDaoImpl implements UserDao {
 		}
 
 		try {
-			String sql = "BEGIN INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,"
-					+ "usr_department,usr_type,usr_password,usr_account_approved,usr_has_email)"
-					+ " VALUES(NULL,?,?,?,?,?,?,?,?,?,?) RETURNING usr_id INTO ?;  END;";
-
+			CONN.setAutoCommit(true);
+//			String sql = "BEGIN INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,"
+//					+ "usr_department,usr_type,usr_password)"
+//					+ " VALUES(NULL,?,?,?,?,?,?,?,?) RETURNING usr_id INTO ?;  END;";
+			String sql = "INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,usr_department,usr_type,usr_password) VALUES(NULL,?,?,?,?,?,?,?,?)";
+//			sql = "INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,usr_department,usr_type,usr_password)\r\n" + 
+//					"VALUES(NULL,'aaaa','aaa','aaaohboh','ahbah@email',99999,21,22,'aaa')";
+			PreparedStatement ps = CONN.prepareStatement(sql);
 			// INSERT INTO USR
 			// VALUES(null,'firstname','lastname','username','email',directSupervisorID,departmentID,typeID,'password','accountApproved','hasEmail');
-			CallableStatement cs = CONN.prepareCall(sql);
+		//	CallableStatement cs = CONN.prepareCall(sql);
+//			
+//			ps.setString(1, "Bob");
+//			ps.setString(2, "sagat");
+//			ps.setString(3, "bobbSaggatty");
+//			ps.setString(4, "bobbysagat@email.com");
+//			ps.setInt(5, 99999);
+//			ps.setInt(6, 21);
+//			ps.setInt(7, 22);
+//			ps.setString(8, "bob");
+////			
+			
+			ps.setString(1, user.getFirstname());
+			ps.setString(2, user.getLastname());
+			ps.setString(3, user.getUsername());
+			ps.setString(4, user.getEmail());
+			ps.setInt(5, user.getDsID());
+			ps.setInt(6, user.getDeptID());
+			ps.setInt(7, user.getUserTypeID());
+			ps.setString(8, user.getPassword());
+			//ps.setString(9, accountApproved);
+			//ps.setString(10, hasEmail);
 
-			cs.setString(1, user.getFirstname());
-			cs.setString(2, user.getLastname());
-			cs.setString(3, user.getUsername());
-			cs.setString(4, user.getEmail());
-			cs.setInt(5, user.getDsID());
-			cs.setInt(6, user.getDeptID());
-			cs.setInt(7, user.getUserTypeID());
-			cs.setString(8, user.getPassword());
-			cs.setString(9, accountApproved);
-			cs.setString(10, hasEmail);
-
-			cs.registerOutParameter(11, OracleTypes.NUMBER); // specifies the index created by the trigger that
+			//cs.registerOutParameter(9, OracleTypes.NUMBER); // specifies the index created by the trigger that
 															// references the employee inserted
-			cs.execute();
-			int id = cs.getInt(11);
-			user.setUserID(id);
+			ps.execute();
+			
+			//int id = cs.getInt(9);
+			//System.out.println(id);
+			//user.setUserID(id);
 			return user;
 //			if (commit) {
 //				conn.commit();
@@ -132,28 +148,5 @@ public class UserDaoImpl implements UserDao {
 		return null;
 	}
 
-	public static void main(String[] args) {
-		String password = "noone";
-		String hashedpw = BCrypt.hashpw(password, BCrypt.gensalt());
-		UserDaoImpl userDao = new UserDaoImpl();
-		ReimbursementUser ds = new ReimbursementUser();
-		ds.setUsername("stanlee");
-		ds = userDao.getUser(ds);
-		if (ds != null) {
-			System.out.println(ds);
-		}
-		ReimbursementUser user = new ReimbursementUser();
-		user.setEmail("arya@email.com");
-		user.setFirstname("Arya");
-		user.setLastname("Stark");
-		user.setPassword(hashedpw);
-		user.setUsername("arya");
-		//System.out.println(user);
-//		user = userDao.insertUser(user);
-//		if(user!=null) {
-//			System.out.println(user);
-//		}
-		user = userDao.getUser(user);
-		System.out.println(user);
-	}
+
 }
