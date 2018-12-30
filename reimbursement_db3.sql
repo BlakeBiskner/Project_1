@@ -151,6 +151,17 @@ LEFT JOIN
 ON usr.usr_id = ds.usr_id
 );
 
+
+CREATE OR REPLACE VIEW event_view AS
+SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+reimbursement_coverage,et_desc
+FROM
+EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id;
+
+
+
+
+
 CREATE SEQUENCE dept_id_seq
     START WITH 1
     INCREMENT BY 1;
