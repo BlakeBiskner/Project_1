@@ -1,0 +1,4 @@
+Add nextUser to Application table
+Add available reiumbursement amount to user table
+add target user to request for more information table
+indicate whether passed or failed on event grade?

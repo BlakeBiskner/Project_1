@@ -4,21 +4,22 @@ import java.sql.Timestamp;
 
 public class Event {
 	private String title,format,gradeFormat,passingGrade,grade,typeDescription,gradeTypeDesc;
+	private double cost;
+	private int coverage,eventTypeID,eventGradeFormatID,id;
+	private Timestamp startDate,endDate;
 	public String getGradeTypeDesc() {
 		return gradeTypeDesc;
 	}
 	public void setGradeTypeDesc(String gradeTypeDesc) {
 		this.gradeTypeDesc = gradeTypeDesc;
 	}
-	double cost;
-	int coverage,eventTypeID,eventGradeFormatID,id;
+
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	Timestamp startDate,endDate;
 	public int getEventTypeID() {
 		return eventTypeID;
 	}

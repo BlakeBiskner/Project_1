@@ -67,7 +67,8 @@ public class EventDaoImpl implements EventDao {
 	}
 
 	@Override
-	public Event getEvent(Event event) {
+	public Event getEvent(int id) {
+		Event event = new Event();
 		// TODO Auto-generated method stub
 //		SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,reimbursement_coverage,et_desc
 		try {
@@ -76,7 +77,7 @@ public class EventDaoImpl implements EventDao {
 					+ "egf_format, egf_description,egf_id, et_id,reimbursement_coverage,"
 					+ "et_desc FROM event_view WHERE e_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, event.getId());
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			event = null;
 			if (rs.next()) {
@@ -103,5 +104,35 @@ public class EventDaoImpl implements EventDao {
 
 		return null;
 	}
+	public Event getEvent(Event event) {
+		// TODO Auto-generated method stub
+//		SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,reimbursement_coverage,et_desc
+		try {
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "SELECT e_id FROM event_view WHERE e_name = ? AND e_cost = ? AND e_date = ? AND e_enddate = ? and e_passing_grade = ?"
+					+ "AND et_id = ? AND egf_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, event.getTitle());
+			ps.setDouble(2, event.getCost());
+			ps.setTimestamp(3, event.getStartDate());
+			ps.setTimestamp(4, event.getEndDate()); //This could be an issue if there is no enddate, hoping for if it is null it puts null there and checks for null
+			ps.setString(5, event.getPassingGrade());
+			ps.setInt(6, event.getEventTypeID());
+			ps.setInt(7, event.getEventGradeFormatID());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				event.setId(rs.getInt(1));
+			}
+			else {
+				event.setId(-1);
+			}
+			conn.close();
+			return event;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		return null;
+	}
 }

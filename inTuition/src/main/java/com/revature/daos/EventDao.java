@@ -8,6 +8,8 @@ public interface EventDao {
 	
 	//read
 	public Event getEvent(Event event);
+
+	Event getEvent(int id);
 	
 	//update
 	

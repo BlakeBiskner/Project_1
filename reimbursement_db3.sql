@@ -159,6 +159,15 @@ FROM
 EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id;
 
 
+CREATE OR REPLACE VIEW application_view AS
+SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+reimbursement_coverage,et_desc,
+a_id,user_id,comments,a_date,reimbursement_amount,eg_id,eg_a_id,eg_grade,eg_desc
+FROM
+EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id
+INNER JOIN APPLICATION ON event_id=e_id INNER JOIN EVENT_GRADE ON a_id = eg_a_id;
+
+
 
 
 
