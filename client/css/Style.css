@@ -10,11 +10,18 @@
     --jumbo-color:rgb(213,184,255);
     --jumbo-text-color:rgb(102,51,153);
     --button-hover-color:rgb(140,20,252);
+    --navbar-height:55px;
+    --profile-dropdown-margin:100px;
+    --col-nav-font-size:1.1vw;
 }
 
  /* Set height to allow for full height columns */
-html,body{
-    height:100%;
+
+
+/**************************************************/
+/***** Global *****/
+.container-fluid{
+    margin-top:var(--navbar-height); /* Add buffer for navbar */
 }
 
 /**************************************************/
@@ -24,29 +31,29 @@ html,body{
 .customNav{
     background-color:var(--nav-color);
 }
-#colNav{
-    background-color:var(--col-nav-color);
-    margin:0; /* Set margin and padding to 0 to allow for link highlight to extend across entire column */
+
+#vertNavColumn{
     padding:0;
+}
+
+#vertNavBar{
+    background-color:var(--col-nav-color);
+    position:fixed;
 }
 
 .colNavHead{
     font-weight:bold;
-    font-size:14px;
+    font-size:var(--col-nav-font-size); /* Use vw to ensure fixed column adjusts on all screen sizes */
     text-transform:uppercase;
 }
 
 .colNavLink{
     color:gray;
-    font-size:14px;
+    font-size:var(--col-nav-font-size);
 }
 
 .colNavLink:hover{
     background-color:var(--col-nav-hover-color);
-}
-
-.badge{
-    float:right;
 }
 
 .alert{
@@ -71,7 +78,15 @@ html,body{
     color:white;
 }
 
-.btn:hover{
+.customButton:hover{
     background-color:rgb(140,20,252);
     color:white;
+}
+
+#profileDropdown{
+    margin-right:var(--profile-dropdown-margin);
+}
+
+.cardList{
+    padding:0;
 }
