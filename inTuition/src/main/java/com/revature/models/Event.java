@@ -3,10 +3,21 @@ package com.revature.models;
 import java.sql.Timestamp;
 
 public class Event {
-	private String title,format,gradeFormat,passingGrade,grade,typeDescription,gradeTypeDesc;
+	private String title,gradeFormat,passingGrade,typeDescription,gradeTypeDesc;
 	private double cost;
 	private int coverage,eventTypeID,eventGradeFormatID,id;
 	private Timestamp startDate,endDate;
+	
+	public void setEventType(EventType type) {
+		typeDescription = type.getDesc();
+		eventTypeID = type.getId();
+		coverage = type.getCoverage();
+	}
+	public void setGradeFormat(EventGradeFormat egf) {
+		gradeFormat = egf.getFormat();
+		gradeTypeDesc = egf.getDesc();
+		eventGradeFormatID = egf.getId();
+	}
 	public String getGradeTypeDesc() {
 		return gradeTypeDesc;
 	}
@@ -28,8 +39,8 @@ public class Event {
 	}
 	@Override
 	public String toString() {
-		return "Event [title=" + title + ", format=" + format + ", gradeFormat=" + gradeFormat + ", passingGrade="
-				+ passingGrade + ", grade=" + grade + ", typeDescription=" + typeDescription + ", gradeTypeDesc="
+		return "Event [title=" + title + ", gradeFormat=" + gradeFormat + ", passingGrade="
+				+ passingGrade + ", typeDescription=" + typeDescription + ", gradeTypeDesc="
 				+ gradeTypeDesc + ", cost=" + cost + ", coverage=" + coverage + ", eventTypeID=" + eventTypeID
 				+ ", eventGradeFormatID=" + eventGradeFormatID + ", id=" + id + ", startDate=" + startDate
 				+ ", endDate=" + endDate + "]";
@@ -46,12 +57,7 @@ public class Event {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getFormat() {
-		return format;
-	}
-	public void setFormat(String format) {
-		this.format = format;
-	}
+	
 	public String getGradeFormat() {
 		return gradeFormat;
 	}
@@ -63,12 +69,6 @@ public class Event {
 	}
 	public void setPassingGrade(String passingGrade) {
 		this.passingGrade = passingGrade;
-	}
-	public String getGrade() {
-		return grade;
-	}
-	public void setGrade(String grade) {
-		this.grade = grade;
 	}
 	public String getTypeDescription() {
 		return typeDescription;

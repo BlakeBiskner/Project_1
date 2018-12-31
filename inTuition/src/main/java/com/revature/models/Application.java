@@ -5,19 +5,33 @@ import java.sql.Timestamp;
 public class Application {
 	private int applicationID, eventID, userID,gradeID;
 	private double reimbursementAmount;
-	private String comments,gradeComments,grade;
-	private String eventTitle,eventType,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc;
+	private String comments,gradeComments,grade = null;
+	private String eventTitle,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc = null;
 	private double cost;
 	private int typeCoverage,eventTypeID,eventGradeFormatID;
-	private Timestamp eventStartDate,eventEndDate;
+	private Timestamp eventStartDate,eventEndDate = null;
 	
-	
+	public void setEvent(Event event) {
+		eventID = event.getId();
+		eventTitle = event.getTitle();
+		gradeFormat = event.getGradeFormat();
+		passingGrade = event.getPassingGrade();
+		typeDescription = event.getTypeDescription();
+		gradeTypeDesc = event.getGradeTypeDesc();
+		eventGradeFormatDesc = event.getGradeTypeDesc();
+		typeCoverage = event.getCoverage();
+		eventTypeID = event.getEventTypeID();
+		eventGradeFormatID = event.getEventGradeFormatID();
+		eventStartDate = event.getStartDate();
+		eventEndDate = event.getEndDate();
+		cost = event.getCost();
+	}
 	@Override
 	public String toString() {
 		return "Application [applicationID=" + applicationID + ", eventID=" + eventID + ", userID=" + userID
 				+ ", gradeID=" + gradeID + ", reimbursementAmount=" + reimbursementAmount + ", comments=" + comments
 				+ ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle=" + eventTitle
-				+ ", eventType=" + eventType + ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade
+				+ ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade
 				+ ", typeDescription=" + typeDescription + ", gradeTypeDesc=" + gradeTypeDesc
 				+ ", eventGradeFormatDesc=" + eventGradeFormatDesc + ", cost=" + cost + ", typeCoverage=" + typeCoverage
 				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", eventStartDate="
@@ -73,12 +87,7 @@ public class Application {
 	public void setEventTitle(String eventTitle) {
 		this.eventTitle = eventTitle;
 	}
-	public String getEventType() {
-		return eventType;
-	}
-	public void setEventType(String eventType) {
-		this.eventType = eventType;
-	}
+
 	public String getGradeFormat() {
 		return gradeFormat;
 	}
