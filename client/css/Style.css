@@ -1,4 +1,77 @@
 /* Blake Biskner
 */
 
+/* Variable Declarations */
 
+:root{
+    --nav-color:rgb(171,183,183);
+    --col-nav-color:rgb(228,233,235);
+    --col-nav-hover-color:rgb(236,240,241);
+    --jumbo-color:rgb(213,184,255);
+    --jumbo-text-color:rgb(102,51,153);
+    --button-hover-color:rgb(140,20,252);
+}
+
+ /* Set height to allow for full height columns */
+html,body{
+    height:100%;
+}
+
+/**************************************************/
+/***** Home Page *****/
+
+/* Column Nav */
+.customNav{
+    background-color:var(--nav-color);
+}
+#colNav{
+    background-color:var(--col-nav-color);
+    margin:0; /* Set margin and padding to 0 to allow for link highlight to extend across entire column */
+    padding:0;
+}
+
+.colNavHead{
+    font-weight:bold;
+    font-size:14px;
+    text-transform:uppercase;
+}
+
+.colNavLink{
+    color:gray;
+    font-size:14px;
+}
+
+.colNavLink:hover{
+    background-color:var(--col-nav-hover-color);
+}
+
+.badge{
+    float:right;
+}
+
+.alert{
+    text-align:center;
+}
+
+#hiddenApproveAlert{
+    /*display:none;*/
+}
+
+#hiddenEmailAlert{
+    /*display:none;*/ 
+}
+
+.customJumbo{
+    background-color:var(--jumbo-color);
+    color:var(--jumbo-text-color);
+}
+
+.customButton{
+    background-color:var(--jumbo-text-color);
+    color:white;
+}
+
+.btn:hover{
+    background-color:rgb(140,20,252);
+    color:white;
+}
