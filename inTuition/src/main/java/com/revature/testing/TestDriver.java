@@ -28,6 +28,7 @@ public class TestDriver {
 		EventGradeFormatDaoImpl egfDao = EventGradeFormatDaoImpl.getInstance();
 		ApplicationDaoImpl appDao = ApplicationDaoImpl.getInstance();
 		ReimbursementUser user = userDao.getUser("littlefinger");
+		System.out.println(user);
 		ArrayList<EventType> ets = etDao.getTypes();
 		ArrayList<EventGradeFormat> egfs =egfDao.getGradeTypes();
 		EventGradeFormat egf = egfs.get(2);
@@ -38,16 +39,16 @@ public class TestDriver {
 		event.setEventType(et);
 		event.setGradeFormat(egf);
 		event.setCost(199);
-		event.setStartDate(Timestamp.valueOf("2012-08-01 10:30:00"));
+		event.setStartDate(Timestamp.valueOf("2018-09-01 10:30:00"));
 		event.setPassingGrade("Pass");
-		event.setTitle("Paintshop Pro Certification");
+		event.setTitle("Money Laundering Certification");
 		event = eventDao.insertEvent(event);
 		System.out.println(event);
 		app.setEvent(event);
-		app.setComments("I want to make more money as a comment.");
-		app.setDate(Timestamp.valueOf("2012-07-20 13:55:34"));
+		app.setComments("Hiding money.");
+		app.setDate(Timestamp.valueOf("2018-09-20 13:55:34"));
 		app.setUserID(user.getUserID());
-		
+		app.setReimbursementAmount(200);
 		app = appDao.insertApplication(app);
 		System.out.println(app);
 		app = appDao.getUserApplications(user).get(0);
@@ -59,10 +60,10 @@ public class TestDriver {
 		
 		
 		
-		appDao.getUserApplications(user).forEach(e->{
-			System.out.println(e);
-			e.setGradeComments("Winning");
-			EventGradeDaoImpl.getInstance().updateEventGrade(e);
-		});
+//		appDao.getUserApplications(user).forEach(e->{
+//			System.out.println(e);
+//			e.setGradeComments("Winning");
+//			EventGradeDaoImpl.getInstance().updateEventGrade(e);
+//		});
 	}
 }

@@ -137,13 +137,41 @@ FOREIGN KEY(eg_a_id) REFERENCES APPLICATION(a_id)
 );
 
 
+CREATE OR REPLACE FUNCTION get_available_reimbursement (usr_id IN INT)
+RETURN NUMBER
+IS
+yearly_available_reimbursement NUMBER(36,2);
+BEGIN
+SELECT SUM(reimbursement_amount)INTO yearly_available_reimbursement FROM
+(SELECT extract(year from SYSTIMESTAMP)cur_year from dual) a
+left join
+(SELECT reimbursement_amount,user_id,comments, extract(year from a_date) app_year FROM APPLICATION WHERE user_id = usr_id)b
+ON a.cur_year = b.app_year GROUP BY user_id;
+yearly_available_reimbursement := 1000 - yearly_available_reimbursement;
+IF yearly_available_reimbursement IS NULL THEN
+yearly_available_reimbursement := 1000;
+END IF;
+RETURN yearly_available_reimbursement;
+END;
+/
+
+
+SELECT get_available_reimbursement(user_id) FROM APPLICATION GROUP BY user_id;
+
+SELECT usr_id,usr_firstname,get_available_reimbursement(usr_id) 
+FROM
+user_view;
+
+
+
 CREATE OR REPLACE VIEW user_view AS
 SELECT usr.usr_id,usr.usr_firstname,usr.usr_lastname,usr.usr_username,usr.usr_email,usr.usr_password,
 usr.usr_account_approved,usr.usr_has_email,usr.dept_name, usr.usr_t_permissions,usr.usr_t_name job,
 usr.usr_t_desc job_desc,ds.usr_id ds_id, ds.usr_firstname ds_firstname, ds.usr_lastname ds_lastname, 
 ds.usr_username ds_username, ds.usr_email ds_email, ds.dept_name ds_dept_name, ds.usr_t_permissions ds_usr_t_permissions,
 ds.usr_t_name ds_job, ds.usr_t_desc ds_job_desc, 
-usr.usr_type usr_type_id, usr.usr_department usr_department_id
+usr.usr_type usr_type_id, usr.usr_department usr_department_id,
+get_available_reimbursement(usr.usr_id) yearly_available_reimbursement
 FROM(
 (SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) INNER JOIN USER_TYPE ON usr_type = usr_t_id)usr
 LEFT JOIN

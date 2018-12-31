@@ -79,7 +79,7 @@ public class UserDaoImpl implements UserDao {
 			String sql = "SELECT usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_password,"
 					+ "usr_account_approved,usr_has_email,dept_name, usr_t_permissions,job,"
 					+ "job_desc, ds_id,ds_firstname,ds_lastname, ds_username,ds_email,ds_dept_name, ds_usr_t_permissions,"
-					+ " ds_job,  ds_job_desc, usr_type_id,usr_department_id FROM user_view WHERE usr_username = ?";
+					+ " ds_job,  ds_job_desc, usr_type_id,usr_department_id,yearly_available_reimbursement FROM user_view WHERE usr_username = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ps.setString(1, user.getUsername());
@@ -112,7 +112,7 @@ public class UserDaoImpl implements UserDao {
 
 				user.setUserTypeID(rs.getInt(22));
 				user.setDeptID(rs.getInt(23));
-
+				user.setYearlyReimbursementRemaining(rs.getDouble(24));
 
 			}
 			conn.close();
@@ -133,7 +133,7 @@ public class UserDaoImpl implements UserDao {
 			String sql = "SELECT usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_password,"
 					+ "usr_account_approved,usr_has_email,dept_name, usr_t_permissions,job,"
 					+ "job_desc, ds_id,ds_firstname,ds_lastname, ds_username,ds_email,ds_dept_name, ds_usr_t_permissions,"
-					+ " ds_job,  ds_job_desc, usr_type_id,usr_department_id FROM user_view WHERE usr_username = ?";
+					+ " ds_job,  ds_job_desc, usr_type_id,usr_department_id,yearly_available_reimbursement FROM user_view WHERE usr_username = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
@@ -165,6 +165,8 @@ public class UserDaoImpl implements UserDao {
 
 				user.setUserTypeID(rs.getInt(22));
 				user.setDeptID(rs.getInt(23));
+
+				user.setYearlyReimbursementRemaining(rs.getDouble(24));
 			}
 			conn.close();
 			return user;

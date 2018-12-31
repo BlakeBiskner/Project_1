@@ -6,6 +6,7 @@ public class ReimbursementUser {
 	private int userID, permissionType,deptID,userTypeID;
 	private int dsID, dsPermissionType;
 	private boolean hasEmail,hasUrgentEmail,accountApproved;
+	private double yearlyReimbursementRemaining;
 	
 	public ReimbursementUser() {
 		hasEmail = false;
@@ -187,6 +188,12 @@ public class ReimbursementUser {
 	public void setHasEmail(boolean hasEmail) {
 		this.hasEmail = hasEmail;
 	}
+	public double getYearlyReimbursementRemaining() {
+		return yearlyReimbursementRemaining;
+	}
+	public void setYearlyReimbursementRemaining(double yearlyReimbursementRemaining) {
+		this.yearlyReimbursementRemaining = yearlyReimbursementRemaining;
+	}
 	@Override
 	public String toString() {
 		return "ReimbursementUser [username=" + username + ", firstname=" + firstname + ", lastname=" + lastname
@@ -195,7 +202,8 @@ public class ReimbursementUser {
 				+ ", dsEmail=" + dsEmail + ", dsDept=" + dsDept + ", dsJob=" + dsJob + ", dsJobDesc=" + dsJobDesc
 				+ ", userID=" + userID + ", permissionType=" + permissionType + ", deptID=" + deptID + ", userTypeID="
 				+ userTypeID + ", dsID=" + dsID + ", dsPermissionType=" + dsPermissionType + ", hasEmail=" + hasEmail
-				+ ", hasUrgentEmail=" + hasUrgentEmail + ", accountApproved=" + accountApproved + "]";
+				+ ", hasUrgentEmail=" + hasUrgentEmail + ", accountApproved=" + accountApproved
+				+ ", yearlyReimbursementRemaining=" + yearlyReimbursementRemaining + "]";
 	}
 	
 
