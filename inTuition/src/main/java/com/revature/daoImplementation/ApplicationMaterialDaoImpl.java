@@ -92,7 +92,7 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 				am.setAppID(rs.getInt(2));
 				am.setDesc(rs.getString(3));
 				
-				File file = new File("Read.txt");
+				File file = new File("temp");
 				Blob blob = rs.getBlob(4);//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
 				InputStream in = blob.getBinaryStream();
 				OutputStream out = new FileOutputStream(file);
@@ -104,8 +104,10 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 				}
 				
 				am.setFile(file);
+				ams.add(am);
 			}
 			conn.close();
+			return ams;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,7 +1,6 @@
 package com.revature.testing;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,14 +52,16 @@ public class TestDriver {
 //		app = appDao.insertApplication(app);
 //		System.out.println(app);
 		app = appDao.getUserApplications(user).get(0);
+		app.setApplicationID(21);
 		ArrayList<ApplicationMaterial> ams = amDao.getApplicationMaterials(app);
-		ApplicationMaterial am = ams.get(0);
-		//FileWriter fileWriter = new FileWriter("c:/temp/samplefile2.txt");
-		am.getFile().renameTo(new File("tooodoooo.txt"));
-	   // fileWriter.write(ams.get(0).getFile().);
-	    //fileWriter.close();
+		System.out.println(ams);
+	//	ApplicationMaterial am = ams.get(0);
+//		FileWriter fileWriter = new FileWriter("c:/temp/samplefile2.txt");
+//		System.out.println(am.getFile().getAbsolutePath());
+//	    fileWriter.write(am.getFile().);
+//	    fileWriter.close();
 //		System.out.println(app);
-//		File file = new File("toDo.txt");
+//		File file = new File("power.jpeg");
 //		ApplicationMaterial material = new ApplicationMaterial();
 //		material.setAppID(app.getApplicationID());
 //		material.setFile(file);
