@@ -29,8 +29,8 @@ public class RegisterController {
 		String department=request.getParameter("dept");
 		String supervisor=request.getParameter("supervisor");
 		
-//		// Add input validation
-//		
+		// Add input validation
+		
 		System.out.println(username);
 		System.out.println(password);
 		System.out.println(firstName);
@@ -38,21 +38,18 @@ public class RegisterController {
 		System.out.println(email);
 		System.out.println(department);
 		System.out.println(supervisor);
-//		
+		
 		UserDaoImpl userDao = UserDaoImpl.getInstance();  //we need to not make new dao objects all the time
 		ReimbursementUser user = new ReimbursementUser(username,password,firstName, lastName, email,department,supervisor);
-
 		
 		String hashedpw = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashedpw);
 		user = userDao.insertUser(user);
-		if(user==null) {
-			//This happens when for some reason the database is unable to insert this user into the table
-			return "/client/html/Welcome.html";
+		System.out.println(user);
+		if(user!=null) {
+			//return true;
+			//WERE GOOD
 		}
-
-		//return false;
-		//were  bad
 		
 		return "/client/html/Welcome.html";
 	}

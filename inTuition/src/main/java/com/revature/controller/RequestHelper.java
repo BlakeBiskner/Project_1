@@ -21,6 +21,9 @@ public class RequestHelper {
 		case (BASE_URI+"Register.do"):
 			System.out.println("in Register.do case");
 			return RegisterController.Register(request);
+		case (BASE_URI+"HomeJSON.do"):
+			System.out.println("in HomeJSON.do case");
+			return HomeController.HomeJSON(request,response);
 		default:
 			return DEFAULT_URI;
 		}
