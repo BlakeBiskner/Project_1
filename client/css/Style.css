@@ -11,8 +11,9 @@
     --jumbo-text-color:rgb(102,51,153);
     --button-hover-color:rgb(140,20,252);
     --navbar-height:55px;
-    --profile-dropdown-margin:100px;
+    --profile-dropdown-margin:150px;
     --col-nav-font-size:1.1vw;
+    --cost-card-padding:10px;
 }
 
  /* Set height to allow for full height columns */
@@ -89,4 +90,11 @@
 
 .cardList{
     padding:0;
+}
+
+/**************************************************/
+/***** Application Form *****/
+
+.costCard{
+    padding:var(--cost-card-padding);
 }

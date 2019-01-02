@@ -95,15 +95,15 @@
                             <div class="form-group">
                                 <!-- Ensures proper margins -->
                                 <label for="user">username</label>
-                                <input type="text" class="form-control" name="user" id="user">
+                                <input type="text" class="form-control" name="user" id="user" required> <!-- Required ensures user inputs data before submission -->
                                 <!-- id and label are same and form control name is referenced in controllers-->
                             </div>
                             <div class="form-group">
                                 <label for="pass">password</label>
-                                <input type="password" class="form-control" name="pass" id="pass">
+                                <input type="password" class="form-control" name="pass" id="pass" required>
                             </div>
                             <div class="form-group">
-                                <input type="submit" class="form-control btn-primary" id="LoginButton">
+                                <input type="submit" class="form-control btn-primary" id="LoginButton"> <!-- Input type submit denotes a button for submitting form data to a form handler (a form handler is a server page for handling input data) -->
                             </div>
                         </form>
                     </div>

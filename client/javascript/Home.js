@@ -33,10 +33,7 @@ function getUserInfo() {
 
 function setValues(user) {
 	console.log("in setValues");
-	document.getElementById("username").innerHTML = "Your Username is "
-			+ user.dsUsername;
-	document.getElementById("password").innerHTML = "Your Password is "
-			+ user.password;
+	document.getElementById("dropdownUser").innerHTML=(user.firstname+" "+user.lastname);
 }
 
 
