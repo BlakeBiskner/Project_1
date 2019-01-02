@@ -6,11 +6,60 @@ public class Application {
 	private int applicationID, eventID, userID,gradeID;
 	private double reimbursementAmount;
 	private String comments,gradeComments,grade = null;
-	private String eventTitle,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc = null;
+	private String eventTitle,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc,status = null;
 	private double cost;
-	private int typeCoverage,eventTypeID,eventGradeFormatID;
+	private int typeCoverage,eventTypeID,eventGradeFormatID,nextApproverID;
 	private Timestamp eventStartDate,eventEndDate = null;
+	private int timeMissed,statusID;
+	private String passed = null;
 	
+	
+	@Override
+	public String toString() {
+		return "Application [applicationID=" + applicationID + ", eventID=" + eventID + ", userID=" + userID
+				+ ", gradeID=" + gradeID + ", reimbursementAmount=" + reimbursementAmount + ", comments=" + comments
+				+ ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle=" + eventTitle
+				+ ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade + ", typeDescription="
+				+ typeDescription + ", gradeTypeDesc=" + gradeTypeDesc + ", eventGradeFormatDesc="
+				+ eventGradeFormatDesc + ", status=" + status + ", cost=" + cost + ", typeCoverage=" + typeCoverage
+				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", nextApprovedID="
+				+ nextApproverID + ", eventStartDate=" + eventStartDate + ", eventEndDate=" + eventEndDate
+				+ ", timeMissed=" + timeMissed + ", statusID=" + statusID + ", passed=" + passed + ", date=" + date
+				+ "]";
+	}
+	public String getPassed() {
+		return passed;
+	}
+	public void setPassed(String passed) {
+		this.passed = passed;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public int getStatusID() {
+		if(status==null) {
+			return 2;   //This indicates that an application has a status of pending.
+		}
+		return statusID;
+	}
+	public void setStatusID(int statusID) {
+		this.statusID = statusID;
+	}
+	public int getTimeMissed() {
+		return timeMissed;
+	}
+	public void setTimeMissed(int timeMissed) {
+		this.timeMissed = timeMissed;
+	}
+	public int getNextApproverID() {
+		return nextApproverID;
+	}
+	public void setNextApproverID(int nextApprovedID) {
+		this.nextApproverID = nextApprovedID;
+	}
 	public void setEvent(Event event) {
 		eventID = event.getId();
 		eventTitle = event.getTitle();
@@ -26,17 +75,7 @@ public class Application {
 		eventEndDate = event.getEndDate();
 		cost = event.getCost();
 	}
-	@Override
-	public String toString() {
-		return "Application [applicationID=" + applicationID + ", eventID=" + eventID + ", userID=" + userID
-				+ ", gradeID=" + gradeID + ", reimbursementAmount=" + reimbursementAmount + ", comments=" + comments
-				+ ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle=" + eventTitle
-				+ ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade
-				+ ", typeDescription=" + typeDescription + ", gradeTypeDesc=" + gradeTypeDesc
-				+ ", eventGradeFormatDesc=" + eventGradeFormatDesc + ", cost=" + cost + ", typeCoverage=" + typeCoverage
-				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", eventStartDate="
-				+ eventStartDate + ", eventEndDate=" + eventEndDate + ", date=" + date + "]";
-	}
+	
 	public String getEventGradeFormatDesc() {
 		return eventGradeFormatDesc;
 	}

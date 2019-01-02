@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
 
 		try {
 			String sql = "BEGIN INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,"
-					+ "usr_department,usr_type,usr_password)"
+					+ "usr_department,usr_job,usr_password)"
 					+ " VALUES(NULL,?,?,?,?,?,?,?,?) RETURNING usr_id INTO ?;  END;";
 //			String sql = "INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,usr_department,usr_type,usr_password) VALUES(NULL,?,?,?,?,?,?,?,?)";
 			// PreparedStatement ps = conn.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
 			cs.setString(4, user.getEmail());
 			cs.setInt(5, user.getDsID());
 			cs.setInt(6, user.getDeptID());
-			cs.setInt(7, user.getUserTypeID());
+			cs.setInt(7, user.getJobID());
 			cs.setString(8, user.getPassword());
 			// ps.setString(9, accountApproved);
 			// ps.setString(10, hasEmail);
@@ -75,11 +75,38 @@ public class UserDaoImpl implements UserDao {
 	public ReimbursementUser getUser(ReimbursementUser user) {
 		// TODO Auto-generated method stub
 		try {
+			
+			
 			conn = ConnFactory.getInstance().getConnection();
-			String sql = "SELECT usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_password,"
-					+ "usr_account_approved,usr_has_email,dept_name, usr_t_permissions,job,"
-					+ "job_desc, ds_id,ds_firstname,ds_lastname, ds_username,ds_email,ds_dept_name, ds_usr_t_permissions,"
-					+ " ds_job,  ds_job_desc, usr_type_id,usr_department_id,yearly_available_reimbursement FROM user_view WHERE usr_username = ?";
+			String sql = "SELECT "
+					+ "usr_id,"
+					+ "usr_firstname,"
+					+ "usr_lastname,"
+					+ "usr_username,"
+					+ "usr_email,"
+					+ "usr_password,"
+					+ "usr_account_approved,"
+					+ "usr_has_email,"
+					+ "dept_name,"
+					+ "job,"
+					+ "usr_job_id,"
+					+ "job_desc, "
+					+ "ds_id,"
+					+ "ds_firstname,"
+					+ "ds_lastname, "
+					+ "ds_username,"
+					+ "ds_email,"
+					+ "ds_dept_name,"
+					+ "ds_job_id, "
+					+ "ds_job,"
+					+ "ds_job_desc,"
+					+ "usr_department_id,"
+					+ "ujt_id,"
+					+ "job_type,"
+					+ "ds_jt_id,"
+					+ "ds_ujt_type,"
+					+ "available_reimbursement "
+					+ "FROM user_view WHERE usr_username = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ps.setString(1, user.getUsername());
@@ -94,11 +121,11 @@ public class UserDaoImpl implements UserDao {
 				user.setEmail(rs.getString(5));
 				user.setPassword(rs.getString(6));
 				user.setAccountApproved(rs.getString(7).equals("Y"));
-				user.setHasEmail(rs.getString(8).equals('Y') || rs.getString(8).equals("U"));
+				user.setHasEmail(rs.getString(8).equals("Y") || rs.getString(8).equals("U"));
 				user.setHasUrgentEmail(rs.getString(8).equals("U"));
 				user.setDept(rs.getString(9));
-				user.setPermissionType(rs.getInt(10));
-				user.setJob(rs.getString(11));
+				user.setJob(rs.getString(10));
+				user.setJobID(rs.getInt(11));
 				user.setJobDesc(rs.getString(12));
 				user.setDsID(rs.getInt(13));
 				user.setDsFirstname(rs.getString(14));
@@ -106,13 +133,16 @@ public class UserDaoImpl implements UserDao {
 				user.setDsUsername(rs.getString(16));
 				user.setDsEmail(rs.getString(17));
 				user.setDsDept(rs.getString(18));
-				user.setDsPermissionType(rs.getInt(19));
+				user.setDsJobID(rs.getInt(19));
 				user.setDsJob(rs.getString(20));
 				user.setDsJobDesc(rs.getString(21));
 
-				user.setUserTypeID(rs.getInt(22));
-				user.setDeptID(rs.getInt(23));
-				user.setYearlyReimbursementRemaining(rs.getDouble(24));
+				user.setDeptID(rs.getInt(22));
+				user.setJobTypeID(rs.getInt(23));
+				user.setJobType(rs.getString(24));
+				user.setDsJobTypeID(rs.getInt(25));
+				user.setDsJobType(rs.getString(26));
+				user.setYearlyReimbursementRemaining(rs.getDouble(27));
 
 			}
 			conn.close();
@@ -120,8 +150,7 @@ public class UserDaoImpl implements UserDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		return null;
+		}		return null;
 	}
 
 	@Override
@@ -129,12 +158,40 @@ public class UserDaoImpl implements UserDao {
 		// TODO Auto-generated method stub
 		ReimbursementUser user = new ReimbursementUser();
 		try {
+			
+			
 			conn = ConnFactory.getInstance().getConnection();
-			String sql = "SELECT usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_password,"
-					+ "usr_account_approved,usr_has_email,dept_name, usr_t_permissions,job,"
-					+ "job_desc, ds_id,ds_firstname,ds_lastname, ds_username,ds_email,ds_dept_name, ds_usr_t_permissions,"
-					+ " ds_job,  ds_job_desc, usr_type_id,usr_department_id,yearly_available_reimbursement FROM user_view WHERE usr_username = ?";
+			String sql = "SELECT "
+					+ "usr_id,"
+					+ "usr_firstname,"
+					+ "usr_lastname,"
+					+ "usr_username,"
+					+ "usr_email,"
+					+ "usr_password,"
+					+ "usr_account_approved,"
+					+ "usr_has_email,"
+					+ "dept_name,"
+					+ "job,"
+					+ "usr_job_id,"
+					+ "job_desc, "
+					+ "ds_id,"
+					+ "ds_firstname,"
+					+ "ds_lastname, "
+					+ "ds_username,"
+					+ "ds_email,"
+					+ "ds_dept_name,"
+					+ "ds_job_id, "
+					+ "ds_job,"
+					+ "ds_job_desc,"
+					+ "usr_department_id,"
+					+ "ujt_id,"
+					+ "job_type,"
+					+ "ds_jt_id,"
+					+ "ds_ujt_type,"
+					+ "available_reimbursement "
+					+ "FROM user_view WHERE usr_username = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
+
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
 			user = null;
@@ -147,11 +204,11 @@ public class UserDaoImpl implements UserDao {
 				user.setEmail(rs.getString(5));
 				user.setPassword(rs.getString(6));
 				user.setAccountApproved(rs.getString(7).equals("Y"));
-				user.setHasEmail(rs.getString(8).equals('Y') || rs.getString(8).equals("U"));
+				user.setHasEmail(rs.getString(8).equals("Y") || rs.getString(8).equals("U"));
 				user.setHasUrgentEmail(rs.getString(8).equals("U"));
 				user.setDept(rs.getString(9));
-				user.setPermissionType(rs.getInt(10));
-				user.setJob(rs.getString(11));
+				user.setJob(rs.getString(10));
+				user.setJobID(rs.getInt(11));
 				user.setJobDesc(rs.getString(12));
 				user.setDsID(rs.getInt(13));
 				user.setDsFirstname(rs.getString(14));
@@ -159,14 +216,17 @@ public class UserDaoImpl implements UserDao {
 				user.setDsUsername(rs.getString(16));
 				user.setDsEmail(rs.getString(17));
 				user.setDsDept(rs.getString(18));
-				user.setDsPermissionType(rs.getInt(19));
+				user.setDsJobID(rs.getInt(19));
 				user.setDsJob(rs.getString(20));
 				user.setDsJobDesc(rs.getString(21));
 
-				user.setUserTypeID(rs.getInt(22));
-				user.setDeptID(rs.getInt(23));
+				user.setDeptID(rs.getInt(22));
+				user.setJobTypeID(rs.getInt(23));
+				user.setJobType(rs.getString(24));
+				user.setDsJobTypeID(rs.getInt(25));
+				user.setDsJobType(rs.getString(26));
+				user.setYearlyReimbursementRemaining(rs.getDouble(27));
 
-				user.setYearlyReimbursementRemaining(rs.getDouble(24));
 			}
 			conn.close();
 			return user;

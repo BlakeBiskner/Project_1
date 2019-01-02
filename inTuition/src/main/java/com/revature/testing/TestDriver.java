@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.revature.connection.ConnFactory;
 import com.revature.daoImplementation.ApplicationDaoImpl;
 import com.revature.daoImplementation.ApplicationMaterialDaoImpl;
@@ -18,6 +20,11 @@ import com.revature.models.ReimbursementUser;
 
 public class TestDriver {
 	public static void main(String[] args) throws SQLException {
+		
+		String password = "password";
+		String hashedpw = BCrypt.hashpw(password, BCrypt.gensalt());
+		System.out.println(hashedpw);
+		System.exit(0);
 		Connection conn = ConnFactory.getInstance().getConnection();
 		
 		UserDaoImpl userDao = UserDaoImpl.getInstance();

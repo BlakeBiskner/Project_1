@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.revature.connection.ConnFactory;
 import com.revature.daos.DeptDao;
+import com.revature.models.Department;
 
 public class DeptDaoImpl implements DeptDao {
 	private Connection conn;
@@ -33,6 +34,30 @@ public class DeptDaoImpl implements DeptDao {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				depts.add(rs.getString(1));
+			}
+			conn.close();
+			return depts;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public ArrayList<Department> getDepartmentsAndIds() {
+		// TODO Auto-generated method stub
+		ArrayList<Department> depts = new ArrayList<>();
+		try {
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "SELECT dept_name,dept_id FROM DEPARTMENT";
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Department dept = new Department();
+				dept.setName(rs.getString(1));
+				dept.setId(rs.getInt(2));
+				depts.add(dept);
 			}
 			conn.close();
 			return depts;

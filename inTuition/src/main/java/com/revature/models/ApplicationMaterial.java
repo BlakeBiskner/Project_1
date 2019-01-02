@@ -4,8 +4,14 @@ import java.io.File;
 
 public class ApplicationMaterial {
 	File file;
-	String desc;
+	String desc, fileName;
 	int appID, appMatID;
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	public File getFile() {
 		return file;
 	}

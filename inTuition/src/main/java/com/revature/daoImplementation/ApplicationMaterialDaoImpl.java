@@ -45,16 +45,17 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 			FileInputStream in = new FileInputStream(blob);
 
 			
-			String sql = "BEGIN INSERT INTO APPLICATION_MATERIAL (am_id,am_a_id,am_description,am_material)"
-					+ " VALUES(NULL,?,?,?) RETURNING am_id INTO ?;  END;";
+			String sql = "BEGIN INSERT INTO APPLICATION_MATERIAL (am_id,am_a_id,am_description,am_material,am_filename)"
+					+ " VALUES(NULL,?,?,?,?) RETURNING am_id INTO ?;  END;";
 
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setInt(1, material.getAppID());
 			cs.setString(2, material.getDesc());
 			cs.setBinaryStream(3, in, (int)blob.length()); 
+			cs.setString(4, material.getFileName());
 			cs.registerOutParameter(4, OracleTypes.NUMBER); // specifies the index created by the trigger that
 			cs.execute();
-			int id = cs.getInt(4);
+			int id = cs.getInt(5);
 
 //			if (commit) {
 //				conn.commit();
@@ -82,7 +83,7 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 		ArrayList<ApplicationMaterial> ams = new ArrayList<>();
 		try {
 			conn = ConnFactory.getInstance().getConnection();
-			String sql = "SELECT am_id,am_a_id,am_description,am_material FROM APPLICATION_MATERIAL WHERE am_a_id = ?";
+			String sql = "SELECT am_id,am_a_id,am_description,am_material,am_filename FROM APPLICATION_MATERIAL WHERE am_a_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, app.getApplicationID());
 			ResultSet rs = ps.executeQuery();
@@ -91,7 +92,7 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 				am.setAppMatID(rs.getInt(1));
 				am.setAppID(rs.getInt(2));
 				am.setDesc(rs.getString(3));
-				
+				am.setFileName(rs.getString(5));
 				File file = new File("temp");
 				Blob blob = rs.getBlob(4);//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
 				InputStream in = blob.getBinaryStream();

@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 
 import com.revature.connection.ConnFactory;
@@ -30,13 +32,15 @@ public class ApplicationDaoImpl implements ApplicationDao {
 	@Override
 	public Application insertApplication(Application app) {//This method uses transaction - autocommit false then commits after eventgrade has been added
 		// TODO Auto-generated method stub
+		app.setDate(Timestamp.from(Instant.now()));
 		conn = ConnFactory.getInstance().getConnection();
 		
 		try {
 			conn.setAutoCommit(false);
 
-			String sql = "BEGIN INSERT INTO APPLICATION (a_id,event_id,user_id,comments,a_date,reimbursement_amount)"
-					+ " VALUES(NULL,?,?,?,?,?) RETURNING a_id INTO ?;  END;";
+			String sql = "BEGIN INSERT INTO APPLICATION (a_id,event_id,user_id,comments,a_date,"
+					+ "reimbursement_amount,status,time_missed,next_approver)"
+					+ " VALUES(NULL,?,?,?,?,?,?,?,?) RETURNING a_id INTO ?;  END;";
 
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setInt(1, app.getEventID());
@@ -44,9 +48,12 @@ public class ApplicationDaoImpl implements ApplicationDao {
 			cs.setString(3, app.getComments());
 			cs.setTimestamp(4,app.getDate());
 			cs.setDouble(5, app.getReimbursementAmount());
-			cs.registerOutParameter(6, OracleTypes.NUMBER); // specifies the index created by the trigger that
+			cs.setInt(6, app.getStatusID());
+			cs.setInt(7, app.getTimeMissed());
+			cs.setInt(8, app.getNextApproverID());
+			cs.registerOutParameter(9, OracleTypes.NUMBER); // specifies the index created by the trigger that
 			cs.execute();
-			int id = cs.getInt(6);
+			int id = cs.getInt(9);
 			
 //			if (commit) {
 //				conn.commit();
@@ -74,11 +81,37 @@ public class ApplicationDaoImpl implements ApplicationDao {
 	public ArrayList<Application> getUserApplications(ReimbursementUser user) {
 		// TODO Auto-generated method stub
 		ArrayList<Application> apps = new ArrayList<Application>();
+//		e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+//		reimbursement_coverage,et_desc,
+//		a_id,user_id,comments,a_date,reimbursement_amount,eg_id,eg_a_id,eg_grade,eg_desc,
+//		as_status status,as_id status_id, next_approver
 		try {
 			conn = ConnFactory.getInstance().getConnection();
-			String sql = "SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id," + 
-					"reimbursement_coverage,et_desc," + 
-					"a_id,comments,a_date,reimbursement_amount,eg_id,eg_a_id,eg_grade,eg_desc FROM application_view WHERE user_id = ?";
+			String sql = "SELECT "
+					+ "e_id,"
+					+ "e_name, "
+					+ "e_cost, "
+					+ "e_date, "
+					+ "e_enddate, "
+					+ "e_passing_grade,"
+					+ "egf_format,"
+					+ "egf_description,"
+					+ "egf_id, "
+					+ "et_id," 
+					+ "reimbursement_coverage,"
+					+ "et_desc," 
+					+ "a_id,"
+					+ "comments,"
+					+ "a_date,"
+					+ "reimbursement_amount,"
+					+ "eg_id,"
+					+ "eg_grade,"
+					+ "eg_desc, "
+					+ "status,"
+					+ "status_id,"
+					+ "next_approver,"
+					+ "passed "
+					+ "FROM application_view WHERE user_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ps.setInt(1, user.getUserID());
@@ -106,6 +139,10 @@ public class ApplicationDaoImpl implements ApplicationDao {
 				app.setGradeID(rs.getInt(17));
 				app.setGrade(rs.getString(18));
 				app.setGradeComments(rs.getString(19));
+				app.setStatus(rs.getString(20));
+				app.setStatusID(rs.getInt(21));
+				app.setNextApproverID(rs.getInt(22));
+				app.setPassed(rs.getString(23));
 				apps.add(app);
 			}
 			conn.close();

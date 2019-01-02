@@ -1,6 +1,6 @@
 Add nextUser to Application table
-Add available reiumbursement amount to user table
 add target user to request for more information table
 indicate whether passed or failed on event grade?
-add application approved or denied on application table
+add application approved or denied on application table or maybe stage?
 add filename to application material table
+make application_request have column for material instead of vice versa

@@ -1,20 +1,68 @@
 package com.revature.models;
 
 public class ReimbursementUser {
-	private String username, firstname, lastname, email, dept,password,job,jobDesc;
-	private String dsUsername, dsFirstname, dsLastname, dsEmail, dsDept,dsJob,dsJobDesc;
-	private int userID, permissionType,deptID,userTypeID;
-	private int dsID, dsPermissionType;
+	private String username, firstname, lastname, email, dept,password,job,jobDesc,jobType;
+	private String dsUsername, dsFirstname, dsLastname, dsEmail, dsDept,dsJob,dsJobDesc,dsJobType;
+	private int userID, deptID,jobTypeID,jobID;
+	private int dsID,dsJobID,dsJobTypeID;
 	private boolean hasEmail,hasUrgentEmail,accountApproved;
 	private double yearlyReimbursementRemaining;
 	
+	
+	@Override
+	public String toString() {
+		return "ReimbursementUser [username=" + username + ", firstname=" + firstname + ", lastname=" + lastname
+				+ ", email=" + email + ", dept=" + dept + ", password=" + password + ", job=" + job + ", jobDesc="
+				+ jobDesc + ", jobType=" + jobType + ", dsUsername=" + dsUsername + ", dsFirstname=" + dsFirstname
+				+ ", dsLastname=" + dsLastname + ", dsEmail=" + dsEmail + ", dsDept=" + dsDept + ", dsJob=" + dsJob
+				+ ", dsJobDesc=" + dsJobDesc + ", dsJobType=" + dsJobType + ", userID=" + userID + ", deptID=" + deptID
+				+ ", jobTypeID=" + jobTypeID + ", jobID=" + jobID + ", dsID=" + dsID + ", dsJobID=" + dsJobID
+				+ ", dsJobTypeID=" + dsJobTypeID + ", hasEmail=" + hasEmail + ", hasUrgentEmail=" + hasUrgentEmail
+				+ ", accountApproved=" + accountApproved + ", yearlyReimbursementRemaining="
+				+ yearlyReimbursementRemaining + "]";
+	}
+	public String getDsJobType() {
+		return dsJobType;
+	}
+	public void setDsJobType(String dsJobType) {
+		this.dsJobType = dsJobType;
+	}
+	public int getDsJobTypeID() {
+		return dsJobTypeID;
+	}
+	public void setDsJobTypeID(int dsJobTypeID) {
+		this.dsJobTypeID = dsJobTypeID;
+	}
+	public int getJobID() {
+		return jobID;
+	}
+	public void setJobID(int jobID) {
+		this.jobID = jobID;
+	}
+	public int getDsJobID() {
+		return dsJobID;
+	}
+	public void setDsJobID(int dsJobID) {
+		this.dsJobID = dsJobID;
+	}
+	public String getJobType() {
+		return jobType;
+	}
+	public void setJobType(String jobType) {
+		this.jobType = jobType;
+	}
+	public int getJobTypeID() {
+		return jobTypeID;
+	}
+	public void setJobTypeID(int jobTypeID) {
+		this.jobTypeID = jobTypeID;
+	}
 	public ReimbursementUser() {
 		hasEmail = false;
 		hasUrgentEmail = false;
 		accountApproved = true;
 		deptID = 21;  //set default department as administration
 		dsID = 99999; //set default direct supervisor as stan lee
-		userTypeID = 22;
 	}
 	public ReimbursementUser(String username,String password,String firstName,String lastName,String email,String department,String supervisor) {
 		this.username = username;
@@ -30,7 +78,6 @@ public class ReimbursementUser {
 		accountApproved = true;
 		deptID = 21;  //set default department as administration
 		dsID = 99999; //set default direct supervisor as stan lee
-		userTypeID = 22;
 	}
 	public void setDirectSupervisor(ReimbursementUser ds) {
 		dsUsername = ds.getUsername();
@@ -41,7 +88,6 @@ public class ReimbursementUser {
 		dsJob = ds.getJob();
 		dsJobDesc = ds.getJobDesc();
 		dsID = ds.getUserID();
-		dsPermissionType = ds.getPermissionType();
 	}
 	public boolean isHasUrgentEmail() {
 		return hasUrgentEmail;
@@ -54,12 +100,6 @@ public class ReimbursementUser {
 	}
 	public void setDeptID(int deptID) {
 		this.deptID = deptID;
-	}
-	public int getUserTypeID() {
-		return userTypeID;
-	}
-	public void setUserTypeID(int userTypeID) {
-		this.userTypeID = userTypeID;
 	}
 	public boolean isAccountApproved() {
 		return accountApproved;
@@ -80,12 +120,7 @@ public class ReimbursementUser {
 	public void setDsID(int dsID) {
 		this.dsID = dsID;
 	}
-	public int getDsPermissionType() {
-		return dsPermissionType;
-	}
-	public void setDsPermissionType(int dsPermissionType) {
-		this.dsPermissionType = dsPermissionType;
-	}	
+		
 	public String getUsername() {
 		return username;
 	}
@@ -176,12 +211,6 @@ public class ReimbursementUser {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	public int getPermissionType() {
-		return permissionType;
-	}
-	public void setPermissionType(int permissionType) {
-		this.permissionType = permissionType;
-	}
 	public boolean isHasEmail() {
 		return hasEmail;
 	}
@@ -194,17 +223,5 @@ public class ReimbursementUser {
 	public void setYearlyReimbursementRemaining(double yearlyReimbursementRemaining) {
 		this.yearlyReimbursementRemaining = yearlyReimbursementRemaining;
 	}
-	@Override
-	public String toString() {
-		return "ReimbursementUser [username=" + username + ", firstname=" + firstname + ", lastname=" + lastname
-				+ ", email=" + email + ", dept=" + dept + ", password=" + password + ", job=" + job + ", jobDesc="
-				+ jobDesc + ", dsUsername=" + dsUsername + ", dsFirstname=" + dsFirstname + ", dsLastname=" + dsLastname
-				+ ", dsEmail=" + dsEmail + ", dsDept=" + dsDept + ", dsJob=" + dsJob + ", dsJobDesc=" + dsJobDesc
-				+ ", userID=" + userID + ", permissionType=" + permissionType + ", deptID=" + deptID + ", userTypeID="
-				+ userTypeID + ", dsID=" + dsID + ", dsPermissionType=" + dsPermissionType + ", hasEmail=" + hasEmail
-				+ ", hasUrgentEmail=" + hasUrgentEmail + ", accountApproved=" + accountApproved
-				+ ", yearlyReimbursementRemaining=" + yearlyReimbursementRemaining + "]";
-	}
-	
 
 }

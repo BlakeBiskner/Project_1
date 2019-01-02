@@ -2,12 +2,14 @@
 DROP TABLE APPLICATION_MATERIAL_REQUEST;
 DROP TABLE APPLICATION_MATERIAL;
 DROP TABLE APPLICATION_APPROVAL;
-DROP TABLE APPLICATION_APPROVAL_TYPE;
 DROP TABLE EVENT_GRADE;
 DROP TABLE APPLICATION;
+DROP TABLE APPLICATION_STATUS;
 DROP TABLE USR;
-DROP TABLE USER_TYPE;
+DROP TABLE USER_JOB;
+DROP TABLE USER_JOB_TYPE;
 DROP TABLE EVENT;
+DROP TABLE EVENT_LOCATION;
 DROP TABLE EVENT_TYPE;
 DROP TABLE DEPARTMENT;
 DROP TABLE EVENT_GRADE_FORMAT;
@@ -28,28 +30,46 @@ egf_description VARCHAR2(200),
 PRIMARY KEY(egf_id)
 );
 
+CREATE TABLE EVENT_LOCATION(
+el_id INTEGER,
+el_state VARCHAR2(20) NOT NULL,
+el_city VARCHAR2(60) NOT NULL,
+el_zipcode INTEGER NOT NULL,
+el_address_line1 VARCHAR2(100) NOT NULL,
+el_address_line2 VARCHAR2(100),
+PRIMARY KEY(el_id)
+);
+
 
 CREATE TABLE EVENT(
 e_id INTEGER,
 e_type INTEGER NOT NULL,
-e_name VARCHAR2(40) NOT NULL,
+e_name VARCHAR2(60) NOT NULL,
 e_cost NUMBER(10,2) NOT NULL,
 e_date TIMESTAMP NOT NULL,
 e_enddate TIMESTAMP,
 e_egf_id INTEGER NOT NULL,
 e_passing_grade VARCHAR2(10) NOT NULL,
+e_location INTEGER,
 PRIMARY KEY(e_id),
 FOREIGN KEY(e_type) REFERENCES EVENT_TYPE(et_id),
-FOREIGN KEY(e_egf_id) REFERENCES EVENT_GRADE_FORMAT(egf_id)
+FOREIGN KEY(e_egf_id) REFERENCES EVENT_GRADE_FORMAT(egf_id),
+FOREIGN KEY(e_location) REFERENCES EVENT_LOCATION(el_id)
 );
 
+CREATE TABLE USER_JOB_TYPE(
+ujt_id INTEGER,
+ujt_type VARCHAR2(20)NOT NULL,
+PRIMARY KEY(ujt_id)
+);
 
-CREATE TABLE USER_TYPE(
-usr_t_id INTEGER,
-usr_t_permissions INTEGER,
-usr_t_name VARCHAR2(40) UNIQUE NOT NULL,
-usr_t_desc VARCHAR2(100),
-PRIMARY KEY (usr_t_id)
+CREATE TABLE USER_JOB(
+usr_j_id INTEGER,
+usr_j_name VARCHAR2(40) UNIQUE NOT NULL,
+usr_j_desc VARCHAR2(100),
+usr_j_type INTEGER NOT NULL,
+PRIMARY KEY (usr_j_id),
+FOREIGN KEY(usr_j_type) REFERENCES USER_JOB_TYPE(ujt_id)
 );
 
 
@@ -68,48 +88,56 @@ usr_username VARCHAR2(40) UNIQUE NOT NULL,
 usr_email VARCHAR2(50) UNIQUE NOT NULL,
 usr_direct_supervisor INTEGER NOT NULL,
 usr_department INTEGER NOT NULL,
-usr_type INTEGER NOT NULL,
+usr_job INTEGER NOT NULL,
 usr_password VARCHAR2(200) NOT NULL,
 usr_account_approved VARCHAR2(1) DEFAULT('Y') CHECK (usr_account_approved='Y' OR usr_account_approved='N')NOT NULL,
 usr_has_email VARCHAR2(1)DEFAULT('N') CHECK (usr_has_email='Y' OR usr_has_email='N' OR usr_has_email='U')NOT NULL,
 PRIMARY KEY(usr_id),
 FOREIGN KEY(usr_direct_supervisor) REFERENCES USR(usr_id),
 FOREIGN KEY(usr_department) REFERENCES DEPARTMENT(dept_id),
-FOREIGN KEY(usr_type) REFERENCES USER_TYPE(usr_t_id)
+FOREIGN KEY(usr_job) REFERENCES USER_JOB(usr_J_id)
+);
+
+CREATE TABLE APPLICATION_STATUS(
+as_id INTEGER,
+as_status VARCHAR2(20),
+PRIMARY KEY(as_id)
 );
 
 CREATE TABLE APPLICATION(
 a_id INTEGER,
 user_id INTEGER NOT NULL,
 event_id INTEGER NOT NULL,
-comments VARCHAR2(90),
+comments VARCHAR2(300) NOT NULL,
+time_missed NUMBER,
 a_date TIMESTAMP,
 reimbursement_amount NUMBER(10,2),
+next_approver INTEGER,
+status INTEGER NOT NULL,
 PRIMARY KEY(a_id),
 FOREIGN KEY(user_id) REFERENCES USR(usr_id),
-FOREIGN KEY(event_id) REFERENCES EVENT(e_id)
-);
-
-CREATE TABLE APPLICATION_APPROVAL_TYPE(
-aat_id INTEGER,
-type VARCHAR2(40) UNIQUE NOT NULL,
-PRIMARY KEY(aat_id)
+FOREIGN KEY(event_id) REFERENCES EVENT(e_id),
+FOREIGN KEY(next_approver) REFERENCES USR(usr_id),
+FOREIGN KEY(status) REFERENCES APPLICATION_STATUS(as_id)
 );
 
 CREATE TABLE APPLICATION_APPROVAL(
 aa_id INTEGER,
-aat_id INTEGER NOT NULL,
-approval_time TIMESTAMP NOT NULL,
-approval VARCHAR2(1) CHECK (approval='Y' OR approval='N') NOT NULL,
+aa_application INTEGER NOT NULL,
+aa_approver INTEGER NOT NULL,
+approval_time TIMESTAMP,
+approval VARCHAR2(1) CHECK (approval='Y' OR approval='N'),
 reasoning VARCHAR2(750),
 PRIMARY KEY(aa_id),
-FOREIGN KEY(aat_id) REFERENCES APPLICATION_APPROVAL_TYPE(aat_id)
+FOREIGN KEY(aa_application) REFERENCES APPLICATION(a_id),
+FOREIGN KEY(aa_approver) REFERENCES USR(usr_id)
 );
 
 CREATE TABLE APPLICATION_MATERIAL(
 am_id INTEGER,
 am_a_id INTEGER NOT NULL,
 am_material BLOB NOT NULL,
+am_filename VARCHAR2(50) NOT NULL,
 am_description VARCHAR2(200),
 PRIMARY KEY(am_id),
 FOREIGN KEY(am_a_id) REFERENCES APPLICATION(a_id)
@@ -118,12 +146,14 @@ FOREIGN KEY(am_a_id) REFERENCES APPLICATION(a_id)
 CREATE TABLE APPLICATION_MATERIAL_REQUEST(
 amr_id INTEGER,
 amr_a_id INTEGER NOT NULL,
-amr_req_usr_id INTEGER NOT NULL,
+amr_requester_id INTEGER NOT NULL,
+amr_requestee_id INTEGER NOT NULL,
 amr_request VARCHAR2(500) NOT NULL,
 amr_am_id INTEGER,
 PRIMARY KEY(amr_id),
 FOREIGN KEY(amr_a_id) REFERENCES APPLICATION(a_id),
-FOREIGN KEY(amr_req_usr_id) REFERENCES USR(usr_id)
+FOREIGN KEY(amr_requester_id) REFERENCES USR(usr_id),
+FOREIGN KEY(amr_requestee_id) REFERENCES USR(usr_id)
 );
 
 
@@ -132,6 +162,7 @@ eg_id INTEGER,
 eg_a_id INTEGER NOT NULL,
 eg_grade VARCHAR2(10),
 eg_desc VARCHAR2(150),
+passed VARCHAR2(1) CHECK (passed='Y' OR passed='N'),
 PRIMARY KEY(eg_id),
 FOREIGN KEY(eg_a_id) REFERENCES APPLICATION(a_id)
 );
@@ -156,46 +187,56 @@ END;
 /
 
 
-SELECT get_available_reimbursement(user_id) FROM APPLICATION GROUP BY user_id;
-
-SELECT usr_id,usr_firstname,get_available_reimbursement(usr_id) 
-FROM
-user_view;
-
 
 
 CREATE OR REPLACE VIEW user_view AS
 SELECT usr.usr_id,usr.usr_firstname,usr.usr_lastname,usr.usr_username,usr.usr_email,usr.usr_password,
-usr.usr_account_approved,usr.usr_has_email,usr.dept_name, usr.usr_t_permissions,usr.usr_t_name job,
-usr.usr_t_desc job_desc,ds.usr_id ds_id, ds.usr_firstname ds_firstname, ds.usr_lastname ds_lastname, 
-ds.usr_username ds_username, ds.usr_email ds_email, ds.dept_name ds_dept_name, ds.usr_t_permissions ds_usr_t_permissions,
-ds.usr_t_name ds_job, ds.usr_t_desc ds_job_desc, 
-usr.usr_type usr_type_id, usr.usr_department usr_department_id,
-get_available_reimbursement(usr.usr_id) yearly_available_reimbursement
+usr.usr_account_approved,usr.usr_has_email,usr.dept_name,usr.usr_j_name job,
+usr.usr_j_desc job_desc,ds.usr_id ds_id, ds.usr_firstname ds_firstname, ds.usr_lastname ds_lastname, 
+ds.usr_username ds_username, ds.usr_email ds_email, ds.dept_name ds_dept_name, 
+ds.usr_j_name ds_job, ds.usr_j_desc ds_job_desc, ds.usr_job ds_job_id,
+usr.usr_job usr_job_id, usr.usr_department usr_department_id,
+usr.ujt_id ujt_id, usr.ujt_type job_type, ds.ujt_id ds_jt_id, ds.ujt_type ds_ujt_type,
+get_available_reimbursement(usr.usr_id) available_reimbursement
 FROM(
-(SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) INNER JOIN USER_TYPE ON usr_type = usr_t_id)usr
+(SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) 
+INNER JOIN USER_JOB ON usr_job = usr_j_id
+INNER JOIN USER_JOB_TYPE ON usr_j_type=ujt_id)usr
 LEFT JOIN
-(SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) INNER JOIN USER_TYPE ON usr_type = usr_t_id)ds
+(SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) 
+INNER JOIN USER_JOB ON usr_job = usr_j_id
+INNER JOIN USER_JOB_TYPE ON usr_j_type=ujt_id)ds
 ON usr.usr_id = ds.usr_id
 );
 
 
 CREATE OR REPLACE VIEW event_view AS
 SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
-reimbursement_coverage,et_desc
+reimbursement_coverage,et_desc,el_id,el_state,el_city,el_zipcode,el_address_line1,el_address_line2
 FROM
-EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id;
+EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id
+LEFT JOIN EVENT_LOCATION ON e_location=el_id;
+
+--
+--CREATE OR REPLACE VIEW application_view AS
+--SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+--reimbursement_coverage,et_desc,
+--a_id,user_id,comments,a_date,reimbursement_amount,eg_id,eg_a_id,eg_grade,eg_desc
+--FROM
+--EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id
+--INNER JOIN APPLICATION ON event_id=e_id INNER JOIN EVENT_GRADE ON a_id = eg_a_id;
+
 
 
 CREATE OR REPLACE VIEW application_view AS
 SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
 reimbursement_coverage,et_desc,
-a_id,user_id,comments,a_date,reimbursement_amount,eg_id,eg_a_id,eg_grade,eg_desc
+a_id,user_id,comments,a_date,reimbursement_amount,eg_id,eg_a_id,eg_grade,eg_desc,
+as_status status,as_id status_id, next_approver, passed
 FROM
 EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id
-INNER JOIN APPLICATION ON event_id=e_id INNER JOIN EVENT_GRADE ON a_id = eg_a_id;
-
-
+INNER JOIN APPLICATION ON event_id=e_id INNER JOIN EVENT_GRADE ON a_id = eg_a_id
+INNER JOIN APPLICATION_STATUS ON status=as_id;
 
 
 
@@ -278,6 +319,21 @@ begin
 end; 
 /
 
+CREATE SEQUENCE el_id_seq
+    START WITH 1
+    INCREMENT BY 1;
+
+
+CREATE OR REPLACE TRIGGER  el_id_trigger
+  before insert on EVENT_LOCATION              
+  for each row  
+begin   
+  if :new.el_id is null then 
+    select el_id_seq.nextval into :new.el_id from dual; 
+  end if; 
+end; 
+/
+
 CREATE SEQUENCE e_id_seq
     START WITH 1
     INCREMENT BY 1;
@@ -293,20 +349,37 @@ begin
 end; 
 /
 
-CREATE SEQUENCE usr_t_id_seq
+CREATE SEQUENCE usr_j_id_seq
     START WITH 1
     INCREMENT BY 1;
 
 
-CREATE OR REPLACE TRIGGER  usr_t_id_trigger
-  before insert on USER_TYPE              
+CREATE OR REPLACE TRIGGER  usr_j_id_trigger
+  before insert on USER_JOB              
   for each row  
 begin   
-  if :new.usr_t_id is null then 
-    select usr_t_id_seq.nextval into :new.usr_t_id from dual; 
+  if :new.usr_j_id is null then 
+    select usr_j_id_seq.nextval into :new.usr_j_id from dual; 
   end if; 
 end; 
 /
+
+
+CREATE SEQUENCE ujt_id_seq
+    START WITH 1
+    INCREMENT BY 1;
+
+
+CREATE OR REPLACE TRIGGER  ujt_id_trigger
+  before insert on USER_JOB_TYPE           
+  for each row  
+begin   
+  if :new.ujt_id is null then 
+    select ujt_id_seq.nextval into :new.ujt_id from dual; 
+  end if; 
+end; 
+/
+
 
 
 CREATE SEQUENCE a_id_seq
@@ -325,17 +398,17 @@ end;
 /
 
 
-CREATE SEQUENCE aat_id_seq
+CREATE SEQUENCE as_id_seq
     START WITH 1
     INCREMENT BY 1;
 
 
-CREATE OR REPLACE TRIGGER  aat_id_trigger
-  before insert on APPLICATION_APPROVAL_TYPE              
+CREATE OR REPLACE TRIGGER  as_id_trigger
+  before insert on APPLICATION_STATUS              
   for each row  
 begin   
-  if :new.aat_id is null then 
-    select aat_id_seq.nextval into :new.aat_id from dual; 
+  if :new.as_id is null then 
+    select as_id_seq.nextval into :new.as_id from dual; 
   end if; 
 end; 
 /
