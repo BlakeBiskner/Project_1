@@ -2,12 +2,12 @@
 DROP TABLE APPLICATION_MATERIAL_REQUEST;
 DROP TABLE APPLICATION_MATERIAL;
 DROP TABLE APPLICATION_APPROVAL;
-DROP TABLE EVENT_GRADE;
 DROP TABLE APPLICATION;
 DROP TABLE APPLICATION_STATUS;
 DROP TABLE USR;
 DROP TABLE USER_JOB;
 DROP TABLE USER_JOB_TYPE;
+DROP TABLE EVENT_PARTICIPATION;
 DROP TABLE EVENT;
 DROP TABLE EVENT_LOCATION;
 DROP TABLE EVENT_TYPE;
@@ -45,7 +45,6 @@ CREATE TABLE EVENT(
 e_id INTEGER,
 e_type INTEGER NOT NULL,
 e_name VARCHAR2(60) NOT NULL,
-e_cost NUMBER(10,2) NOT NULL,
 e_date TIMESTAMP NOT NULL,
 e_enddate TIMESTAMP,
 e_egf_id INTEGER NOT NULL,
@@ -104,19 +103,29 @@ as_status VARCHAR2(20),
 PRIMARY KEY(as_id)
 );
 
+CREATE TABLE EVENT_PARTICIPATION(
+ep_id INTEGER,
+ep_cost NUMBER(36,2) NOT NULL,
+ep_grade VARCHAR2(10),
+ep_desc VARCHAR2(150),
+passed VARCHAR2(1) CHECK (passed='Y' OR passed='N'),
+event_id INTEGER NOT NULL,
+PRIMARY KEY(ep_id),
+FOREIGN KEY(event_id) REFERENCES EVENT(e_id)
+);
+
 CREATE TABLE APPLICATION(
 a_id INTEGER,
 user_id INTEGER NOT NULL,
-event_id INTEGER NOT NULL,
 comments VARCHAR2(300) NOT NULL,
 time_missed NUMBER,
 a_date TIMESTAMP,
 reimbursement_amount NUMBER(10,2),
 next_approver INTEGER,
 status INTEGER NOT NULL,
+event_participation INTEGER NOT NULL,
 PRIMARY KEY(a_id),
 FOREIGN KEY(user_id) REFERENCES USR(usr_id),
-FOREIGN KEY(event_id) REFERENCES EVENT(e_id),
 FOREIGN KEY(next_approver) REFERENCES USR(usr_id),
 FOREIGN KEY(status) REFERENCES APPLICATION_STATUS(as_id)
 );
@@ -156,16 +165,6 @@ FOREIGN KEY(amr_requester_id) REFERENCES USR(usr_id),
 FOREIGN KEY(amr_requestee_id) REFERENCES USR(usr_id)
 );
 
-
-CREATE TABLE EVENT_GRADE(
-eg_id INTEGER,
-eg_a_id INTEGER NOT NULL,
-eg_grade VARCHAR2(10),
-eg_desc VARCHAR2(150),
-passed VARCHAR2(1) CHECK (passed='Y' OR passed='N'),
-PRIMARY KEY(eg_id),
-FOREIGN KEY(eg_a_id) REFERENCES APPLICATION(a_id)
-);
 
 
 CREATE OR REPLACE FUNCTION get_available_reimbursement (usr_id IN INT)
@@ -211,7 +210,7 @@ ON usr.usr_id = ds.usr_id
 
 
 CREATE OR REPLACE VIEW event_view AS
-SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+SELECT e_id, e_name,e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
 reimbursement_coverage,et_desc,el_id,el_state,el_city,el_zipcode,el_address_line1,el_address_line2
 FROM
 EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id
@@ -229,13 +228,13 @@ LEFT JOIN EVENT_LOCATION ON e_location=el_id;
 
 
 CREATE OR REPLACE VIEW application_view AS
-SELECT e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+SELECT e_id, e_name, ep_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
 reimbursement_coverage,et_desc,
-a_id,user_id,comments,a_date,reimbursement_amount,eg_id,eg_a_id,eg_grade,eg_desc,
+a_id,user_id,comments,a_date,reimbursement_amount,ep_id,ep_grade,ep_desc,
 as_status status,as_id status_id, next_approver, passed
 FROM
 EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id
-INNER JOIN APPLICATION ON event_id=e_id INNER JOIN EVENT_GRADE ON a_id = eg_a_id
+INNER JOIN EVENT_PARTICIPATION ON event_id=e_id INNER JOIN APPLICATION ON ep_id = event_participation
 INNER JOIN APPLICATION_STATUS ON status=as_id;
 
 
@@ -304,17 +303,17 @@ begin
 end; 
 /
 
-CREATE SEQUENCE eg_id_seq
+CREATE SEQUENCE ep_id_seq
     START WITH 1
     INCREMENT BY 1;
 
 
-CREATE OR REPLACE TRIGGER  eg_id_trigger
-  before insert on EVENT_GRADE              
+CREATE OR REPLACE TRIGGER  ep_id_trigger
+  before insert on EVENT_PARTICIPATION              
   for each row  
 begin   
-  if :new.eg_id is null then 
-    select eg_id_seq.nextval into :new.eg_id from dual; 
+  if :new.ep_id is null then 
+    select ep_id_seq.nextval into :new.ep_id from dual; 
   end if; 
 end; 
 /

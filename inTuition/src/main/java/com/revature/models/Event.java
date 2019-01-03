@@ -4,10 +4,17 @@ import java.sql.Timestamp;
 
 public class Event {
 	private String title,gradeFormat,passingGrade,typeDescription,gradeTypeDesc;
-	private double cost;
 	private int coverage,eventTypeID,eventGradeFormatID,id;
 	private Timestamp startDate,endDate;
+
 	
+	@Override
+	public String toString() {
+		return "Event [title=" + title + ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade
+				+ ", typeDescription=" + typeDescription + ", gradeTypeDesc=" + gradeTypeDesc + ", coverage=" + coverage
+				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", id=" + id
+				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
+	}
 	public void setEventType(EventType type) {
 		typeDescription = type.getDesc();
 		eventTypeID = type.getId();
@@ -37,14 +44,7 @@ public class Event {
 	public void setEventTypeID(int eventTypeID) {
 		this.eventTypeID = eventTypeID;
 	}
-	@Override
-	public String toString() {
-		return "Event [title=" + title + ", gradeFormat=" + gradeFormat + ", passingGrade="
-				+ passingGrade + ", typeDescription=" + typeDescription + ", gradeTypeDesc="
-				+ gradeTypeDesc + ", cost=" + cost + ", coverage=" + coverage + ", eventTypeID=" + eventTypeID
-				+ ", eventGradeFormatID=" + eventGradeFormatID + ", id=" + id + ", startDate=" + startDate
-				+ ", endDate=" + endDate + "]";
-	}
+	
 	public int getEventGradeFormatID() {
 		return eventGradeFormatID;
 	}
@@ -76,12 +76,7 @@ public class Event {
 	public void setTypeDescription(String typeDescription) {
 		this.typeDescription = typeDescription;
 	}
-	public double getCost() {
-		return cost;
-	}
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
+
 	public int getCoverage() {
 		return coverage;
 	}

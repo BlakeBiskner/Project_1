@@ -15,16 +15,18 @@ class ApplicationDaoImplTest {
 	EventTypeDaoImpl etDao = EventTypeDaoImpl.getInstance();
 	UserDaoImpl userDao = UserDaoImpl.getInstance();
 
-	@Test
+	
 	void testInsertApplication() {
 		ReimbursementUser user = userDao.getUser("bobbyb");
-		Event event = eventDao.getEvent(83);
+		Event event = eventDao.getEvent(103);
 		Application app = new Application();
 		app.setEvent(event);
 		app.setUserID(user.getUserID());
-		app.setComments("I need to be able to learn the economics behind leading a rebellion.");
+		app.setComments("I need to be able to learn about rebellion economics.");
 		app.setNextApproverID(userDao.getUser("stanlee").getUserID());
 		app.setTimeMissed(10);
+		app.setGrade("P");
+		app.setPassed(true);
 		app = appDao.insertApplication(app);
 		System.out.println(app);
 		assert(app.getApplicationID()>=1);
@@ -34,8 +36,11 @@ class ApplicationDaoImplTest {
 	@Test
 	void testgetUserApplications() {
 		ReimbursementUser user = userDao.getUser("bobbyb");
+		//System.out.println(user);
 		ArrayList<Application> apps = appDao.getUserApplications(user);
-		System.out.println(apps);
+		apps.forEach(e->{
+			System.out.println(e);
+		});
 		assert(apps.size()>=1);
 		
 	}

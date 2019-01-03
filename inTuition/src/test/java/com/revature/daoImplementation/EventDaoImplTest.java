@@ -11,10 +11,9 @@ class EventDaoImplTest {
 	EventGradeFormatDaoImpl egfDao = EventGradeFormatDaoImpl.getInstance();
 	EventTypeDaoImpl etDao = EventTypeDaoImpl.getInstance();
 	
-	@Test
+	
 	void test() {
 		Event event = new Event();
-		event.setCost(200);
 		event.setGradeFormat(egfDao.getGradeTypes().get(0));
 		event.setEventType(etDao.getTypes().get(0));
 		event.setPassingGrade("Pass");
@@ -28,7 +27,7 @@ class EventDaoImplTest {
 	void testGetEvent() {
 		Event event = new Event();
 		
-		event = eventDao.getEvent(83);
+		event = eventDao.getEvent(103);
 		System.out.println(event);
 		assert(event.getId()>=1);
 	}

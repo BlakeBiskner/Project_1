@@ -12,7 +12,7 @@ class UserDaoImplTest {
 	@Test
 	void testUserInsertion() {
 //		ReimbursementUser user = new ReimbursementUser();
-//		user.setDeptID(41); //hardcoded department into database
+//		user.setDeptID(21); //hardcoded department into database
 //		user.setFirstname("Robert");
 //		user.setLastname("Baratheon");
 //		user.setDsID(99999);
@@ -29,12 +29,14 @@ class UserDaoImplTest {
 	@Test
 	void testUserReading() {
 		ReimbursementUser user = userDao.getUser("bobbyb");
-		//System.out.println(user);
+		System.out.println(user);
 		assert(user.getUsername().equals("bobbyb"));
 	}
+	@Test
 	void testUserReadingByUserObject() {
 		ReimbursementUser user = new ReimbursementUser();// userDao.getUser("bobbyb");
 		user.setUsername("bobbyb");
+		user = userDao.getUser(user);
 		//System.out.println(user);
 		assert(user.getUsername().equals("bobbyb"));
 	}

@@ -3,7 +3,7 @@ package com.revature.models;
 import java.sql.Timestamp;
 
 public class Application {
-	private int applicationID, eventID, userID,gradeID;
+	private int applicationID, eventID, userID,participationID;
 	private double reimbursementAmount;
 	private String comments,gradeComments,grade = null;
 	private String eventTitle,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc,status = null;
@@ -11,26 +11,31 @@ public class Application {
 	private int typeCoverage,eventTypeID,eventGradeFormatID,nextApproverID;
 	private Timestamp eventStartDate,eventEndDate = null;
 	private int timeMissed,statusID;
-	private String passed = null;
-	
-	
+	private Boolean passed = null;
+
 	@Override
 	public String toString() {
 		return "Application [applicationID=" + applicationID + ", eventID=" + eventID + ", userID=" + userID
-				+ ", gradeID=" + gradeID + ", reimbursementAmount=" + reimbursementAmount + ", comments=" + comments
-				+ ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle=" + eventTitle
-				+ ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade + ", typeDescription="
+				+ ", participationID=" + participationID + ", reimbursementAmount=" + reimbursementAmount
+				+ ", comments=" + comments + ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle="
+				+ eventTitle + ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade + ", typeDescription="
 				+ typeDescription + ", gradeTypeDesc=" + gradeTypeDesc + ", eventGradeFormatDesc="
 				+ eventGradeFormatDesc + ", status=" + status + ", cost=" + cost + ", typeCoverage=" + typeCoverage
-				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", nextApprovedID="
+				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", nextApproverID="
 				+ nextApproverID + ", eventStartDate=" + eventStartDate + ", eventEndDate=" + eventEndDate
 				+ ", timeMissed=" + timeMissed + ", statusID=" + statusID + ", passed=" + passed + ", date=" + date
 				+ "]";
 	}
-	public String getPassed() {
+	public int getParticipationID() {
+		return participationID;
+	}
+	public void setParticipationID(int participationID) {
+		this.participationID = participationID;
+	}
+	public Boolean getPassed() {
 		return passed;
 	}
-	public void setPassed(String passed) {
+	public void setPassed(boolean passed) {
 		this.passed = passed;
 	}
 	public String getStatus() {
@@ -73,7 +78,6 @@ public class Application {
 		eventGradeFormatID = event.getEventGradeFormatID();
 		eventStartDate = event.getStartDate();
 		eventEndDate = event.getEndDate();
-		cost = event.getCost();
 	}
 	
 	public String getEventGradeFormatDesc() {
@@ -150,14 +154,7 @@ public class Application {
 	}
 	public void setGradeTypeDesc(String gradeTypeDesc) {
 		this.gradeTypeDesc = gradeTypeDesc;
-	}
-	public int getGradeID() {
-		return gradeID;
-	}
-	public void setGradeID(int gradeID) {
-		this.gradeID = gradeID;
-	}
-	
+	}	
 	public String getGradeComments() {
 		return gradeComments;
 	}
