@@ -237,6 +237,27 @@ EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e
 INNER JOIN EVENT_PARTICIPATION ON event_id=e_id INNER JOIN APPLICATION ON ep_id = event_participation
 INNER JOIN APPLICATION_STATUS ON status=as_id;
 
+CREATE OR REPLACE PROCEDURE update_application 
+(new_a_id IN INTEGER, 
+new_ep_id IN INTEGER,
+new_reimbursement_amount IN NUMBER, 
+new_next_approver IN INTEGER, 
+new_status IN INTEGER, 
+new_ep_cost IN NUMBER,
+new_ep_grade IN VARCHAR2,
+new_ep_desc IN VARCHAR2,
+new_passed IN VARCHAR2) 
+AS
+BEGIN
+  UPDATE EVENT_PARTICIPATION SET 
+  ep_cost = new_ep_cost, ep_grade = new_ep_grade, ep_desc = new_ep_desc, passed = new_passed
+  WHERE ep_id = new_ep_id;
+  UPDATE APPLICATION SET
+  reimbursement_amount = new_reimbursement_amount, next_approver = new_next_approver, status = new_status
+  WHERE a_id = new_a_id;
+  COMMIT;
+END update_application;
+/
 
 
 CREATE SEQUENCE dept_id_seq

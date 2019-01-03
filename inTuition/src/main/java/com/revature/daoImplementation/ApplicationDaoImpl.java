@@ -124,7 +124,6 @@ public class ApplicationDaoImpl implements ApplicationDao {
 					+ "FROM application_view WHERE user_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, user.getUserID());
-			System.out.println(user);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Application app = new Application();
@@ -174,44 +173,42 @@ public class ApplicationDaoImpl implements ApplicationDao {
 	public Application updateApplication(Application app) {
 		// TODO Auto-generated method stub
 		conn = ConnFactory.getInstance().getConnection();
+		String passed = null;
+		if(app.getPassed()!=null) {
+			if(app.getPassed()) {
+				passed = "Y";
+			}
+			else {
+				passed = "N";
+			}	
+		}	
 		
-		try {
-			app = EventParticipationDaoImpl.getInstance().insertEventParticipation(conn, app);
-			if(app==null || !(app.getParticipationID() >=1)) {
-				conn.close();
-				return null;
-			}
-//			a_id INTEGER,
-//			user_id INTEGER NOT NULL,
-//			comments VARCHAR2(300) NOT NULL,
-//			time_missed NUMBER,
-//			a_date TIMESTAMP,
-//			reimbursement_amount NUMBER(10,2),
-//			next_approver INTEGER,
-//			status INTEGER NOT NULL,
-//			event_participation INTEGER NOT NULL,
-			conn.setAutoCommit(false);
-
-			String sql = "UPDATE APPLICATION (event_participation,user_id,comments,a_date,"
-					+ "reimbursement_amount,status,time_missed,next_approver)"
-					+ " VALUES(?,?,?,?,?,?,?,?) WHERE a_id = ?";
-
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, app.getParticipationID());
-			ps.setInt(2, app.getUserID());
-			ps.setString(3, app.getComments());
-			ps.setTimestamp(4,app.getDate());
-			ps.setDouble(5, app.getReimbursementAmount());
-			ps.setInt(6, app.getStatusID());
-			ps.setInt(7, app.getTimeMissed());
-			ps.setInt(8, app.getNextApproverID());
-
-			ResultSet rs = ps.executeQuery();
+		try {			
+			String sql = "EXECUTE update_application("
+					+ "new_a_id => ?,"
+					+ "new_ep_id => ?,"
+					+ "new_reimbursement_amount => ?,"
+					+ "new_next_approved => ?,"
+					+ "new_status => ?,"
+					+ "new_ep_cost => ?,"
+					+ "new_ep_grade => ?,"
+					+ "new_ep_desc => ?,"
+					+ "new_passed => ?)";
+			sql = "{call update_application(?,?,?,?,?,?,?,?,?)}";
+			CallableStatement cs = conn.prepareCall(sql);
+			cs.setInt(1, app.getApplicationID());
+			cs.setInt(2, app.getParticipationID());
+			cs.setDouble(3, app.getReimbursementAmount());
+			cs.setInt(4, app.getNextApproverID());
+			cs.setInt(5, app.getStatusID());
+			cs.setDouble(6, app.getCost());
+			cs.setString(7, app.getGrade());
+			cs.setString(8, app.getGradeComments());
+			cs.setString(9, passed);
+			
+			cs.execute();
 			conn.close();
-			if (rs.next()) {
-				return app;
-			}
-			conn.close();
+			return app;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

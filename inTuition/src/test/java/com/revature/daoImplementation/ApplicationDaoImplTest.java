@@ -33,7 +33,7 @@ class ApplicationDaoImplTest {
 		
 		
 	}
-	@Test
+	
 	void testgetUserApplications() {
 		ReimbursementUser user = userDao.getUser("bobbyb");
 		//System.out.println(user);
@@ -43,6 +43,21 @@ class ApplicationDaoImplTest {
 		});
 		assert(apps.size()>=1);
 		
+	}
+	@Test
+	void testUpdateApplication() {
+		ReimbursementUser user = userDao.getUser("bobbyb");
+		//System.out.println(user);
+		ArrayList<Application> apps = appDao.getUserApplications(user);
+		Application app = apps.get(0);
+		System.out.println(app);
+		app.setStatusID(3);//means approved
+		app.setGrade("100");
+		app.setGradeComments("WOOT WOOT");
+		app.setReimbursementAmount(300);
+		app.setPassed(true);
+		app = appDao.updateApplication(app);
+		assert(app!=null);
 	}
 
 }
