@@ -19,6 +19,7 @@ import com.revature.controller.RequestHelper;
 public class MasterServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		System.out.println("in doGet in servlet");
 		String jsonStuff=RequestHelper.process(request, response);
 	}
 	

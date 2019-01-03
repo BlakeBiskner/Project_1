@@ -7,6 +7,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.revature.daoImplementation.UserDaoImpl;
 import com.revature.models.ReimbursementUser;
 
+
+
 /**
  * Register Controller
  * 
@@ -39,7 +41,7 @@ public class RegisterController {
 		System.out.println(department);
 		System.out.println(supervisor);
 		
-		UserDaoImpl userDao = new UserDaoImpl();  //we need to not make new dao objects all the time
+		UserDaoImpl userDao = UserDaoImpl.getInstance();  //we need to not make new dao objects all the time
 		ReimbursementUser user = new ReimbursementUser(username,password,firstName, lastName, email,department,supervisor);
 		
 		String hashedpw = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());

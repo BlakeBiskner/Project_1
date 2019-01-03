@@ -24,6 +24,14 @@ public class RequestHelper {
 		case (BASE_URI+"HomeJSON.do"):
 			System.out.println("in HomeJSON.do case");
 			return HomeController.HomeJSON(request,response);
+		
+		// New Application
+		case (BASE_URI+"NewForm.do"):
+			System.out.println("in NewForm.do case");
+			return NewFormController.NewForm(request);
+		case (BASE_URI+"NewFormJSON.do"):
+			System.out.println("in NewFormJSON.do case");
+			return FormController.NewFormJSON(request,response);
 		default:
 			return DEFAULT_URI;
 		}
