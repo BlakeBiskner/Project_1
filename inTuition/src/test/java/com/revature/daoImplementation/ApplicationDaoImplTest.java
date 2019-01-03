@@ -33,7 +33,7 @@ class ApplicationDaoImplTest {
 		
 		
 	}
-	
+	@Test
 	void testgetUserApplications() {
 		ReimbursementUser user = userDao.getUser("bobbyb");
 		//System.out.println(user);

@@ -129,31 +129,31 @@ public class ApplicationDaoImpl implements ApplicationDao {
 				Application app = new Application();
 				
 				
-				app.setEventID(rs.getInt(1));
-				app.setEventTitle(rs.getString(2));
-				app.setCost(rs.getDouble(3));
-				app.setEventStartDate(rs.getTimestamp(4));
-				app.setEventEndDate(rs.getTimestamp(5));
-				app.setPassingGrade(rs.getString(6));
-				app.setGradeFormat(rs.getString(7));
-				app.setEventGradeFormatDesc(rs.getString(8));
-				app.setEventGradeFormatID(rs.getInt(9));
-				app.setEventTypeID(rs.getInt(10));
-				app.setTypeCoverage(rs.getInt(11));
-				app.setTypeDescription(rs.getString(12));
-				app.setApplicationID(rs.getInt(13));
-				app.setComments(rs.getString(14));
-				app.setDate(rs.getTimestamp(15));
-				app.setReimbursementAmount(rs.getDouble(16));
-				app.setParticipationID(rs.getInt(17));
-				app.setGrade(rs.getString(18));
-				app.setGradeComments(rs.getString(19));
-				app.setStatus(rs.getString(20));
-				app.setStatusID(rs.getInt(21));
-				app.setNextApproverID(rs.getInt(22));
+				app.setEventID(rs.getInt("e_id"));
+				app.setEventTitle(rs.getString("e_name"));
+				app.setCost(rs.getDouble("ep_cost"));
+				app.setEventStartDate(rs.getTimestamp("e_date"));
+				app.setEventEndDate(rs.getTimestamp("e_enddate"));
+				app.setPassingGrade(rs.getString("e_passing_grade"));
+				app.setGradeFormat(rs.getString("egf_format"));
+				app.setEventGradeFormatDesc(rs.getString("egf_description"));
+				app.setEventGradeFormatID(rs.getInt("egf_id"));
+				app.setEventTypeID(rs.getInt("et_id"));
+				app.setTypeCoverage(rs.getInt("reimbursement_coverage"));
+				app.setTypeDescription(rs.getString("et_desc"));
+				app.setApplicationID(rs.getInt("a_id"));
+				app.setComments(rs.getString("comments"));
+				app.setDate(rs.getTimestamp("a_date"));
+				app.setReimbursementAmount(rs.getDouble("reimbursement_amount"));
+				app.setParticipationID(rs.getInt("ep_id"));
+				app.setGrade(rs.getString("ep_grade"));
+				app.setGradeComments(rs.getString("ep_desc"));
+				app.setStatus(rs.getString("status"));
+				app.setStatusID(rs.getInt("status_id"));
+				app.setNextApproverID(rs.getInt("next_approver"));
 				
 				//app.setPassed(rs.getString(23).equals("Y"));
-				String pf = rs.getString(23);
+				String pf = rs.getString("passed");
 				if(pf!=null) {
 					app.setPassed(pf.equals("Y"));
 				}

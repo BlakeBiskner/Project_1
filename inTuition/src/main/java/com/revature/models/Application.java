@@ -1,6 +1,9 @@
 package com.revature.models;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+
+import com.revature.exceptions.InvalidInputException;
 
 public class Application {
 	private int applicationID, eventID, userID,participationID;
@@ -12,7 +15,14 @@ public class Application {
 	private Timestamp eventStartDate,eventEndDate = null;
 	private int timeMissed,statusID;
 	private Boolean passed = null;
-
+	private static HashMap<String,Integer> statusTypes = new HashMap<String,Integer>();
+	public Application() {
+		if (statusTypes.size()==0) {
+			statusTypes.put("Denied",1);
+			statusTypes.put("Pending",2);
+			statusTypes.put("Approved",3);
+		}
+	}
 	@Override
 	public String toString() {
 		return "Application [applicationID=" + applicationID + ", eventID=" + eventID + ", userID=" + userID
@@ -42,7 +52,13 @@ public class Application {
 		return status;
 	}
 	public void setStatus(String status) {
-		this.status = status;
+		if(!statusTypes.containsKey(status)) {
+			throw new InvalidInputException(status + " is not a valid status.");		
+		}
+		else {
+			this.status = status;
+			this.statusID = statusTypes.get(status);
+		}
 	}
 	public int getStatusID() {
 		if(status==null) {
