@@ -33,7 +33,7 @@ public class DeptDaoImpl implements DeptDao {
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				depts.add(rs.getString(1));
+				depts.add(rs.getString("dept_name"));
 			}
 			conn.close();
 			return depts;
@@ -55,8 +55,8 @@ public class DeptDaoImpl implements DeptDao {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Department dept = new Department();
-				dept.setName(rs.getString(1));
-				dept.setId(rs.getInt(2));
+				dept.setName(rs.getString("dept_name"));
+				dept.setId(rs.getInt("dept_id"));
 				depts.add(dept);
 			}
 			conn.close();

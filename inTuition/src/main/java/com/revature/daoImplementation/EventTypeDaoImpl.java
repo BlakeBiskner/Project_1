@@ -33,7 +33,7 @@ public class EventTypeDaoImpl implements EventTypeDao {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				eventTypes.add(new EventType(rs.getInt(1),rs.getString(2),rs.getInt(3)));
+				eventTypes.add(new EventType(rs.getInt("et_id"),rs.getString("et_desc"),rs.getInt("reimbursement_coverage")));
 			}
 			conn.close();
 			return eventTypes;

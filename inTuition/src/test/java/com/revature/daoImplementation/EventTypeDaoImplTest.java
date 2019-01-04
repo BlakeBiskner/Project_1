@@ -11,7 +11,7 @@ class EventTypeDaoImplTest {
 	@Test
 	void testReadAllEventTypes() {
 		ArrayList<EventType> types = eventTypeDao.getTypes();
-		//System.out.println(types);
+		System.out.println(types);
 		assert(types.get(0).getId()>=1);
 	}
 

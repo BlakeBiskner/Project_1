@@ -180,6 +180,8 @@ ON a.cur_year = b.app_year GROUP BY user_id;
 yearly_available_reimbursement := 1000 - yearly_available_reimbursement;
 IF yearly_available_reimbursement IS NULL THEN
 yearly_available_reimbursement := 1000;
+ELSIF yearly_available_reimbursement < 0 THEN
+yearly_available_reimbursement := 0;
 END IF;
 RETURN yearly_available_reimbursement;
 END;

@@ -22,7 +22,7 @@ class ApplicationDaoImplTest {
 		Application app = new Application();
 		app.setEvent(event);
 		app.setUserID(user.getUserID());
-		app.setComments("I need to be able to learn about rebellion economics.");
+		app.setComments("WAAAAAAGH");
 		app.setNextApproverID(userDao.getUser("stanlee").getUserID());
 		app.setTimeMissed(10);
 		app.setGrade("P");
