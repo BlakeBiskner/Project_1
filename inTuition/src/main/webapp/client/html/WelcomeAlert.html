@@ -51,9 +51,21 @@
             </div>
         </div>
 
+
         <!------------------------------------------------------>
         <!-- Images -->
         <div class="container-fluid" align="center">
+                    
+        <!------------------------------------------------------>
+        <!-- Alert -->
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Login Failure</strong> Username or Password is Incorrect
+                    </div>
+                </div>
+            </div>
             <!-- Change width later to something more responsive -->
             <div class="row">
                 <div class="col" align="center">
@@ -95,7 +107,7 @@
                             <div class="form-group">
                                 <!-- Ensures proper margins -->
                                 <label for="user">username</label>
-                                <input type="text" class="form-control" name="user" id="user" required> <!-- Required ensures user inputs data before submission -->
+                                <input type="text" class="form-control" name="user" id="user" required>
                                 <!-- id and label are same and form control name is referenced in controllers-->
                             </div>
                             <div class="form-group">
@@ -103,7 +115,7 @@
                                 <input type="password" class="form-control" name="pass" id="pass" required>
                             </div>
                             <div class="form-group">
-                                <input type="submit" class="form-control btn-primary" id="LoginButton"> <!-- Input type submit denotes a button for submitting form data to a form handler (a form handler is a server page for handling input data) -->
+                                <input type="submit" class="form-control btn-primary" id="LoginButton">
                             </div>
                         </form>
                     </div>

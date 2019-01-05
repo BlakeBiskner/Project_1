@@ -1,4 +1,100 @@
 /* Blake Biskner
 */
 
+/* Variable Declarations */
 
+:root{
+    --nav-color:rgb(171,183,183);
+    --col-nav-color:rgb(228,233,235);
+    --col-nav-hover-color:rgb(236,240,241);
+    --jumbo-color:rgb(213,184,255);
+    --jumbo-text-color:rgb(102,51,153);
+    --button-hover-color:rgb(140,20,252);
+    --navbar-height:55px;
+    --profile-dropdown-margin:150px;
+    --col-nav-font-size:1.1vw;
+    --cost-card-padding:10px;
+}
+
+ /* Set height to allow for full height columns */
+
+
+/**************************************************/
+/***** Global *****/
+.container-fluid{
+    margin-top:var(--navbar-height); /* Add buffer for navbar */
+}
+
+/**************************************************/
+/***** Home Page *****/
+
+/* Column Nav */
+.customNav{
+    background-color:var(--nav-color);
+}
+
+#vertNavColumn{
+    padding:0;
+}
+
+#vertNavBar{
+    background-color:var(--col-nav-color);
+    position:fixed;
+}
+
+.colNavHead{
+    font-weight:bold;
+    font-size:var(--col-nav-font-size); /* Use vw to ensure fixed column adjusts on all screen sizes */
+    text-transform:uppercase;
+}
+
+.colNavLink{
+    color:gray;
+    font-size:var(--col-nav-font-size);
+}
+
+.colNavLink:hover{
+    background-color:var(--col-nav-hover-color);
+}
+
+.alert{
+    text-align:center;
+}
+
+#hiddenApproveAlert{
+	display:none; /* Invisible by default so pops up when load page */
+}
+
+#hiddenEmailAlert{
+	display:none;
+}
+
+.customJumbo{
+    background-color:var(--jumbo-color);
+    color:var(--jumbo-text-color);
+}
+
+.customButton{
+    background-color:var(--jumbo-text-color);
+    color:white;
+}
+
+.customButton:hover{
+    background-color:rgb(140,20,252);
+    color:white;
+}
+
+#profileDropdown{
+    margin-right:var(--profile-dropdown-margin);
+}
+
+.cardList{
+    padding:0;
+}
+
+/**************************************************/
+/***** Application Form *****/
+
+.costCard{
+    padding:var(--cost-card-padding);
+}

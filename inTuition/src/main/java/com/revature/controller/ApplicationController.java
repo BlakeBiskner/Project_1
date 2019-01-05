@@ -37,7 +37,7 @@ public class ApplicationController {
 		
 		String timeStamp=(eventStartDate+" 00:00:00");
 		Timestamp startDate=Timestamp.valueOf(timeStamp);
-		timeStamp = eventEndDate +"00:00:00";
+		timeStamp = eventEndDate +" 00:00:00";
 		Timestamp endDate = Timestamp.valueOf(timeStamp);
 		// Set application fields
 		Application app=new Application();

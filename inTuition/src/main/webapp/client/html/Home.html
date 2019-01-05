@@ -9,18 +9,196 @@
         <!-- Ensures proper zooming by setting width of page to follow screen width and setting initial zoom level when page first loaded-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
             crossorigin="anonymous">
-        
         <!-- Custom Stylesheet -->
         <link rel="stylesheet" href="../css/Style.css">
     </head>
 
     <body>
-        <div class="container">
-            <h1>Home</h1>
-            <h4>Here is Your Info</h4>
-            <div id="username"></div>
-            <div id="password"></div>
-        </div>
+    <!------------------------------------------------------->
+    <!-- Note the navbar is outside of the container -->
+    <!-- Navbar -->
+        <nav class= "navbar navbar-expand-xl customNav navbar-light fixed-top"> <!-- Left aligns links in navbar -->
+            <!-- Brand -->
+            <a class="navbar-brand" href="#">inTuition</a>
+            <!-- Collapsible Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul id="profileDropdown" class="navbar-nav ml-auto"> <!-- ml-auto is a flexbox property that pushes elements to right -->
+                    <!-- Drop Down -->
+                    <li class="nav-item dropdown"> <!-- dropdown indicates a dropdown menu -->
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"> <!-- dropdown- toggle and data-toggle allow this button to toggle dropdown -->
+                            <strong id="dropdownUser"></strong>
+                        </a>
+                        <div class="dropdown-menu"> <!-- dropdown menu buils dropdown -->
+                            <a class="dropdown-item" href="#">Profile Information</a> <!-- dropdown items are like list items -->
+                            <a class="dropdown-item" href="#">Sign Out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+            <!----------------------------------------------------->
+        <div class="container-fluid h-100"> <!-- Have to specify h-100 to get full browser height for nested elements -->
+            <!-- Side Navigation -->
+            
+            <div class="row">
+                <div class="col-3 h-100" id="vertNavColumn">
+                    <ul class="nav flex-column h-100" id="vertNavBar">
+                        <li class="nav-item"> <!-- Create colNavLink class for css -->
+                            <a class="nav-link colNavLink" href="#">Home</a>
+                        </li>
+                        <li class="nav-item  colNavHead"> <!-- Create colNavHead class for css -->
+                            <a class="nav-link disabled" href="#">Your Applications</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link colNavLink" href="#">
+                                Current Applications <span id="currAppBadge" class="badge badge-light">0</span> <!-- Badge to indicate number with id for javascript -->
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link colNavLink" href="#">
+                                Past Applications <span id="pastAppBadge" class="badge badge-light">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item colNavHead">
+                            <a class="nav-link disabled" href="#">Employee Applications</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link colNavLink" href="#">
+                                Urgent Employee Applications <span id="urgentAppBadge" class="badge badge-danger">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link colNavLink" href="#">
+                                Other Pending Applications <span id="currAppReviewBadge" class="badge badge-light">0</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link colNavLink" href="#">
+                                Past Employee Applications <span id="pastAppReviewBadge" class="badge badge-light">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!------------------------------------------------------>
+                <!-- Main Content -->
+                <div class="col-9 h-100">
+                    <div class="row">
+                        <div class="col">
+                            <h1>Home</h1>
+                        </div>
+                    </div>
+                    <!-- Alerts -->
+                    <div class="row" id="hiddenApproveAlert"> <!-- Use hiddenApproveAlert and hiddenEmailAlert so can change change display to none with JavaScript so they do not take up space together or one without other-->
+                        <div class="col">
+                            <div class="alert alert-danger alert-dismissible fade-show">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong>Auto Approval Alert</strong> Employee Application Will Soon be Auto Approved
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="hiddenEmailAlert">
+                        <div class="col">
+                            <div class="alert alert-warning alert-dismissible fade-show">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                <strong>Email Alert</strong> You Have Been Sent an Important Email
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Available Reimbursement -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="jumbotron">
+                                <h3>Available Reimbursement</h3>
+                                <h1>$<span id="availableReimbursement"></span></h1> <!-- Added availableReimbursement id to change with JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Browse Upcoming Events -->
+                    <div class="row">
+                        <div class="col">
+                            <h3>Browse Events <small>View Upcoming Courses and Certifications</small></h3>
+                        </div>
+                    </div>
+                    <!-- Pseudo Accordian ( a real accordian will not exapnd all links at once) -->
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="card"> <!-- Creates bordered box with a header body footer all with padding -->
+                                <div class="card-header"> <!-- Card header -->
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseOne">
+                                        <strong>Art Events</strong>
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="collapse">
+                                    <div class="card-body cardList"> <!-- Card body -->
+                                        <div class="list-group list-group-flush"> <!-- Creates basic list group which is flush and has no rounded corners use div instead of ul since we have links  -->
+                                            <li class="list-group-item list-group-item-light"><strong>Illustration</strong></li> <!-- Create basic list item elements by combining li with list item -->
+                                            <a href="https://www.niche.com/colleges/search/best-colleges-for-art/s/florida/" class="list-group-item list-group-item-action">Courses</a> <!-- List-group-item-action adds gray on hover -->
+                                            <a href="https://www.sessions.edu/certificate-programs/fine-arts/" class="list-group-item list-group-item-action">Online Certifications</a>
+                                            <li class="list-group-item list-group-item-light"><strong>Writing</strong></li>
+                                            <a href="https://magidcenter.uiowa.edu/certificate/online" class="list-group-item list-group-item-action">Online Certifications</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                                        <strong>Production Events</strong>
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="collapse">
+                                    <div class="card-body cardList">
+                                        <div class="list-group list-group-flush">
+                                            <li class="list-group-item list-group-item-light"><strong>Editing</strong></li>
+                                            <a href="https://www.pce.uw.edu/certificates/editing" class="list-group-item list-group-item-action">Online Certifications</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                                        <strong>Administration Events</strong>
+                                    </a>
+                                </div>
+                                <div id="collapseThree" class="collapse">
+                                    <div class="card-body cardList">
+                                        <div class="list-group list-group-flush">
+                                            <li class="list-group-item list-group-item-light"><strong>Publication</strong></li>
+                                            <a href="https://www.narrativemagazine.com/writers-resources/publishing-and-editing-programs" class="list-group-item list-group-item-action">Courses</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+
+                    <!-- Start New Application -->
+                    <div class="row">
+                        <div class="col">
+                            <h3>New Application <small>Get Started Today</small></h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <form id="new-application-form" method="POST" action="NewForm.do" role="form">
+                                <input type="submit" class="form-control customButton" id="newFormButton">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Container -->
+        
+
         <!------------------------------------------------------>
         <!-- Custom JavaScript -->
         <script src="../javascript/Home.js"></script>

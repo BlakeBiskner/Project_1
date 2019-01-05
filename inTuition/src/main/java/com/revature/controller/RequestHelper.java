@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RequestHelper {
 	
-	private static final String BASE_URI="/inTuition_draft/client/html/";
+	private static final String BASE_URI="/inTuition/client/html/";
 	private static final String DEFAULT_URI="/client/html/Welcome.html";
 	public static String process(HttpServletRequest request,HttpServletResponse response) {
 		switch(request.getRequestURI()) {
