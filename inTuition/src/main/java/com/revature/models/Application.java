@@ -8,7 +8,7 @@ import com.revature.exceptions.InvalidInputException;
 public class Application {
 	private int applicationID, eventID, userID,participationID;
 	private double reimbursementAmount;
-	private String comments,gradeComments,grade = null;
+	private String justification,gradeComments,grade = null;
 	private String eventTitle,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc,status = null;
 	private double cost;
 	private int typeCoverage,eventTypeID,eventGradeFormatID,nextApproverID;
@@ -27,7 +27,7 @@ public class Application {
 	public String toString() {
 		return "Application [applicationID=" + applicationID + ", eventID=" + eventID + ", userID=" + userID
 				+ ", participationID=" + participationID + ", reimbursementAmount=" + reimbursementAmount
-				+ ", comments=" + comments + ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle="
+				+ ", comments=" + justification + ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle="
 				+ eventTitle + ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade + ", typeDescription="
 				+ typeDescription + ", gradeTypeDesc=" + gradeTypeDesc + ", eventGradeFormatDesc="
 				+ eventGradeFormatDesc + ", status=" + status + ", cost=" + cost + ", typeCoverage=" + typeCoverage
@@ -215,11 +215,11 @@ public class Application {
 	public void setReimbursementAmount(double reimbursementAmount) {
 		this.reimbursementAmount = reimbursementAmount;
 	}
-	public String getComments() {
-		return comments;
+	public String getJustification() {
+		return justification;
 	}
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setJustification(String comments) {
+		this.justification = comments;
 	}
 	
 }

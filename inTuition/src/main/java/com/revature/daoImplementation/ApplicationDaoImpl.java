@@ -59,7 +59,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setInt(1, app.getParticipationID());
 			cs.setInt(2, app.getUserID());
-			cs.setString(3, app.getComments());
+			cs.setString(3, app.getJustification());
 			cs.setTimestamp(4,app.getDate());
 			cs.setDouble(5, app.getReimbursementAmount());
 			cs.setInt(6, app.getStatusID());
@@ -142,7 +142,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
 				app.setTypeCoverage(rs.getInt("reimbursement_coverage"));
 				app.setTypeDescription(rs.getString("et_desc"));
 				app.setApplicationID(rs.getInt("a_id"));
-				app.setComments(rs.getString("comments"));
+				app.setJustification(rs.getString("comments"));
 				app.setDate(rs.getTimestamp("a_date"));
 				app.setReimbursementAmount(rs.getDouble("reimbursement_amount"));
 				app.setParticipationID(rs.getInt("ep_id"));

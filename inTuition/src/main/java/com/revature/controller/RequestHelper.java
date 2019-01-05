@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class RequestHelper {
 	
-	private static final String BASE_URI="/inTuition/client/html/";
+	private static final String BASE_URI="/inTuition_draft/client/html/";
 	private static final String DEFAULT_URI="/client/html/Welcome.html";
 	public static String process(HttpServletRequest request,HttpServletResponse response) {
 		switch(request.getRequestURI()) {
@@ -24,6 +24,17 @@ public class RequestHelper {
 		case (BASE_URI+"HomeJSON.do"):
 			System.out.println("in HomeJSON.do case");
 			return HomeController.HomeJSON(request,response);
+		
+		// New Application
+		case (BASE_URI+"NewForm.do"):
+			System.out.println("in NewForm.do case");
+			return NewFormController.NewForm(request);
+		case (BASE_URI+"NewFormJSON.do"):
+			System.out.println("in NewFormJSON.do case");
+			return FormController.NewFormJSON(request,response);
+		case (BASE_URI+"Apply.do"):
+			System.out.println("in Apply/do case");
+			return ApplicationController.Apply(request);
 		default:
 			return DEFAULT_URI;
 		}

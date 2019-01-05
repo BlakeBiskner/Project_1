@@ -15,6 +15,9 @@ import com.revature.models.ReimbursementUser;
 
 public class LoginController {
 	
+	private static final String LOGIN_SUCCESS="/client/html/Home.html";
+	private static final String LOGIN_FAILURE="/client/html/WelcomeAlert.html";
+	
 	public static String Login(HttpServletRequest request) {
 		String username=request.getParameter("user");
 		String password=request.getParameter("pass");
@@ -27,10 +30,9 @@ public class LoginController {
 		boolean pwMatch = BCrypt.checkpw(password, actualUser.getPassword());
 		if(pwMatch) {
 			request.getSession().setAttribute("User",actualUser);
-			return "/client/html/Home.html";
+			return LOGIN_SUCCESS;
 		} else {
-			return "/client/html/Welcome.html";
+			return LOGIN_FAILURE;
 		}
 	}
-
 }
