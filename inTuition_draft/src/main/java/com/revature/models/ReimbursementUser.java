@@ -3,10 +3,11 @@ package com.revature.models;
 public class ReimbursementUser {
 	private String username, firstname, lastname, email, dept,password,job,jobDesc,jobType;
 	private String dsUsername, dsFirstname, dsLastname, dsEmail, dsDept,dsJob,dsJobDesc,dsJobType;
-	private int userID, deptID,jobTypeID,jobID;
+	private int userID, deptID,jobTypeID,jobID,deptHeadID;
 	private int dsID,dsJobID,dsJobTypeID;
 	private boolean hasEmail,hasUrgentEmail,accountApproved;
 	private double yearlyReimbursementRemaining;
+	
 	
 	
 	@Override
@@ -16,10 +17,16 @@ public class ReimbursementUser {
 				+ jobDesc + ", jobType=" + jobType + ", dsUsername=" + dsUsername + ", dsFirstname=" + dsFirstname
 				+ ", dsLastname=" + dsLastname + ", dsEmail=" + dsEmail + ", dsDept=" + dsDept + ", dsJob=" + dsJob
 				+ ", dsJobDesc=" + dsJobDesc + ", dsJobType=" + dsJobType + ", userID=" + userID + ", deptID=" + deptID
-				+ ", jobTypeID=" + jobTypeID + ", jobID=" + jobID + ", dsID=" + dsID + ", dsJobID=" + dsJobID
-				+ ", dsJobTypeID=" + dsJobTypeID + ", hasEmail=" + hasEmail + ", hasUrgentEmail=" + hasUrgentEmail
-				+ ", accountApproved=" + accountApproved + ", yearlyReimbursementRemaining="
-				+ yearlyReimbursementRemaining + "]";
+				+ ", jobTypeID=" + jobTypeID + ", jobID=" + jobID + ", deptHeadID=" + deptHeadID + ", dsID=" + dsID
+				+ ", dsJobID=" + dsJobID + ", dsJobTypeID=" + dsJobTypeID + ", hasEmail=" + hasEmail
+				+ ", hasUrgentEmail=" + hasUrgentEmail + ", accountApproved=" + accountApproved
+				+ ", yearlyReimbursementRemaining=" + yearlyReimbursementRemaining + "]";
+	}
+	public int getDeptHeadID() {
+		return deptHeadID;
+	}
+	public void setDeptHeadID(int deptHeadID) {
+		this.deptHeadID = deptHeadID;
 	}
 	public String getDsJobType() {
 		return dsJobType;

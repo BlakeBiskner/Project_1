@@ -1,43 +1,64 @@
 package com.revature.models;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
+
+import com.revature.exceptions.InvalidInputException;
 
 public class Application {
-	private int applicationID, eventID, userID,gradeID;
+	private int applicationID, eventID, userID,participationID;
 	private double reimbursementAmount;
-	private String comments,gradeComments,grade = null;
+	private String justification,gradeComments,grade = null;
 	private String eventTitle,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc,status = null;
 	private double cost;
 	private int typeCoverage,eventTypeID,eventGradeFormatID,nextApproverID;
 	private Timestamp eventStartDate,eventEndDate = null;
 	private int timeMissed,statusID;
-	private String passed = null;
-	
-	
+	private Boolean passed = null;
+	private static HashMap<String,Integer> statusTypes = new HashMap<String,Integer>();
+	public Application() {
+		if (statusTypes.size()==0) {
+			statusTypes.put("Denied",1);
+			statusTypes.put("Pending",2);
+			statusTypes.put("Approved",3);
+		}
+	}
 	@Override
 	public String toString() {
 		return "Application [applicationID=" + applicationID + ", eventID=" + eventID + ", userID=" + userID
-				+ ", gradeID=" + gradeID + ", reimbursementAmount=" + reimbursementAmount + ", comments=" + comments
-				+ ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle=" + eventTitle
-				+ ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade + ", typeDescription="
+				+ ", participationID=" + participationID + ", reimbursementAmount=" + reimbursementAmount
+				+ ", comments=" + justification + ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle="
+				+ eventTitle + ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade + ", typeDescription="
 				+ typeDescription + ", gradeTypeDesc=" + gradeTypeDesc + ", eventGradeFormatDesc="
 				+ eventGradeFormatDesc + ", status=" + status + ", cost=" + cost + ", typeCoverage=" + typeCoverage
-				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", nextApprovedID="
+				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", nextApproverID="
 				+ nextApproverID + ", eventStartDate=" + eventStartDate + ", eventEndDate=" + eventEndDate
 				+ ", timeMissed=" + timeMissed + ", statusID=" + statusID + ", passed=" + passed + ", date=" + date
 				+ "]";
 	}
-	public String getPassed() {
+	public int getParticipationID() {
+		return participationID;
+	}
+	public void setParticipationID(int participationID) {
+		this.participationID = participationID;
+	}
+	public Boolean getPassed() {
 		return passed;
 	}
-	public void setPassed(String passed) {
+	public void setPassed(boolean passed) {
 		this.passed = passed;
 	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
-		this.status = status;
+		if(!statusTypes.containsKey(status)) {
+			throw new InvalidInputException(status + " is not a valid status.");		
+		}
+		else {
+			this.status = status;
+			this.statusID = statusTypes.get(status);
+		}
 	}
 	public int getStatusID() {
 		if(status==null) {
@@ -73,7 +94,6 @@ public class Application {
 		eventGradeFormatID = event.getEventGradeFormatID();
 		eventStartDate = event.getStartDate();
 		eventEndDate = event.getEndDate();
-		cost = event.getCost();
 	}
 	
 	public String getEventGradeFormatDesc() {
@@ -150,14 +170,7 @@ public class Application {
 	}
 	public void setGradeTypeDesc(String gradeTypeDesc) {
 		this.gradeTypeDesc = gradeTypeDesc;
-	}
-	public int getGradeID() {
-		return gradeID;
-	}
-	public void setGradeID(int gradeID) {
-		this.gradeID = gradeID;
-	}
-	
+	}	
 	public String getGradeComments() {
 		return gradeComments;
 	}
@@ -202,11 +215,11 @@ public class Application {
 	public void setReimbursementAmount(double reimbursementAmount) {
 		this.reimbursementAmount = reimbursementAmount;
 	}
-	public String getComments() {
-		return comments;
+	public String getJustification() {
+		return justification;
 	}
-	public void setComments(String comments) {
-		this.comments = comments;
+	public void setJustification(String comments) {
+		this.justification = comments;
 	}
 	
 }

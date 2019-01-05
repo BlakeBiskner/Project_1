@@ -19,8 +19,7 @@ public class FormController {
 		ArrayList<EventGradeFormat> eventGradeFormat= (ArrayList<EventGradeFormat>)request.getSession().getAttribute("EventGradeFormat");
 		ArrayList<EventType> eventType=(ArrayList<EventType>)request.getSession().getAttribute("EventType");
 		// From initial set attribute in login
-		ReimbursementUser user=(ReimbursementUser)request.getSession().getAttribute("User");
-		FormSession session=new FormSession(user,eventType,eventGradeFormat);
+		FormSession session=new FormSession(eventType,eventGradeFormat);
 		
 		try {
 			System.out.println("in FormController with "+session.toString());

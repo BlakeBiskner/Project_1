@@ -66,7 +66,7 @@ public class ApplicationController {
 		
 		
 		app.setTimeMissed(eventTimeMissed);
-		app.setComments(eventJustification);
+		app.setJustification(eventJustification);
 		app.setPassingGrade(eventGradePassing);
 		app.setEventStartDate(date);
 		System.out.println(eventName);

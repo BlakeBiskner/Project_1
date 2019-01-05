@@ -31,7 +31,7 @@ public class EventGradeFormatDaoImpl implements EventGradeFormatDao {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				eventGradeTypes.add(new EventGradeFormat(rs.getString(2),rs.getString(3),rs.getInt(1)));
+				eventGradeTypes.add(new EventGradeFormat(rs.getString("egf_description"),rs.getString("egf_format"),rs.getInt("egf_id")));
 			}
 			conn.close();
 			return eventGradeTypes;

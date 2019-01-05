@@ -89,12 +89,12 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				ApplicationMaterial am = new ApplicationMaterial();
-				am.setAppMatID(rs.getInt(1));
-				am.setAppID(rs.getInt(2));
-				am.setDesc(rs.getString(3));
-				am.setFileName(rs.getString(5));
+				am.setAppMatID(rs.getInt("am_id"));
+				am.setAppID(rs.getInt("am_a_id"));
+				am.setDesc(rs.getString("am_description"));
+				am.setFileName(rs.getString("am_filename"));
 				File file = new File("temp");
-				Blob blob = rs.getBlob(4);//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
+				Blob blob = rs.getBlob("am_material");//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
 				InputStream in = blob.getBinaryStream();
 				OutputStream out = new FileOutputStream(file);
 				byte[] buff = new byte[4096];  // how much of the blob to read/write at a time

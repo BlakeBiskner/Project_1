@@ -36,16 +36,30 @@ public class ApplicationDaoImpl implements ApplicationDao {
 		conn = ConnFactory.getInstance().getConnection();
 		
 		try {
+			app = EventParticipationDaoImpl.getInstance().insertEventParticipation(conn, app);
+			if(app==null || !(app.getParticipationID() >=1)) {
+				conn.close();
+				return null;
+			}
+//			a_id INTEGER,
+//			user_id INTEGER NOT NULL,
+//			comments VARCHAR2(300) NOT NULL,
+//			time_missed NUMBER,
+//			a_date TIMESTAMP,
+//			reimbursement_amount NUMBER(10,2),
+//			next_approver INTEGER,
+//			status INTEGER NOT NULL,
+//			event_participation INTEGER NOT NULL,
 			conn.setAutoCommit(false);
 
-			String sql = "BEGIN INSERT INTO APPLICATION (a_id,event_id,user_id,comments,a_date,"
+			String sql = "BEGIN INSERT INTO APPLICATION (a_id,event_participation,user_id,comments,a_date,"
 					+ "reimbursement_amount,status,time_missed,next_approver)"
 					+ " VALUES(NULL,?,?,?,?,?,?,?,?) RETURNING a_id INTO ?;  END;";
 
 			CallableStatement cs = conn.prepareCall(sql);
-			cs.setInt(1, app.getEventID());
+			cs.setInt(1, app.getParticipationID());
 			cs.setInt(2, app.getUserID());
-			cs.setString(3, app.getComments());
+			cs.setString(3, app.getJustification());
 			cs.setTimestamp(4,app.getDate());
 			cs.setDouble(5, app.getReimbursementAmount());
 			cs.setInt(6, app.getStatusID());
@@ -61,12 +75,9 @@ public class ApplicationDaoImpl implements ApplicationDao {
 			
 			if (id >= 1) {
 				app.setApplicationID(id);
-				app = EventGradeDaoImpl.getInstance().insertEventGrade(conn, app);
-				if(app!=null && app.getGradeID()>=1) {
-					conn.commit();
-					conn.close();
-					return app;
-				}
+				conn.commit();
+				conn.close();
+				return app;
 				
 			}
 			conn.close();
@@ -76,21 +87,20 @@ public class ApplicationDaoImpl implements ApplicationDao {
 		}
 		return null;
 	}
-
 	@Override
 	public ArrayList<Application> getUserApplications(ReimbursementUser user) {
 		// TODO Auto-generated method stub
 		ArrayList<Application> apps = new ArrayList<Application>();
-//		e_id, e_name, e_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+//		e_id, e_name, ep_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
 //		reimbursement_coverage,et_desc,
-//		a_id,user_id,comments,a_date,reimbursement_amount,eg_id,eg_a_id,eg_grade,eg_desc,
-//		as_status status,as_id status_id, next_approver
+//		a_id,user_id,comments,a_date,reimbursement_amount,ep_id,ep_grade,ep_desc,
+//		as_status status,as_id status_id, next_approver, passed
 		try {
 			conn = ConnFactory.getInstance().getConnection();
 			String sql = "SELECT "
 					+ "e_id,"
 					+ "e_name, "
-					+ "e_cost, "
+					+ "ep_cost, "
 					+ "e_date, "
 					+ "e_enddate, "
 					+ "e_passing_grade,"
@@ -104,45 +114,49 @@ public class ApplicationDaoImpl implements ApplicationDao {
 					+ "comments,"
 					+ "a_date,"
 					+ "reimbursement_amount,"
-					+ "eg_id,"
-					+ "eg_grade,"
-					+ "eg_desc, "
+					+ "ep_id,"
+					+ "ep_grade,"
+					+ "ep_desc, "
 					+ "status,"
 					+ "status_id,"
 					+ "next_approver,"
 					+ "passed "
 					+ "FROM application_view WHERE user_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
-
 			ps.setInt(1, user.getUserID());
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Application app = new Application();
 				
 				
-				app.setEventID(rs.getInt(1));
-				app.setEventTitle(rs.getString(2));
-				app.setCost(rs.getDouble(3));
-				app.setEventStartDate(rs.getTimestamp(4));
-				app.setEventEndDate(rs.getTimestamp(5));
-				app.setPassingGrade(rs.getString(6));
-				app.setGradeFormat(rs.getString(7));
-				app.setEventGradeFormatDesc(rs.getString(8));
-				app.setEventGradeFormatID(rs.getInt(9));
-				app.setEventTypeID(rs.getInt(10));
-				app.setTypeCoverage(rs.getInt(11));
-				app.setTypeDescription(rs.getString(12));
-				app.setApplicationID(rs.getInt(13));
-				app.setComments(rs.getString(14));
-				app.setDate(rs.getTimestamp(15));
-				app.setReimbursementAmount(rs.getDouble(16));
-				app.setGradeID(rs.getInt(17));
-				app.setGrade(rs.getString(18));
-				app.setGradeComments(rs.getString(19));
-				app.setStatus(rs.getString(20));
-				app.setStatusID(rs.getInt(21));
-				app.setNextApproverID(rs.getInt(22));
-				app.setPassed(rs.getString(23));
+				app.setEventID(rs.getInt("e_id"));
+				app.setEventTitle(rs.getString("e_name"));
+				app.setCost(rs.getDouble("ep_cost"));
+				app.setEventStartDate(rs.getTimestamp("e_date"));
+				app.setEventEndDate(rs.getTimestamp("e_enddate"));
+				app.setPassingGrade(rs.getString("e_passing_grade"));
+				app.setGradeFormat(rs.getString("egf_format"));
+				app.setEventGradeFormatDesc(rs.getString("egf_description"));
+				app.setEventGradeFormatID(rs.getInt("egf_id"));
+				app.setEventTypeID(rs.getInt("et_id"));
+				app.setTypeCoverage(rs.getInt("reimbursement_coverage"));
+				app.setTypeDescription(rs.getString("et_desc"));
+				app.setApplicationID(rs.getInt("a_id"));
+				app.setJustification(rs.getString("comments"));
+				app.setDate(rs.getTimestamp("a_date"));
+				app.setReimbursementAmount(rs.getDouble("reimbursement_amount"));
+				app.setParticipationID(rs.getInt("ep_id"));
+				app.setGrade(rs.getString("ep_grade"));
+				app.setGradeComments(rs.getString("ep_desc"));
+				app.setStatus(rs.getString("status"));
+				app.setStatusID(rs.getInt("status_id"));
+				app.setNextApproverID(rs.getInt("next_approver"));
+				
+				//app.setPassed(rs.getString(23).equals("Y"));
+				String pf = rs.getString("passed");
+				if(pf!=null) {
+					app.setPassed(pf.equals("Y"));
+				}
 				apps.add(app);
 			}
 			conn.close();
@@ -158,6 +172,48 @@ public class ApplicationDaoImpl implements ApplicationDao {
 	@Override
 	public Application updateApplication(Application app) {
 		// TODO Auto-generated method stub
+		conn = ConnFactory.getInstance().getConnection();
+		String passed = null;
+		if(app.getPassed()!=null) {
+			if(app.getPassed()) {
+				passed = "Y";
+			}
+			else {
+				passed = "N";
+			}	
+		}	
+		
+		try {			
+			String sql = "EXECUTE update_application("
+					+ "new_a_id => ?,"
+					+ "new_ep_id => ?,"
+					+ "new_reimbursement_amount => ?,"
+					+ "new_next_approved => ?,"
+					+ "new_status => ?,"
+					+ "new_ep_cost => ?,"
+					+ "new_ep_grade => ?,"
+					+ "new_ep_desc => ?,"
+					+ "new_passed => ?)";
+			sql = "{call update_application(?,?,?,?,?,?,?,?,?)}";
+			CallableStatement cs = conn.prepareCall(sql);
+			cs.setInt(1, app.getApplicationID());
+			cs.setInt(2, app.getParticipationID());
+			cs.setDouble(3, app.getReimbursementAmount());
+			cs.setInt(4, app.getNextApproverID());
+			cs.setInt(5, app.getStatusID());
+			cs.setDouble(6, app.getCost());
+			cs.setString(7, app.getGrade());
+			cs.setString(8, app.getGradeComments());
+			cs.setString(9, passed);
+			
+			cs.execute();
+			conn.close();
+			return app;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return null;
 	}
 

@@ -9,6 +9,7 @@ public interface UserDao {
 	//READ
 	public ReimbursementUser getUser(ReimbursementUser user);
 	public ReimbursementUser getUser(String username);
+	public ReimbursementUser getUser(int id);
 	
 	//UPDATE
 	
