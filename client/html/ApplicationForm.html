@@ -51,7 +51,7 @@
         <!-- Form Input -->
         <div class="row">
             <div class="col-9">
-                <form>
+                <form method="POST" action="Apply.do">
                     <!-- General Information -->
                     <div class="form-row">
                         <div class="col-12">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="form-row"> <!-- Variation of typical row but with css for forms -->
                         <div class="form-group col-12"> <!-- Wrapper class to ensure proper margins -->
-                            <label for="evantName">Name of Event</label>
+                            <label for="eventName">Name of Event</label>
                             <input type="text" class="form-control" id="eventName" name="eventName" placeholder="Ex. Introducation to Editing" required maxlength="60"> <!-- Placeholder specifies hint for type of input value required maxlength specifies maxlength -->
                             <small class="form-text text-muted">Event Name Cannot Exceed 60 Characters</small> <!-- Form text styles form help text with top margin and text muted gives it a gray color and small indicates text that is 85% of parent -->
                         </div>
@@ -72,9 +72,6 @@
                             <label for="eventType">Type of Event</label>
                             <select id="eventType" class="form-control" name="eventType" required>
                                 <!-- Pull These with JavaScript -->
-                                <option selected>Select Event</option> <!-- Selected specifies option is selected when page loads like placeholder for select menu -->
-                                <option id="eventType1">University Course</option>
-                                <option id="eventType2">Seminar</option>
                             </select>
                         </div>
                     </div>
@@ -120,9 +117,9 @@
                         <div class="form-group col-12">
                             <label for="evenTimeMissed">Work Time Missed</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" id="eventTimeMissed" name="eventTimeMissed" placeholder="0" min="0" max="30">
+                                <input type="number" class="form-control" id="eventTimeMissed" name="eventTimeMissed" placeholder="0" min="0" max="100">
                                 <div class="input-group-append">
-                                    <span class="input-group-text">days</span>
+                                    <span class="input-group-text">hours</span>
                                 </div>
                             </div>
                             <small class="form-text text-muted">Optional</small>
@@ -149,9 +146,6 @@
                             <label for="eventGradeFormat">Grading Format</label>
                             <select  class="form-control" name="eventGradeFormat" id="eventGradeFormat" required>
                                 <!-- Will need to import from JavaScript -->
-                                <option selected>Select Format</option>
-                                <option id="eventGradeFormat1">Letter Grade</option>
-                                <option id="eventGradeFormat2">Pass Fail</option>
                             </select>
                         </div>
                         <div class="form-group col-6">
@@ -218,11 +212,11 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between costCard"> <!-- Justify content between equally spaces elements so they fill flexbox -->
-                                <div>
+                                <div> <!-- In flexbox divs are inline unless you specify flex column -->
                                     <p>Available Reimbursement</p>
                                 </div>
-                                <div id="cardAvailableReimbursement">
-                                    <strong class="text-success">$1000</strong>
+                                <div>
+                                    <strong class="text-success">$<span id="availableReimbursement"></span></strong> <!-- Id same as in home so will automatically update here due to homeFunction -->
                                 </div>
                             </div>
 
@@ -230,16 +224,16 @@
                                 <div>
                                     <p>Total Event Cost</p>
                                 </div>
-                                <div id="eventCardTotalCost">
-                                    <p>$800</p>
+                                <div>
+                                    <p>$<span id="cardEventTotalCost"></span></p>
                                 </div>
                             </div>
                             <div class="card-body d-flex justify-content-between costCard border border-top-0 border-right-0 border-left-0">
                                 <div>
                                     <p>Event Coverage</p>
                                 </div>
-                                <div id="cardCoverage">
-                                    <p>90%</p>
+                                <div>
+                                    <p><span id="cardCoverage"></span>%</p>
                                 </div>
                             </div>
                             <div class="card-body d-flex justify-content-between costCard">
@@ -247,8 +241,7 @@
                                     <p>Event Reimbursement Estimate</p>
                                 </div>
                                 <div>
-                                    <strong class="text-danger">- </strong>
-                                    <strong id="cardEstimateReimbursement" class="text-danger">$720</strong>
+                                    <strong class="text-danger">-$<span id="cardEstimateReimbursement"></span></strong>
                                 </div>
                             </div>
                             <div class="card-footer d-flex justify-content-between costCard">
@@ -256,7 +249,7 @@
                                     <p>Remaining Reimbursement Estimate</p>
                                 </div>
                                 <div>
-                                    <strong id="cardRemainingReimbursement">$280</strong>
+                                    <strong>$<span id="cardRemainingReimbursement"></span></strong>
                                 </div>
                             </div>
                         </div>
@@ -268,7 +261,7 @@
 
     <!------------------------------------------------------>
     <!-- Custom JavaScript -->
-    <script src="../javascript/Home.js"></script>
+    <script src="../javascript/ApplicationForm.js"></script>
     <!-- Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

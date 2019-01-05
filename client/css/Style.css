@@ -62,11 +62,11 @@
 }
 
 #hiddenApproveAlert{
-    /*display:none;*/
+	display:none; /* Invisible by default so pops up when load page */
 }
 
 #hiddenEmailAlert{
-    /*display:none;*/ 
+	display:none;
 }
 
 .customJumbo{

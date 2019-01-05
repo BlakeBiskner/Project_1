@@ -56,11 +56,8 @@
                             <a class="nav-link disabled" href="#">Your Applications</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link colNavLink" href="#">New Application</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link colNavLink" href="#">
-                                Current Applications <span id="currAppBadge" class="badge badge-light">0</span> <!-- Badge to indicate number with id for javascript -->
+                                Current Applications <span id="currAppBadge" class="badge badge-light"></span> <!-- Badge to indicate number with id for javascript -->
                             </a>
                         </li>
                         <li class="nav-item">
@@ -192,7 +189,9 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <a href="#" class="btn customButton btn-lg btn-block" role="button">Begin Application</a>
+                            <form id="new-application-form" method="POST" action="NewForm.do" role="form">
+                                <input type="submit" class="form-control customButton" id="newFormButton">
+                            </form>
                         </div>
                     </div>
                 </div>
