@@ -13,6 +13,7 @@ public interface ApplicationDao {
 	//READ
 	
 	public ArrayList<Application> getUserApplications(ReimbursementUser user);
+	public ArrayList<Application> getApplicationsToReview(ReimbursementUser user);
 	
 	//UPDATE
 	public Application updateApplication(Application app);

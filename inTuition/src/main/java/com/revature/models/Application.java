@@ -18,9 +18,11 @@ public class Application {
 	private static HashMap<String,Integer> statusTypes = new HashMap<String,Integer>();
 	public Application() {
 		if (statusTypes.size()==0) {
-			statusTypes.put("Denied",1);
-			statusTypes.put("Pending",2);
-			statusTypes.put("Approved",3);
+			statusTypes.put("Denied",0);
+			statusTypes.put("Submitted",1);
+			statusTypes.put("Approved by Direct Supervisor", 2);
+			statusTypes.put("Approved by Department Head",3);
+			statusTypes.put("Approved",4);
 		}
 	}
 	@Override

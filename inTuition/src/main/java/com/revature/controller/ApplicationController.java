@@ -24,6 +24,7 @@ public class ApplicationController {
 		Event event=new Event();
 		
 		
+		
 		int userId=user.getUserID();
 		String eventName=request.getParameter("eventName");
 		String eventType=request.getParameter("eventType");

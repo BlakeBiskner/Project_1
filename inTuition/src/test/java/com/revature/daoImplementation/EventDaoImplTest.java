@@ -11,6 +11,7 @@ class EventDaoImplTest {
 	EventGradeFormatDaoImpl egfDao = EventGradeFormatDaoImpl.getInstance();
 	EventTypeDaoImpl etDao = EventTypeDaoImpl.getInstance();
 	
+	@Test
 	void test() {
 		Event event = new Event();
 		event.setGradeFormat(egfDao.getGradeTypes().get(0));

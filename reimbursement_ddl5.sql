@@ -99,7 +99,7 @@ FOREIGN KEY(usr_job) REFERENCES USER_JOB(usr_J_id)
 
 CREATE TABLE APPLICATION_STATUS(
 as_id INTEGER,
-as_status VARCHAR2(20),
+as_status VARCHAR2(40),
 PRIMARY KEY(as_id)
 );
 
@@ -210,7 +210,7 @@ LEFT JOIN
 (SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) 
 INNER JOIN USER_JOB ON usr_job = usr_j_id
 INNER JOIN USER_JOB_TYPE ON usr_j_type=ujt_id) ds
-ON usr.usr_id = ds.usr_id)) old_user_view
+ON usr.usr_direct_supervisor = ds.usr_id)) old_user_view
 INNER JOIN
 (SELECT usr_id department_head_id, usr_department dept_id_2 FROM USR INNER JOIN USER_JOB ON usr_job=usr_j_id
 INNER JOIN USER_JOB_TYPE ON usr_j_type = ujt_id WHERE ujt_type ='Department Head') dept_head

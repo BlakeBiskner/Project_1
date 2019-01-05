@@ -1,5 +1,6 @@
 package com.revature.daoImplementation;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -15,15 +16,21 @@ class ApplicationDaoImplTest {
 	EventTypeDaoImpl etDao = EventTypeDaoImpl.getInstance();
 	UserDaoImpl userDao = UserDaoImpl.getInstance();
 
-	@Test
+
 	void testInsertApplication() {
 		ReimbursementUser user = userDao.getUser("bobbyb");
-		Event event = eventDao.getEvent(103);
 		Application app = new Application();
+		Event event = new Event();
+		event.setGradeFormat(egfDao.getGradeTypes().get(0));
+		event.setEventType(etDao.getTypes().get(0));
+		event.setPassingGrade("Pass");
+		event.setStartDate(Timestamp.valueOf("2017-08-08 10:30:00"));
+		event.setTitle("Kingdom Mismanagement Economics");
+		event = eventDao.insertEvent(event);
 		app.setEvent(event);
 		app.setUserID(user.getUserID());
-		app.setJustification("WAAAAAAGH");
-		app.setNextApproverID(userDao.getUser(user.getDsID()).getUserID());
+		app.setJustification("I need to be able to do the things.");
+		app.setNextApproverID(user.getDsID());
 		app.setTimeMissed(10);
 		app.setGrade("P");
 		app.setPassed(true);
@@ -58,6 +65,16 @@ class ApplicationDaoImplTest {
 		app.setPassed(true);
 		app = appDao.updateApplication(app);
 		assert(app!=null);
+	}
+	@Test
+	void testGetApplicationsToReview() {
+		ReimbursementUser user = userDao.getUser("bobbyb");
+		System.out.println("Below is important.");
+		ArrayList<Application> apps = appDao.getApplicationsToReview(user);
+		apps.forEach(e->{
+			System.out.println(e);
+		});
+		assert(apps.size()>0);
 	}
 
 }
