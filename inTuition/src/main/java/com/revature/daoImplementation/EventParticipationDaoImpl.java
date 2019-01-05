@@ -25,6 +25,7 @@ public class EventParticipationDaoImpl implements EventParticipationDao {
 	}
 	public Application insertEventParticipation(Connection con,Application app) {
 		// TODO Auto-generated method stub
+		EventDaoImpl eventDao = EventDaoImpl.getInstance();
 		String passed = null;
 		if(app.getPassed()!=null) {
 			if(app.getPassed()) {

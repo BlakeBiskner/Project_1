@@ -175,7 +175,9 @@ BEGIN
 SELECT SUM(reimbursement_amount)INTO yearly_available_reimbursement FROM
 (SELECT extract(year from SYSTIMESTAMP)cur_year from dual) a
 left join
-(SELECT reimbursement_amount,user_id,comments, extract(year from a_date) app_year FROM APPLICATION WHERE user_id = usr_id)b
+(SELECT reimbursement_amount,user_id,comments, extract(year from a_date) app_year 
+FROM APPLICATION INNER JOIN APPLICATION_STATUS ON status=as_id
+WHERE user_id = usr_id AND as_status != 'Denied')b
 ON a.cur_year = b.app_year GROUP BY user_id;
 yearly_available_reimbursement := 1000 - yearly_available_reimbursement;
 IF yearly_available_reimbursement IS NULL THEN
@@ -191,8 +193,9 @@ END;
 
 
 CREATE OR REPLACE VIEW user_view AS
-SELECT usr.usr_id,usr.usr_firstname,usr.usr_lastname,usr.usr_username,usr.usr_email,usr.usr_password,
-usr.usr_account_approved,usr.usr_has_email,usr.dept_name,usr.usr_j_name job,
+SELECT * FROM (
+(SELECT usr.usr_id,usr.usr_firstname,usr.usr_lastname,usr.usr_username,usr.usr_email,usr.usr_password,
+usr.usr_account_approved,usr.usr_has_email,usr.dept_name,usr.dept_id,usr.usr_j_name job,
 usr.usr_j_desc job_desc,ds.usr_id ds_id, ds.usr_firstname ds_firstname, ds.usr_lastname ds_lastname, 
 ds.usr_username ds_username, ds.usr_email ds_email, ds.dept_name ds_dept_name, 
 ds.usr_j_name ds_job, ds.usr_j_desc ds_job_desc, ds.usr_job ds_job_id,
@@ -202,13 +205,16 @@ get_available_reimbursement(usr.usr_id) available_reimbursement
 FROM(
 (SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) 
 INNER JOIN USER_JOB ON usr_job = usr_j_id
-INNER JOIN USER_JOB_TYPE ON usr_j_type=ujt_id)usr
+INNER JOIN USER_JOB_TYPE ON usr_j_type=ujt_id) usr
 LEFT JOIN
 (SELECT * FROM (USR INNER JOIN DEPARTMENT ON usr_department = dept_id) 
 INNER JOIN USER_JOB ON usr_job = usr_j_id
-INNER JOIN USER_JOB_TYPE ON usr_j_type=ujt_id)ds
-ON usr.usr_id = ds.usr_id
-);
+INNER JOIN USER_JOB_TYPE ON usr_j_type=ujt_id) ds
+ON usr.usr_id = ds.usr_id)) old_user_view
+INNER JOIN
+(SELECT usr_id department_head_id, usr_department dept_id_2 FROM USR INNER JOIN USER_JOB ON usr_job=usr_j_id
+INNER JOIN USER_JOB_TYPE ON usr_j_type = ujt_id WHERE ujt_type ='Department Head') dept_head
+on old_user_view.dept_id = dept_head.dept_id_2);
 
 
 CREATE OR REPLACE VIEW event_view AS

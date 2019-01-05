@@ -15,7 +15,7 @@ class ApplicationDaoImplTest {
 	EventTypeDaoImpl etDao = EventTypeDaoImpl.getInstance();
 	UserDaoImpl userDao = UserDaoImpl.getInstance();
 
-	
+	@Test
 	void testInsertApplication() {
 		ReimbursementUser user = userDao.getUser("bobbyb");
 		Event event = eventDao.getEvent(103);
@@ -23,7 +23,7 @@ class ApplicationDaoImplTest {
 		app.setEvent(event);
 		app.setUserID(user.getUserID());
 		app.setComments("WAAAAAAGH");
-		app.setNextApproverID(userDao.getUser("stanlee").getUserID());
+		app.setNextApproverID(userDao.getUser(user.getDsID()).getUserID());
 		app.setTimeMissed(10);
 		app.setGrade("P");
 		app.setPassed(true);

@@ -8,8 +8,8 @@ import java.sql.SQLException;
 
 import com.revature.connection.ConnFactory;
 import com.revature.daos.EventDao;
+import com.revature.models.Application;
 import com.revature.models.Event;
-import com.revature.models.ReimbursementUser;
 
 import oracle.jdbc.OracleTypes;
 
@@ -23,6 +23,43 @@ public class EventDaoImpl implements EventDao {
 
 	public static EventDaoImpl getInstance() {
 		return eventDao;
+	}
+	@Override
+	public Application insertEvent(Application app, Connection conn) {
+		try {
+			//INSERT INTO EVENT VALUES(null,4,'Graphic Design Certification',200,'10-SEP-02 02.10.10.123000000 PM',null,1,'P');
+
+			String sql = "BEGIN INSERT INTO EVENT (e_id,e_type,e_name,e_date,e_enddate,e_egf_id,e_passing_grade)"
+					+ " VALUES(NULL,?,?,?,?,?,?) RETURNING e_id INTO ?;  END;";
+
+			CallableStatement cs = conn.prepareCall(sql);
+			cs.setInt(1, app.getEventTypeID());
+			cs.setString(2, app.getEventTitle());
+			cs.setTimestamp(3, app.getEventStartDate());
+			cs.setTimestamp(4, app.getEventEndDate());
+			cs.setInt(5, app.getEventGradeFormatID());
+			cs.setString(6, app.getPassingGrade());
+
+			cs.registerOutParameter(7, OracleTypes.NUMBER); // specifies the index created by the trigger that
+															// references the employee inserted
+			cs.execute();
+
+			int id = cs.getInt(7);
+
+//			if (commit) {
+//				conn.commit();
+//			}
+			if (id >= 1) {
+				app.setEventID(id);
+				return app;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return null;
 	}
 
 	@Override

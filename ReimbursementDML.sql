@@ -6,11 +6,11 @@ INSERT INTO USER_JOB_TYPE VALUES(4,'Employee');
 INSERT INTO USER_JOB_TYPE VALUES(5,'Intern');
 INSERT INTO USER_JOB VALUES(1,'CEO','The CEO of the company',1);
 INSERT INTO USER_JOB VALUES(2,'Writing Intern','An intern for the company that works as a writer.',5);
+INSERT INTO USER_JOB VALUES(3,'Head of Writing','The head of the writing department.',1);
 
 INSERT INTO USR 
 (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,usr_department, usr_job,usr_password)
 VALUES(99999,'Stan','Lee','stanlee','stanlee@mailinator.com',99999,21,1,'$2a$10$5Nm7Khp8bTZgip78u80Zv.OMUwN1lzbsx52tMyouizSKvY0tN2Mem');
-
 
 
 INSERT INTO EVENT_TYPE VALUES(1,80,'University Course');

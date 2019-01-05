@@ -42,5 +42,15 @@ class UserDaoImplTest {
 		System.out.println(user);
 		assert(user.getUsername().equals("bobbyb"));
 	}
+	
+	@Test
+	void testUserReadingByID() {
+		ReimbursementUser user = new ReimbursementUser();// userDao.getUser("bobbyb");
+		user.setUsername("bobbyb");
+		user = userDao.getUser(user);
+		user = userDao.getUser(user.getUserID());
+		System.out.println(user);
+		assert(user.getUsername().equals("bobbyb"));
+	}
 
 }
