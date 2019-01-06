@@ -25,8 +25,10 @@ public class HomeController {
 	public static String HomeJSON(HttpServletRequest request, HttpServletResponse response) {
 		ReimbursementUser user = (ReimbursementUser) request.getSession().getAttribute("User");
 		ArrayList<Application> apps=(ArrayList<Application>) request.getSession().getAttribute("UserApplications");
+		ArrayList<Application> reviewApps=(ArrayList<Application>) request.getSession().getAttribute("ReviewApps");
+		ArrayList<ReimbursementUser> reviewUserApps=(ArrayList<ReimbursementUser>) request.getSession().getAttribute("ReviewAppUsers");
 		System.out.println(apps);
-		FormSession session=new FormSession(user,apps);
+		FormSession session=new FormSession(user,apps,reviewApps, reviewUserApps);
 		try {
 			System.out.println("in HomeController with session "+session.toString());
 			System.out.println("in HomeController with User" +user.toString());

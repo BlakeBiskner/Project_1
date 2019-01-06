@@ -33,9 +33,10 @@ public class ApplicationDaoImpl implements ApplicationDao {
 	public Application insertApplication(Application app) {//This method uses transaction - autocommit false then commits after eventgrade has been added
 		// TODO Auto-generated method stub
 		app.setDate(Timestamp.from(Instant.now()));
-		conn = ConnFactory.getInstance().getConnection();
 		
 		try {
+			conn = ConnFactory.getInstance().getConnection();
+
 			app = EventParticipationDaoImpl.getInstance().insertEventParticipation(conn, app);
 			if(app==null || !(app.getParticipationID() >=1)) {
 				conn.close();
@@ -151,7 +152,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
 				app.setStatus(rs.getString("status"));
 				app.setStatusID(rs.getInt("status_id"));
 				app.setNextApproverID(rs.getInt("next_approver"));
-				
+				app.setUserID(user.getUserID());
 				//app.setPassed(rs.getString(23).equals("Y"));
 				String pf = rs.getString("passed");
 				if(pf!=null) {
@@ -214,6 +215,88 @@ public class ApplicationDaoImpl implements ApplicationDao {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	@Override
+	public ArrayList<Application> getApplicationsToReview(ReimbursementUser user) {
+		// TODO Auto-generated method stub
+		ArrayList<Application> apps = new ArrayList<Application>();
+//		e_id, e_name, ep_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+//		reimbursement_coverage,et_desc,
+//		a_id,user_id,comments,a_date,reimbursement_amount,ep_id,ep_grade,ep_desc,
+//		as_status status,as_id status_id, next_approver, passed
+		try {
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "SELECT "
+					+ "user_id,"
+					+ "e_id,"
+					+ "e_name, "
+					+ "ep_cost, "
+					+ "e_date, "
+					+ "e_enddate, "
+					+ "e_passing_grade,"
+					+ "egf_format,"
+					+ "egf_description,"
+					+ "egf_id, "
+					+ "et_id," 
+					+ "reimbursement_coverage,"
+					+ "et_desc," 
+					+ "a_id,"
+					+ "comments,"
+					+ "a_date,"
+					+ "reimbursement_amount,"
+					+ "ep_id,"
+					+ "ep_grade,"
+					+ "ep_desc, "
+					+ "status,"
+					+ "status_id,"
+					+ "next_approver,"
+					+ "passed "
+					+ "FROM application_view WHERE next_approver = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, user.getUserID());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Application app = new Application();
+				
+				
+				app.setEventID(rs.getInt("e_id"));
+				app.setEventTitle(rs.getString("e_name"));
+				app.setCost(rs.getDouble("ep_cost"));
+				app.setEventStartDate(rs.getTimestamp("e_date"));
+				app.setEventEndDate(rs.getTimestamp("e_enddate"));
+				app.setPassingGrade(rs.getString("e_passing_grade"));
+				app.setGradeFormat(rs.getString("egf_format"));
+				app.setEventGradeFormatDesc(rs.getString("egf_description"));
+				app.setEventGradeFormatID(rs.getInt("egf_id"));
+				app.setEventTypeID(rs.getInt("et_id"));
+				app.setTypeCoverage(rs.getInt("reimbursement_coverage"));
+				app.setTypeDescription(rs.getString("et_desc"));
+				app.setApplicationID(rs.getInt("a_id"));
+				app.setJustification(rs.getString("comments"));
+				app.setDate(rs.getTimestamp("a_date"));
+				app.setReimbursementAmount(rs.getDouble("reimbursement_amount"));
+				app.setParticipationID(rs.getInt("ep_id"));
+				app.setGrade(rs.getString("ep_grade"));
+				app.setGradeComments(rs.getString("ep_desc"));
+				app.setStatus(rs.getString("status"));
+				app.setStatusID(rs.getInt("status_id"));
+				app.setNextApproverID(rs.getInt("next_approver"));
+				app.setUserID(rs.getInt("user_id"));
+				//app.setPassed(rs.getString(23).equals("Y"));
+				String pf = rs.getString("passed");
+				if(pf!=null) {
+					app.setPassed(pf.equals("Y"));
+				}
+				apps.add(app);
+			}
+			conn.close();
+			return apps;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 

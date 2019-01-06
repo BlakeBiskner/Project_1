@@ -46,7 +46,7 @@ public class ApplicationController {
 		Application app=new Application();
 		
 		app.setUserID(userId);
-		app.setNextApproverID(userId);
+		app.setNextApproverID(user.getDsID());
 		
 		for(EventGradeFormat x:egf) {
 			if(x.getFormat().equals(eventGradeFormat)) {

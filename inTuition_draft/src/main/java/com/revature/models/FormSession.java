@@ -8,12 +8,21 @@ public class FormSession{
 	private ArrayList<Application> userApps;
 	private ArrayList<EventType> eventTypes;
 	private ArrayList<EventGradeFormat> eventGradeFormats;
+	private ArrayList<Application> reviewApps;
+	private ArrayList<ReimbursementUser> reviewAppUsers;
 	
 	
 	public FormSession() {
 		
 	}
 	// Home Page
+	public FormSession(ReimbursementUser user,ArrayList<Application> userApps, ArrayList<Application> reviewApps, ArrayList<ReimbursementUser> reviewAppUsers) {
+		this.user=user;
+		this.userApps=userApps;
+		this.reviewApps=reviewApps;
+		this.reviewAppUsers=reviewAppUsers;
+	}
+	
 	public FormSession(ReimbursementUser user,ArrayList<Application> userApps) {
 		this.user=user;
 		this.userApps=userApps;
@@ -40,6 +49,14 @@ public class FormSession{
 		return eventGradeFormats;
 	}
 	
+	public ArrayList<Application> getReviewApps(){
+		return reviewApps;
+	}
+	
+	public ArrayList<ReimbursementUser> getReviewAppUsers(){
+		return reviewAppUsers;
+	}
+	
 	public void setUser(ReimbursementUser user) {
 		this.user=user;
 	}
@@ -56,9 +73,17 @@ public class FormSession{
 		this.eventGradeFormats=eventGradeFormats;
 	}
 	
+	public void setReviewApps(ArrayList<Application> reviewApps) {
+		this.reviewApps=reviewApps;
+	}
+	
+	public void setReviewUserApps(ArrayList<ReimbursementUser> reviewAppUsers) {
+		this.reviewAppUsers=reviewAppUsers;
+	}
 	@Override
 	public String toString() {
 		return "FormSession [user=" + user + ", userApps=" + userApps + ", eventTypes=" + eventTypes
-				+ ", eventGradeFormats=" + eventGradeFormats + "]";
+				+ ", eventGradeFormats=" + eventGradeFormats + ", reviewApps=" + reviewApps + ", reviewAppUsers="
+				+ reviewAppUsers + "]";
 	}
 }
