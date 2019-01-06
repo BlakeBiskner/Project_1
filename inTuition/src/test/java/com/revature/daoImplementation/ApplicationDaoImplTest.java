@@ -58,7 +58,7 @@ class ApplicationDaoImplTest {
 		ArrayList<Application> apps = appDao.getUserApplications(user);
 		Application app = apps.get(0);
 		System.out.println(app);
-		app.setStatusID(3);//means approved
+		app.setStatusID(3);
 		app.setGrade("100");
 		app.setGradeComments("WOOT WOOT");
 		app.setReimbursementAmount(300);

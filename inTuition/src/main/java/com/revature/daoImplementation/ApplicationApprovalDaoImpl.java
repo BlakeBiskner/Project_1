@@ -47,7 +47,7 @@ public class ApplicationApprovalDaoImpl implements ApplicationApprovalDao {
 			conn.setAutoCommit(false);
 
 			String sql = "BEGIN INSERT INTO APPLICATION_APPROVAL (aa_id,aa_application,aa_approver,approval_time,approval,reasoning)"
-					+ " VALUES(NULL,?,?,?,?,?) RETURNING aa_id INTO ?;  END;";
+					+ " VALUES(NULL,?,?,?,?) RETURNING aa_id INTO ?;  END;";
 
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setInt(1,approval.getAppID());
