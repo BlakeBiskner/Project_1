@@ -211,7 +211,7 @@ LEFT JOIN
 INNER JOIN USER_JOB ON usr_job = usr_j_id
 INNER JOIN USER_JOB_TYPE ON usr_j_type=ujt_id) ds
 ON usr.usr_direct_supervisor = ds.usr_id)) old_user_view
-INNER JOIN
+LEFT JOIN
 (SELECT usr_id department_head_id, usr_department dept_id_2 FROM USR INNER JOIN USER_JOB ON usr_job=usr_j_id
 INNER JOIN USER_JOB_TYPE ON usr_j_type = ujt_id WHERE ujt_type ='Department Head') dept_head
 on old_user_view.dept_id = dept_head.dept_id_2);

@@ -36,12 +36,20 @@ INSERT INTO USER_JOB VALUES(null,'Illustration Intern','An intern illustrator',5
 INSERT INTO USER_JOB VALUES(null,'Advertising Intern','An intern advertisor',5);
 
 
-
+SELECT * FROM USER_VIEW;
 COMMIT;
 
 INSERT INTO USR 
 (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,usr_department, usr_job,usr_password)
 VALUES(99999,'Stan','Lee','stanlee','stanlee@mailinator.com',99999,21,1,'$2a$10$5Nm7Khp8bTZgip78u80Zv.OMUwN1lzbsx52tMyouizSKvY0tN2Mem');
+
+INSERT INTO USR 
+(usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,usr_department, usr_job,usr_password)
+VALUES(99998,'Jack','Kirby','jackkirby','jackkirby@mailinator.com',99999,21,3,'$2a$10$5Nm7Khp8bTZgip78u80Zv.OMUwN1lzbsx52tMyouizSKvY0tN2Mem');
+
+DELETE FROM USR WHERE usr_username = 'jackkirby';
+SELECT * FROM USER_VIEW;
+SELECT * FROM USR;
 
 SELECT * FROM user_view;
 
