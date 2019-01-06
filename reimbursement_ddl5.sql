@@ -216,6 +216,7 @@ LEFT JOIN
 INNER JOIN USER_JOB_TYPE ON usr_j_type = ujt_id WHERE ujt_type ='Department Head') dept_head
 on old_user_view.dept_id = dept_head.dept_id_2);
 
+SELECT * FROM USER_VIEW;
 
 CREATE OR REPLACE VIEW event_view AS
 SELECT e_id, e_name,e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
