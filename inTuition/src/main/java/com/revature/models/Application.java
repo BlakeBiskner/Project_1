@@ -64,7 +64,7 @@ public class Application {
 	}
 	public int getStatusID() {
 		if(status==null) {
-			return 2;   //This indicates that an application has a status of pending.
+			return 1;   //This indicates that an application has a status of pending.
 		}
 		return statusID;
 	}

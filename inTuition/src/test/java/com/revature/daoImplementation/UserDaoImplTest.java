@@ -1,5 +1,7 @@
 package com.revature.daoImplementation;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -10,7 +12,6 @@ class UserDaoImplTest {
 	UserDaoImpl userDao = UserDaoImpl.getInstance();
 	ApplicationDaoImpl appDao = ApplicationDaoImpl.getInstance();
 	
-	@Test
 	void testUserInsertion() {
 		ReimbursementUser user = new ReimbursementUser();
 		user.setDeptID(21); //hardcoded department into database
@@ -58,6 +59,15 @@ class UserDaoImplTest {
 		assert(user!=null);
 	}
 	
-
+	@Test
+	void testGetAllUsers() {
+		ArrayList<ReimbursementUser> users = new ArrayList<>();
+		users = userDao.getAllUsers();
+		users.forEach(e->{
+			System.out.println(e);
+		});
+		System.out.println("All Users: " + users.size());
+		assert(users.size()>0);
+	}
 
 }

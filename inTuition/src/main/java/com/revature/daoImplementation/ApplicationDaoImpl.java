@@ -33,7 +33,6 @@ public class ApplicationDaoImpl implements ApplicationDao {
 	public Application insertApplication(Application app) {//This method uses transaction - autocommit false then commits after eventgrade has been added
 		// TODO Auto-generated method stub
 		app.setDate(Timestamp.from(Instant.now()));
-		
 		try {
 			conn = ConnFactory.getInstance().getConnection();
 

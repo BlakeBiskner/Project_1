@@ -10,7 +10,7 @@ window.onload= function(){
 
 	///// Callback Functions /////
 	// Home Screen
-	loadDoc("http://localhost:8080/inTuition/client/html/HomeJSON.do",homeFunction);
+	loadDoc("http://localhost:8080/inTuition/client/html/WelcomeJSON.do",welcomeFunction);
 
 	console.log("completed window.onload");
 }
@@ -38,8 +38,8 @@ function loadDoc(url,cFunction){
 		console.log("xhr sent");
 }
 
-function homeFunction(xhr){
-	console.log("in homeFunction xhr");
+function welcomeFunction(xhr){
+	console.log("in welcomeFunction xhr");
 	let userInfo=JSON.parse(xhr.responseText);
 	console.log(userInfo);
 	// Split up JSON 

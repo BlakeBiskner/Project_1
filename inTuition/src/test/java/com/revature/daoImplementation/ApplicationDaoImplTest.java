@@ -16,7 +16,7 @@ class ApplicationDaoImplTest {
 	EventTypeDaoImpl etDao = EventTypeDaoImpl.getInstance();
 	UserDaoImpl userDao = UserDaoImpl.getInstance();
 
-
+	
 	void testInsertApplication() {
 		ReimbursementUser user = userDao.getUser("bobbyb");
 		Application app = new Application();
@@ -68,7 +68,7 @@ class ApplicationDaoImplTest {
 	}
 	@Test
 	void testGetApplicationsToReview() {
-		ReimbursementUser user = userDao.getUser("bobbyb");
+		ReimbursementUser user = userDao.getUser("stanlee");
 		System.out.println("Below is important.");
 		ArrayList<Application> apps = appDao.getApplicationsToReview(user);
 		apps.forEach(e->{
