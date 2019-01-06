@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>PendingApplications</title>
+
+        <!-- Bootstrap -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Ensures proper zooming by setting width of page to follow screen width and setting initial zoom level when page first loaded-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+            crossorigin="anonymous">
+        
+        <!-- Custom Stylesheet -->
+        <link rel="stylesheet" href="../css/Style.css">
+    </head>
+    <body>
+        <!----------------------------------------------------->
+        <!-- Navigation Bar -->
+        <nav class= "navbar navbar-expand-xl customNav navbar-light fixed-top"> <!-- Left aligns links in navbar -->
+            <!-- Brand -->
+            <a class="navbar-brand" href="#">inTuition</a>
+            <!-- Collapsible Button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul id="profileDropdown" class="navbar-nav ml-auto"> <!-- ml-auto is a flexbox property that pushes elements to right -->
+                    <!-- Drop Down -->
+                    <li class="nav-item dropdown"> <!-- dropdown indicates a dropdown menu -->
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"> <!-- dropdown- toggle and data-toggle allow this button to toggle dropdown -->
+                            <strong id="dropdownUser"></strong>
+                        </a>
+                        <div class="dropdown-menu"> <!-- dropdown menu buils dropdown -->
+                            <a class="dropdown-item" href="#">Profile Information</a> <!-- dropdown items are like list items -->
+                            <a class="dropdown-item" href="#">Sign Out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!------------------------------------------------------>
+        <!-- Heading -->
+        <div class="container-fluid">
+            <div class="row" align="center">
+                <div class="col">
+                    <h1>Pending Applications</h1>
+                </div>
+            </div>
+        </div>
+
+        <!------------------------------------------------------>
+        <!-- Application Accordian -->
+        <div class="row">
+            <div class="col">
+                <div id="appAccordian">
+
+                </div>
+            </div>
+        </div>
+        <!----------------------------------------------------->
+        <!-- Custom JavaScript -->
+        <script src="../javascript/PendingApplications.js"></script>
+        <!-- Bootstrap -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+    </body>
+</html>

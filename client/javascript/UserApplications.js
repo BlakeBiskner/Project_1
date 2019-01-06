@@ -1,3 +1,10 @@
+/*
+ * User Application
+ * 
+ * author Blake Biskner
+ * version 1.0
+ */
+
 window.onload=function(){
     console.log("in User Applications");
     // Get session from storage
