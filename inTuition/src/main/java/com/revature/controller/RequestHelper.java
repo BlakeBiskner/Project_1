@@ -35,9 +35,9 @@ public class RequestHelper {
 		case (BASE_URI+"Apply.do"):
 			System.out.println("in Apply/do case");
 			return ApplicationController.Apply(request);
-		case (BASE_URI +"Welcome.do"):
-			System.out.println("In Welcome.do case");
-			return WelcomeController.apply(request,response);
+		case (BASE_URI+"WelcomeJSON.do"):
+			System.out.println("In Welcome.do");
+			return WelcomeController.welcomeJSON(request, response);
 		default:
 			return DEFAULT_URI;
 		}

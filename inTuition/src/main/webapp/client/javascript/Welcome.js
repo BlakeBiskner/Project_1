@@ -40,31 +40,41 @@ function loadDoc(url,cFunction){
 
 function welcomeFunction(xhr){
 	console.log("in welcomeFunction xhr");
-	let userInfo=JSON.parse(xhr.responseText);
-	console.log(userInfo);
+	let regInfo=JSON.parse(xhr.responseText);
+	console.log(regInfo);
 	// Split up JSON 
-	let user=userInfo.user;
-	let userApps=userInfo.userApps;
+	let users=regInfo.users;
+	let depts=regInfo.depts;
+	let jobs = regInfo.jobs;
 	// Persist data in browser for curresnt session (ie will clear when browser tab closes)
 	// Check browser support
-	if(typeof(Storage)!="undefined"){ // Typeof returns type of object
-		console.log("Storage supported");
-		localStorage.setItem("User",JSON.stringify(user)); // Store name value pair in browser storage with JSON of user
-		localStorage.setItem("UserApps",JSON.stringify(userApps));
-	} else{
-		console.log("Storage not supported");
-	}
+
 	// Display Name
-	document.getElementById("dropdownUser").innerHTML=(user.firstname+" "+user.lastname);
-	// Display Reimbursement
-	document.getElementById("availableReimbursement").innerHTML=(user.yearlyReimbursementRemaining);
-	// Display Alerts
-	if(user.hasUrgentEmail==true){
-		document.getElementById("hiddenEmailAlert").style.display="block"; // Change css to display element
+	var txt="";
+	// Iterate through names
+	for(i=0;i<users.length;i++){
+		txt+="<option value ="+ users[i].userID + ">"+users[i].firstname + " " + users[i].lastname+"</option>";
 	}
-	// Display Badges
-	if(userApps.length>0){
-		document.getElementById("currAppBadge").style.display="inline";
-		document.getElementById("currAppBadge").innerHTML=userApps.length;
+	console.log(txt);
+	document.getElementById("supervisor").innerHTML=txt;
+
+	
+	var txt="";
+	// Iterate through names
+	for(i=0;i<jobs.length;i++){
+		txt+="<option value ="+ jobs[i].jobID + ">"+jobs[i].job+"</option>";
 	}
+	console.log(txt);
+	document.getElementById("job").innerHTML=txt;
+
+	
+	var txt="";
+	// Iterate through names
+	for(i=0;i<depts.length;i++){
+		txt+="<option value ="+ depts[i].id + ">"+depts[i].name+"</option>";
+	}
+	console.log(txt);
+	document.getElementById("dept").innerHTML=txt;
+
+	
 }

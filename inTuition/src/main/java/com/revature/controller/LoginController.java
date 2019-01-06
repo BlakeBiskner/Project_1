@@ -40,9 +40,23 @@ public class LoginController {
 			// Check if user has any applications
 			ApplicationDaoImpl appDao=ApplicationDaoImpl.getInstance();
 			ArrayList<Application> userApps=appDao.getUserApplications(actualUser);
-			if(appDao.getUserApplications(actualUser)!=null) { // If has applications
+			if(userApps!=null) { // If has applications
 				request.getSession().setAttribute("UserApplications",userApps);
 				System.out.println("User apps"+userApps);
+			}
+			// Check if have any applications to review
+			ArrayList<Application> reviewApps=appDao.getApplicationsToReview(actualUser);
+			System.out.println("Apps to review\n" +reviewApps);
+			if(reviewApps!=null) {
+				// For each application insert the application user at a corresponding index in another array
+				ArrayList<ReimbursementUser> reviewUsers=new ArrayList<ReimbursementUser>();
+				for(Application app:reviewApps) {
+					ReimbursementUser user=userDao.getApplicant(app);
+					reviewUsers.add(user);
+				}
+				System.out.println("User to review\n");
+				request.getSession().setAttribute("ReviewApps", reviewApps);
+				request.getSession().setAttribute("ReviewAppUsers", reviewUsers);
 			}
 			request.getSession().setAttribute("User",actualUser);
 			return LOGIN_SUCCESS;
