@@ -1,5 +1,6 @@
 package com.revature.daos;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 
 import com.revature.models.Application;
@@ -17,6 +18,16 @@ public interface ApplicationDao {
 	
 	//UPDATE
 	public Application updateApplication(Application app);
+
+
+	public Application updateApplicationAfterApproval(Application app, Connection con);
+
+
+	public ArrayList<Application> getApplicationsForBencoToView();
+
+
+
+
 	
 	
 	//Delete

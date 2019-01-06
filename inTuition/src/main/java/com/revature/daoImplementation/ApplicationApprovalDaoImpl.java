@@ -28,7 +28,7 @@ public class ApplicationApprovalDaoImpl implements ApplicationApprovalDao {
 
 
 	@Override
-	public ApplicationApproval insertApproval(ApplicationApproval approval) {
+	public ApplicationApproval insertApproval(ApplicationApproval approval,Application app) {
 		// TODO Auto-generated method stub
 		approval.setApprovalTime(Timestamp.from(Instant.now()));
 		conn = ConnFactory.getInstance().getConnection();
@@ -47,7 +47,7 @@ public class ApplicationApprovalDaoImpl implements ApplicationApprovalDao {
 			conn.setAutoCommit(false);
 
 			String sql = "BEGIN INSERT INTO APPLICATION_APPROVAL (aa_id,aa_application,aa_approver,approval_time,approval,reasoning)"
-					+ " VALUES(NULL,?,?,?,?) RETURNING aa_id INTO ?;  END;";
+					+ " VALUES(NULL,?,?,?,?,?) RETURNING aa_id INTO ?;  END;";
 
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setInt(1,approval.getAppID());
@@ -66,7 +66,10 @@ public class ApplicationApprovalDaoImpl implements ApplicationApprovalDao {
 			
 			if (id >= 1) {
 				approval.setApprovalID(id);
-				conn.commit();
+				app = ApplicationDaoImpl.getInstance().updateApplicationAfterApproval(app, conn);
+				if(app!=null) {
+					conn.commit();
+				}
 				conn.close();
 				return approval;
 				

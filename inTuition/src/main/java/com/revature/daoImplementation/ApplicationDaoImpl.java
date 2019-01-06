@@ -184,17 +184,17 @@ public class ApplicationDaoImpl implements ApplicationDao {
 		}	
 		
 		try {			
-			String sql = "EXECUTE update_application("
-					+ "new_a_id => ?,"
-					+ "new_ep_id => ?,"
-					+ "new_reimbursement_amount => ?,"
-					+ "new_next_approved => ?,"
-					+ "new_status => ?,"
-					+ "new_ep_cost => ?,"
-					+ "new_ep_grade => ?,"
-					+ "new_ep_desc => ?,"
-					+ "new_passed => ?)";
-			sql = "{call update_application(?,?,?,?,?,?,?,?,?)}";
+//			String sql = "EXECUTE update_application("
+//					+ "new_a_id => ?,"
+//					+ "new_ep_id => ?,"
+//					+ "new_reimbursement_amount => ?,"
+//					+ "new_next_approved => ?,"
+//					+ "new_status => ?,"
+//					+ "new_ep_cost => ?,"
+//					+ "new_ep_grade => ?,"
+//					+ "new_ep_desc => ?,"
+//					+ "new_passed => ?)";
+			String sql = "{call update_application(?,?,?,?,?,?,?,?,?)}";
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setInt(1, app.getApplicationID());
 			cs.setInt(2, app.getParticipationID());
@@ -217,8 +217,46 @@ public class ApplicationDaoImpl implements ApplicationDao {
 		return null;
 	}
 
+
+	@Override
+	public Application updateApplicationAfterApproval(Application app, Connection con) {
+		// TODO Auto-generated method stub
+
+		try {			
+
+			String sql = "UPDATE APPLICATION SET reimbursement_amount = ?, next_approver = ?, status = ? "
+					+ "WHERE a_id = ?";
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setDouble(1, app.getReimbursementAmount());
+			if(app.getNextApproverID()==null || app.getNextApproverID() == 0) {
+				ps.setNull(2, 0);
+			}
+			else {
+				ps.setInt(2, app.getNextApproverID());	
+			}
+			ps.setInt(3, app.getStatusID());
+			ps.setInt(4, app.getApplicationID());
+			System.out.println(sql);
+			System.out.println(app.getReimbursementAmount());
+			System.out.println(app.getNextApproverID());
+			System.out.println(app.getStatusID());
+			System.out.println(app.getApplicationID());
+			ps.execute();
+			return app;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	
 	@Override
 	public ArrayList<Application> getApplicationsToReview(ReimbursementUser user) {
+		if (user.getJob().equals("Benefits Coordinator")) {
+			return this.getApplicationsForBencoToView();
+		}
 		// TODO Auto-generated method stub
 		ArrayList<Application> apps = new ArrayList<Application>();
 //		e_id, e_name, ep_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
@@ -299,4 +337,85 @@ public class ApplicationDaoImpl implements ApplicationDao {
 		return null;
 	}
 
+	@Override
+	public ArrayList<Application> getApplicationsForBencoToView() {
+		// TODO Auto-generated method stub
+		ArrayList<Application> apps = new ArrayList<Application>();
+//		e_id, e_name, ep_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
+//		reimbursement_coverage,et_desc,
+//		a_id,user_id,comments,a_date,reimbursement_amount,ep_id,ep_grade,ep_desc,
+//		as_status status,as_id status_id, next_approver, passed
+		try {
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "SELECT "
+					+ "user_id,"
+					+ "e_id,"
+					+ "e_name, "
+					+ "ep_cost, "
+					+ "e_date, "
+					+ "e_enddate, "
+					+ "e_passing_grade,"
+					+ "egf_format,"
+					+ "egf_description,"
+					+ "egf_id, "
+					+ "et_id," 
+					+ "reimbursement_coverage,"
+					+ "et_desc," 
+					+ "a_id,"
+					+ "comments,"
+					+ "a_date,"
+					+ "reimbursement_amount,"
+					+ "ep_id,"
+					+ "ep_grade,"
+					+ "ep_desc, "
+					+ "status,"
+					+ "status_id,"
+					+ "next_approver,"
+					+ "passed "
+					+ "FROM application_view WHERE status = 'Approved by Department Head' ";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Application app = new Application();
+				
+				
+				app.setEventID(rs.getInt("e_id"));
+				app.setEventTitle(rs.getString("e_name"));
+				app.setCost(rs.getDouble("ep_cost"));
+				app.setEventStartDate(rs.getTimestamp("e_date"));
+				app.setEventEndDate(rs.getTimestamp("e_enddate"));
+				app.setPassingGrade(rs.getString("e_passing_grade"));
+				app.setGradeFormat(rs.getString("egf_format"));
+				app.setEventGradeFormatDesc(rs.getString("egf_description"));
+				app.setEventGradeFormatID(rs.getInt("egf_id"));
+				app.setEventTypeID(rs.getInt("et_id"));
+				app.setTypeCoverage(rs.getInt("reimbursement_coverage"));
+				app.setTypeDescription(rs.getString("et_desc"));
+				app.setApplicationID(rs.getInt("a_id"));
+				app.setJustification(rs.getString("comments"));
+				app.setDate(rs.getTimestamp("a_date"));
+				app.setReimbursementAmount(rs.getDouble("reimbursement_amount"));
+				app.setParticipationID(rs.getInt("ep_id"));
+				app.setGrade(rs.getString("ep_grade"));
+				app.setGradeComments(rs.getString("ep_desc"));
+				app.setStatus(rs.getString("status"));
+				app.setStatusID(rs.getInt("status_id"));
+				app.setNextApproverID(rs.getInt("next_approver"));
+				app.setUserID(rs.getInt("user_id"));
+				//app.setPassed(rs.getString(23).equals("Y"));
+				String pf = rs.getString("passed");
+				if(pf!=null) {
+					app.setPassed(pf.equals("Y"));
+				}
+				apps.add(app);
+			}
+			conn.close();
+			return apps;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

@@ -39,14 +39,6 @@ public class WelcomeController {
 			e.printStackTrace();
 		}
 
-//		try {
-////			response.getWriter().write(new ObjectMapper().writeValueAsString(session));
-////			response.getWriter().write(new ObjectMapper().writeValueAsString(user));
-//		} catch (JsonProcessingException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 
 		// TODO Auto-generated method stub
 		return null;

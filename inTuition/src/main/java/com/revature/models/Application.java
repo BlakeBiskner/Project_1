@@ -11,7 +11,8 @@ public class Application {
 	private String justification,gradeComments,grade = null;
 	private String eventTitle,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc,status = null;
 	private double cost;
-	private int typeCoverage,eventTypeID,eventGradeFormatID,nextApproverID;
+	private int typeCoverage,eventTypeID,eventGradeFormatID;
+	private Integer nextApproverID = null;
 	private Timestamp eventStartDate,eventEndDate = null;
 	private int timeMissed,statusID;
 	private Boolean passed = null;
@@ -77,10 +78,10 @@ public class Application {
 	public void setTimeMissed(int timeMissed) {
 		this.timeMissed = timeMissed;
 	}
-	public int getNextApproverID() {
+	public Integer getNextApproverID() {
 		return nextApproverID;
 	}
-	public void setNextApproverID(int nextApprovedID) {
+	public void setNextApproverID(Integer nextApprovedID) {
 		this.nextApproverID = nextApprovedID;
 	}
 	public void setEvent(Event event) {
