@@ -1,10 +1,3 @@
-/*
- * User Application
- * 
- * author Blake Biskner
- * version 1.0
- */
-
 window.onload=function(){
     console.log("in User Applications");
     // Get session from storage
@@ -49,5 +42,7 @@ window.onload=function(){
         // Clear data for next user
         localStorage.removeItem("User");
         localStorage.removeItem("UserApps");
+        localStorage.removeItem("ReviewApps");
+        localStorage.removeItem("ReviewAppUsers");
     }
 }
