@@ -3,6 +3,7 @@ package com.revature.daos;
 import java.util.ArrayList;
 
 import com.revature.models.Application;
+import com.revature.models.ApplicationMaterial;
 import com.revature.models.MaterialRequest;
 import com.revature.models.ReimbursementUser;
 
@@ -19,6 +20,6 @@ public interface RequestDao {
 	
 	//UPDATE
 	
-	public MaterialRequest updateRequest(MaterialRequest request);
+	public MaterialRequest updateRequest(MaterialRequest request, ApplicationMaterial mat);
 	
 }

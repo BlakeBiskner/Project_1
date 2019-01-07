@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import com.revature.connection.ConnFactory;
 import com.revature.daos.RequestDao;
 import com.revature.models.Application;
+import com.revature.models.ApplicationMaterial;
 import com.revature.models.MaterialRequest;
 import com.revature.models.ReimbursementUser;
 
@@ -127,8 +128,28 @@ public class RequestDaoImpl implements RequestDao {
 	}
 
 	@Override
-	public MaterialRequest updateRequest(MaterialRequest request) {
+	public MaterialRequest updateRequest(MaterialRequest request, ApplicationMaterial mat) {
 		// TODO Auto-generated method stub
+		try {
+			mat = ApplicationMaterialDaoImpl.getInstance().insertMaterial(mat);
+			if(mat==null) {
+				return null;
+			}
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "UPDATE APPLICATION_MATERIAL_REQUEST SET amr_am_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			ps.setInt(1, request.getMaterialID());
+			ResultSet rs = ps.executeQuery();
+
+			conn.close();
+			if (rs.next()) {
+				return request;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
