@@ -70,7 +70,7 @@ public class RequestDaoImpl implements RequestDao {
 		ArrayList<MaterialRequest> reqs = new ArrayList<>();
 		try {
 			conn = ConnFactory.getInstance().getConnection();
-			String sql = "SELECT amr_id,amr_request,amr_requestee_id,amr_requester_id,amr_am_id WHERE amr_a_id = ?";
+			String sql = "SELECT amr_id,amr_request,amr_requestee_id,amr_requester_id,amr_am_id FROM APPLICATION_MATERIAL_REQUEST WHERE amr_a_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ps.setInt(1, app.getApplicationID());
@@ -98,6 +98,31 @@ public class RequestDaoImpl implements RequestDao {
 	@Override
 	public ArrayList<MaterialRequest> getUserRequests(ReimbursementUser requestee) {
 		// TODO Auto-generated method stub
+		ArrayList<MaterialRequest> reqs = new ArrayList<>();
+		try {
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "SELECT amr_id,amr_request,amr_a_id,amr_requester_id,amr_am_id FROM APPLICATION_MATERIAL_REQUEST WHERE amr_requestee_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			ps.setInt(1, requestee.getUserID());
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				MaterialRequest req = new MaterialRequest();
+				req.setAppID(rs.getInt("amr_a_id"));
+				req.setMaterialID(rs.getInt("amr_am_id"));
+				req.setRequest(rs.getString("amr_request"));
+				req.setRequesteeID(requestee.getUserID());
+				req.setRequesterID(rs.getInt("amr_requester_ID"));
+				req.setRequestID(rs.getInt("amr_id"));
+				reqs.add(req);
+			}
+			conn.close();
+			return reqs;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
