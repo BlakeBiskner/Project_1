@@ -44,7 +44,10 @@ public class ApprovalController {
 		 * We check if it is a dept head first before direct supervisor so that we an
 		 * skip direct supervisor approval if the direct supervisor is the department head.
 		 */
-		if(applicant.getDeptHeadID()==user.getUserID()) {  //check if approver is dept head
+		if(!approved) {
+			app.setStatus("Denied");
+		}
+		else if(applicant.getDeptHeadID()==user.getUserID()) {  //check if approver is dept head
 			app.setStatus("Approved by Department Head");
 			app.setNextApproverID(null);
 		}

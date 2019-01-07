@@ -1,13 +1,18 @@
 package com.revature.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import com.revature.daoImplementation.ApplicationDaoImpl;
 import com.revature.daoImplementation.EventDaoImpl;
 import com.revature.models.Application;
+import com.revature.models.ApplicationMaterial;
 import com.revature.models.Event;
 import com.revature.models.EventGradeFormat;
 import com.revature.models.EventType;
@@ -17,6 +22,24 @@ public class ApplicationController {
 	
 	public static String Apply(HttpServletRequest request) {
 		System.out.println("in Application Controller");
+		Part fileField;
+		try {
+			fileField = request.getPart("eventRelatedFiles");
+			if(fileField!=null) {
+				String fileName = fileField.getSubmittedFileName();
+				ApplicationMaterial material = new ApplicationMaterial();
+				material.setFileName(fileName);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		ReimbursementUser user=(ReimbursementUser)request.getSession().getAttribute("User");
 		ArrayList<EventGradeFormat> egf=(ArrayList<EventGradeFormat>)request.getSession().getAttribute("EventGradeFormat");
 		ArrayList<EventType> et=(ArrayList<EventType>)request.getSession().getAttribute("EventType");
@@ -32,6 +55,8 @@ public class ApplicationController {
 		String eventEndDate=request.getParameter("eventEndDate");
 		System.out.println(request.getParameter("eventTimeMissed").getClass());
 		String etm = request.getParameter("eventTimeMissed");
+		
+
 		if(etm != null && !etm.equals("")) {
 		
 			eventTimeMissed = Integer.valueOf(etm);
