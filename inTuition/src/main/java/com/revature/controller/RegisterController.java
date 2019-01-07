@@ -21,9 +21,6 @@ public class RegisterController {
 	
 	public static String Register(HttpServletRequest request) {
 		// Obtain data from form
-		UserDaoImpl userDao = UserDaoImpl.getInstance();  //we need to not make new dao objects all the time
-		
-		
 		System.out.println("in RegisterController");
 		
 		String username=request.getParameter("preUser");
@@ -33,7 +30,7 @@ public class RegisterController {
 		String email=request.getParameter("email");
 		String department=request.getParameter("dept");
 		String supervisor=request.getParameter("supervisor");
-		String job = request.getParameter("job");
+		
 		// Add input validation
 		
 		System.out.println(username);
@@ -43,16 +40,9 @@ public class RegisterController {
 		System.out.println(email);
 		System.out.println(department);
 		System.out.println(supervisor);
-		System.out.println(job);
-		ReimbursementUser user = new ReimbursementUser();
-		user.setUsername(username);
-		user.setPassword(password);
-		user.setEmail(email);
-		user.setDeptID(Integer.valueOf(department));
-		user.setFirstname(firstName);
-		user.setLastname(lastName);
-		user.setDsID(Integer.valueOf(supervisor));
-		user.setJobID(Integer.valueOf(job));
+		
+		UserDaoImpl userDao = UserDaoImpl.getInstance();  //we need to not make new dao objects all the time
+		ReimbursementUser user = new ReimbursementUser(username,password,firstName, lastName, email,department,supervisor);
 		
 		String hashedpw = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashedpw);

@@ -45,12 +45,16 @@ function homeFunction(xhr){
 	// Split up JSON 
 	let user=userInfo.user;
 	let userApps=userInfo.userApps;
+	let reviewApps=userInfo.reviewApps;
+	let reviewAppUsers=userInfo.reviewAppUsers;
 	// Persist data in browser for curresnt session (ie will clear when browser tab closes)
 	// Check browser support
 	if(typeof(Storage)!="undefined"){ // Typeof returns type of object
 		console.log("Storage supported");
 		localStorage.setItem("User",JSON.stringify(user)); // Store name value pair in browser storage with JSON of user
 		localStorage.setItem("UserApps",JSON.stringify(userApps));
+		localStorage.setItem("ReviewApps",JSON.stringify(reviewApps));
+		localStorage.setItem("ReviewAppUsers",JSON.stringify(reviewAppUsers));
 	} else{
 		console.log("Storage not supported");
 	}
@@ -66,5 +70,10 @@ function homeFunction(xhr){
 	if(userApps.length>0){
 		document.getElementById("currAppBadge").style.display="inline";
 		document.getElementById("currAppBadge").innerHTML=userApps.length;
+	}
+	if(reviewApps.length>0){
+		console.log(reviewApps);
+		document.getElementById("currAppReviewBadge").style.display="inline";
+		document.getElementById("currAppReviewBadge").innerHTML=reviewApps.length;
 	}
 }

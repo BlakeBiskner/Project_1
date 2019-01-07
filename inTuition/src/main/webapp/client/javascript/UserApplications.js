@@ -42,5 +42,7 @@ window.onload=function(){
         // Clear data for next user
         localStorage.removeItem("User");
         localStorage.removeItem("UserApps");
+        localStorage.removeItem("ReviewApps");
+        localStorage.removeItem("ReviewAppUsers");
     }
 }

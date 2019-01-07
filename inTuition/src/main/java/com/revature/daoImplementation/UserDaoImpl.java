@@ -328,7 +328,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public ReimbursementUser getApplicant(Application app) {
 		// TODO Auto-generated method stub
-try {
+		try {
 			
 			
 			conn = ConnFactory.getInstance().getConnection();

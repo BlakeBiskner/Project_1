@@ -38,6 +38,12 @@ public class RequestHelper {
 		case (BASE_URI+"WelcomeJSON.do"):
 			System.out.println("In Welcome.do");
 			return WelcomeController.welcomeJSON(request, response);
+		case (BASE_URI + "Approval.do"):
+			System.out.println("In approval.do");
+			return ApprovalController.approve(request, response,true);
+		case (BASE_URI + "Deny.do"):
+			System.out.println("In deny.do");
+			return ApprovalController.approve(request, response,false);
 		default:
 			return DEFAULT_URI;
 		}

@@ -417,5 +417,81 @@ public class ApplicationDaoImpl implements ApplicationDao {
 		}
 		return null;
 	}
-	
+	public Application getApplication(int a_id) {
+		try {
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "SELECT "
+					+ "user_id,"
+					+ "e_id,"
+					+ "e_name, "
+					+ "ep_cost, "
+					+ "e_date, "
+					+ "e_enddate, "
+					+ "e_passing_grade,"
+					+ "egf_format,"
+					+ "egf_description,"
+					+ "egf_id, "
+					+ "et_id," 
+					+ "reimbursement_coverage,"
+					+ "et_desc," 
+					+ "a_id,"
+					+ "comments,"
+					+ "a_date,"
+					+ "reimbursement_amount,"
+					+ "ep_id,"
+					+ "ep_grade,"
+					+ "ep_desc, "
+					+ "status,"
+					+ "status_id,"
+					+ "next_approver,"
+					+ "passed "
+					+ "FROM application_view WHERE a_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, a_id);
+			ResultSet rs = ps.executeQuery();
+			Application app = null;
+			
+			if (rs.next()) {
+				
+				app = new Application();
+				app.setEventID(rs.getInt("e_id"));
+				app.setEventTitle(rs.getString("e_name"));
+				app.setCost(rs.getDouble("ep_cost"));
+				app.setEventStartDate(rs.getTimestamp("e_date"));
+				app.setEventEndDate(rs.getTimestamp("e_enddate"));
+				app.setPassingGrade(rs.getString("e_passing_grade"));
+				app.setGradeFormat(rs.getString("egf_format"));
+				app.setEventGradeFormatDesc(rs.getString("egf_description"));
+				app.setEventGradeFormatID(rs.getInt("egf_id"));
+				app.setEventTypeID(rs.getInt("et_id"));
+				app.setTypeCoverage(rs.getInt("reimbursement_coverage"));
+				app.setTypeDescription(rs.getString("et_desc"));
+				app.setApplicationID(rs.getInt("a_id"));
+				app.setJustification(rs.getString("comments"));
+				app.setDate(rs.getTimestamp("a_date"));
+				app.setReimbursementAmount(rs.getDouble("reimbursement_amount"));
+				app.setParticipationID(rs.getInt("ep_id"));
+				app.setGrade(rs.getString("ep_grade"));
+				app.setGradeComments(rs.getString("ep_desc"));
+				app.setStatus(rs.getString("status"));
+				app.setStatusID(rs.getInt("status_id"));
+				app.setNextApproverID(rs.getInt("next_approver"));
+				app.setUserID(rs.getInt("user_id"));
+				//app.setPassed(rs.getString(23).equals("Y"));
+				String pf = rs.getString("passed");
+				if(pf!=null) {
+					app.setPassed(pf.equals("Y"));
+				}
+			}
+			conn.close();
+			return app;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return null;
+	}
 }
