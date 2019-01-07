@@ -33,7 +33,7 @@ public class RequestHelper {
 			System.out.println("in NewFormJSON.do case");
 			return FormController.NewFormJSON(request,response);
 		case (BASE_URI+"Apply.do"):
-			System.out.println("in Apply/do case");
+			System.out.println("in Apply.do case");
 			return ApplicationController.Apply(request);
 		default:
 			return DEFAULT_URI;

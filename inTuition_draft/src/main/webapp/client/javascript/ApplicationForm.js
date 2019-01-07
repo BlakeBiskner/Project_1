@@ -71,6 +71,8 @@ function formFunction(xhr){
     // Clear Storage
     localStorage.removeItem("User");
     localStorage.removeItem("UserApps");
+    localStorage.removeItem("ReviewApps");
+    localStorage.removeItem("ReviewAppUsers");
 }
 
 // Handler Functions
