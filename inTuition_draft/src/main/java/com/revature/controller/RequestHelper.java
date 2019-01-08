@@ -33,8 +33,17 @@ public class RequestHelper {
 			System.out.println("in NewFormJSON.do case");
 			return FormController.NewFormJSON(request,response);
 		case (BASE_URI+"Apply.do"):
-			System.out.println("in Apply.do case");
+			System.out.println("in Apply/do case");
 			return ApplicationController.Apply(request);
+		case (BASE_URI+"WelcomeJSON.do"):
+			System.out.println("In Welcome.do");
+			return WelcomeController.welcomeJSON(request, response);
+		case (BASE_URI + "Approval.do"):
+			System.out.println("In approval.do");
+			return ApprovalController.approve(request, response,true);
+		case (BASE_URI + "Deny.do"):
+			System.out.println("In deny.do");
+			return ApprovalController.approve(request, response,false);
 		default:
 			return DEFAULT_URI;
 		}

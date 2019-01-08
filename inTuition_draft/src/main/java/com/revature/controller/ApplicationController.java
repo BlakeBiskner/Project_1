@@ -1,13 +1,18 @@
 package com.revature.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import com.revature.daoImplementation.ApplicationDaoImpl;
 import com.revature.daoImplementation.EventDaoImpl;
 import com.revature.models.Application;
+import com.revature.models.ApplicationMaterial;
 import com.revature.models.Event;
 import com.revature.models.EventGradeFormat;
 import com.revature.models.EventType;
@@ -17,29 +22,56 @@ public class ApplicationController {
 	
 	public static String Apply(HttpServletRequest request) {
 		System.out.println("in Application Controller");
+//		Part fileField;
+//		try {
+//			fileField = request.getPart("eventRelatedFiles");
+//			if(fileField!=null) {
+//				String fileName = fileField.getSubmittedFileName();
+//				ApplicationMaterial material = new ApplicationMaterial();
+//				material.setFileName(fileName);
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ServletException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		
+		
 		ReimbursementUser user=(ReimbursementUser)request.getSession().getAttribute("User");
 		ArrayList<EventGradeFormat> egf=(ArrayList<EventGradeFormat>)request.getSession().getAttribute("EventGradeFormat");
 		ArrayList<EventType> et=(ArrayList<EventType>)request.getSession().getAttribute("EventType");
 		EventDaoImpl eventDao=EventDaoImpl.getInstance();
 		Event event=new Event();
-		
-		
+		Timestamp endDate = null;
+		Integer eventTimeMissed = null;
 		int userId=user.getUserID();
 		String eventName=request.getParameter("eventName");
 		String eventType=request.getParameter("eventType");
 		Double eventCost=Double.valueOf(request.getParameter("eventCost"));
 		String eventStartDate=request.getParameter("eventStartDate");
 		String eventEndDate=request.getParameter("eventEndDate");
-		int eventTimeMissed=Integer.valueOf(request.getParameter("eventTimeMissed"));
+		System.out.println(request.getParameter("eventTimeMissed").getClass());
+		String etm = request.getParameter("eventTimeMissed");
+		
+
+		if(etm != null && !etm.equals("")) {
+		
+			eventTimeMissed = Integer.valueOf(etm);
+		}
 		String eventJustification=request.getParameter("eventJustification");
 		String eventGradeFormat=request.getParameter("eventGradeFormat");
 		String eventGradePassing=request.getParameter("eventGradePassing");
 		
-		int egfId=0;
-		int etId=0;
 		
 		String timeStamp=(eventStartDate+" 00:00:00");
 		Timestamp date=Timestamp.valueOf(timeStamp);
+		if(eventEndDate != null && !eventEndDate.equals("")) {
+			timeStamp = (eventEndDate+" 00:00:00");
+			endDate = Timestamp.valueOf(timeStamp);
+		}
 		
 		
 		// Set application fields
@@ -50,47 +82,46 @@ public class ApplicationController {
 		
 		for(EventGradeFormat x:egf) {
 			if(x.getFormat().equals(eventGradeFormat)) {
-				egfId=x.getId();
 				app.setEventGradeFormatID(x.getId());
 			}
 		}
 		
 		for(EventType x:et) {
 			if(x.getDesc().equals(eventType)) {
-				etId=x.getId();
 				app.setEventTypeID(x.getId());
+				app.setTypeCoverage(x.getCoverage());
 			}
 		}
 		app.setEventTitle(eventName);
 		app.setCost(eventCost);
 		
-		
-		app.setTimeMissed(eventTimeMissed);
+		if(eventTimeMissed != null) {
+			app.setTimeMissed(eventTimeMissed);	
+		}
 		app.setJustification(eventJustification);
 		app.setPassingGrade(eventGradePassing);
 		app.setEventStartDate(date);
-		System.out.println(eventName);
-		System.out.println(eventType);
-		System.out.println(eventCost);
-		System.out.println(eventStartDate);
-		System.out.println(eventEndDate);
-		System.out.println(eventTimeMissed);
-		System.out.println(eventJustification);
-		System.out.println(eventGradeFormat);
-		System.out.println(eventGradePassing);
-		System.out.println(date);
+		app.setEventEndDate(endDate);
+//		System.out.println(eventName);
+//		System.out.println(eventType);
+//		System.out.println(eventCost);
+//		System.out.println(eventStartDate);
+//		System.out.println(eventEndDate);
+//		System.out.println(eventTimeMissed);
+//		System.out.println(eventJustification);
+//		System.out.println(eventGradeFormat);
+//		System.out.println(eventGradePassing);
+//		System.out.println(date);
+//		
 		
-		event.setPassingGrade(eventGradePassing);
-		event.setTitle(eventName);
-		event.setTypeDescription(eventType);
-		event.setStartDate(date);
-		event.setEventTypeID(etId);
-		event.setEventGradeFormatID(egfId);
 		
-		event=eventDao.insertEvent(event);
-		System.out.println(event);
+
+		double cost = eventCost;
+		double coverage = (double)(app.getTypeCoverage());
+		double reimbursementAmount = cost * (coverage/100);
+		app.setReimbursementAmount(reimbursementAmount);
 		
-		app.setEventID(event.getId());
+		
 		
 		ApplicationDaoImpl appDao=ApplicationDaoImpl.getInstance();
 		app=appDao.insertApplication(app);

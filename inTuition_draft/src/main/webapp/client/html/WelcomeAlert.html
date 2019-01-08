@@ -50,37 +50,33 @@
                 <h1>welcome to trms</h1>
             </div>
         </div>
+        
+        <!------------------------------------------------------->
 
-
-        <!------------------------------------------------------>
-        <!-- Images -->
-        <div class="container-fluid" align="center">
-                    
-        <!------------------------------------------------------>
         <!-- Alert -->
-            <div class="row">
-                <div class="col">
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <strong>Login Failure</strong> Username or Password is Incorrect
-                    </div>
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Login Failure</strong> Username or Password is Incorrect
                 </div>
             </div>
-            <!-- Change width later to something more responsive -->
-            <div class="row">
-                <div class="col" align="center">
-                    <img src="../images/clipboard.svg" alt="clipboard" width="50%">
-                    <h1>apply</h1>
-                </div>
-                <div class="col" align="center">
-                    <img src="../images/pencil.svg" alt="pencil" width="50%">
-                    <h1>learn</h1>
-                </div>
-                <div class="col" align="center">
-                    <img src="../images/money.svg" alt="money" width="50%">
-                    <h1>save</h1>
-                </div>
+        </div>
+        <!-- Change width later to something more responsive -->
+        <div class="row">
+            <div class="col" align="center">
+                <img src="../images/clipboard.svg" alt="clipboard" width="50%">
+                <h1>apply</h1>
             </div>
+            <div class="col" align="center">
+                <img src="../images/pencil.svg" alt="pencil" width="50%">
+                <h1>learn</h1>
+            </div>
+            <div class="col" align="center">
+                <img src="../images/money.svg" alt="money" width="50%">
+                <h1>save</h1>
+            </div>
+        </div>
 
         <!--------------------------------------------------------->
         <!-- Login Modal -->
@@ -107,7 +103,7 @@
                             <div class="form-group">
                                 <!-- Ensures proper margins -->
                                 <label for="user">username</label>
-                                <input type="text" class="form-control" name="user" id="user" required>
+                                <input type="text" class="form-control" name="user" id="user" required> <!-- Required ensures user inputs data before submission -->
                                 <!-- id and label are same and form control name is referenced in controllers-->
                             </div>
                             <div class="form-group">
@@ -115,7 +111,7 @@
                                 <input type="password" class="form-control" name="pass" id="pass" required>
                             </div>
                             <div class="form-group">
-                                <input type="submit" class="form-control btn-primary" id="LoginButton">
+                                <input type="submit" class="form-control btn-primary" id="LoginButton"> <!-- Input type submit denotes a button for submitting form data to a form handler (a form handler is a server page for handling input data) -->
                             </div>
                         </form>
                     </div>
@@ -176,20 +172,19 @@
                                 <label for="dept">department (select one)</label>
                                 <select class="form-control" name="dept" id="dept">
                                     <!-- Select class is form control for select list (as opposed to text email etc) -->
-                                    <option>writing</option>
-                                    <option>art</option>
-                                    <option>editing</option>
-                                    <option>production</option>
-                                    <option>marketing</option>
-                                    <option>benefits</option>
-                                    <option>administration</option>
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="job">job (select one)</label>
+                                <select class="form-control" name="job" id="job">
+                                    <!-- Select class is form control for select list (as opposed to text email etc) -->
+
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="supervisor">direct supervisor</label>
                                 <select class="form-control" name="supervisor" id="supervisor">
-                                    <option>albert (writing)</option>
-                                    <option>benjamin (writing)</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -211,6 +206,7 @@
         </div>
     </div>
     <!------------------------------------------------------>
+    <script src="../javascript/Welcome.js"></script>
     <!-- Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

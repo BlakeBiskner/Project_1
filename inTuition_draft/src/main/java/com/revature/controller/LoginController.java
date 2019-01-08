@@ -1,6 +1,7 @@
 package com.revature.controller;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,6 +24,7 @@ public class LoginController {
 	private static final String LOGIN_FAILURE="/client/html/WelcomeAlert.html";
 	
 	public static String Login(HttpServletRequest request) {
+		
 		String username=request.getParameter("user");
 		String password=request.getParameter("pass");
 		
@@ -52,6 +54,7 @@ public class LoginController {
 				ArrayList<ReimbursementUser> reviewUsers=new ArrayList<ReimbursementUser>();
 				for(Application app:reviewApps) {
 					ReimbursementUser user=userDao.getApplicant(app);
+					System.out.println(user);
 					reviewUsers.add(user);
 				}
 				System.out.println("User to review\n");
