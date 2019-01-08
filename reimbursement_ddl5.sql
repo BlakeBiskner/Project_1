@@ -177,7 +177,7 @@ SELECT SUM(reimbursement_amount)INTO yearly_available_reimbursement FROM
 left join
 (SELECT reimbursement_amount,user_id,comments, extract(year from a_date) app_year 
 FROM APPLICATION INNER JOIN APPLICATION_STATUS ON status=as_id
-WHERE user_id = usr_id AND as_status != 'Denied')b
+WHERE user_id = usr_id AND as_status = 'Approved')b
 ON a.cur_year = b.app_year GROUP BY user_id;
 yearly_available_reimbursement := 1000 - yearly_available_reimbursement;
 IF yearly_available_reimbursement IS NULL THEN
@@ -216,6 +216,10 @@ LEFT JOIN
 INNER JOIN USER_JOB_TYPE ON usr_j_type = ujt_id WHERE ujt_type ='Department Head') dept_head
 on old_user_view.dept_id = dept_head.dept_id_2);
 
+
+
+
+
 SELECT * FROM USER_VIEW;
 
 CREATE OR REPLACE VIEW event_view AS
@@ -240,7 +244,7 @@ CREATE OR REPLACE VIEW application_view AS
 SELECT e_id, e_name, ep_cost, e_date, e_enddate, e_passing_grade,egf_format, egf_description,egf_id, et_id,
 reimbursement_coverage,et_desc,
 a_id,user_id,comments,a_date,reimbursement_amount,ep_id,ep_grade,ep_desc,
-as_status status,as_id status_id, next_approver, passed
+as_status status,as_id status_id, next_approver, passed,time_missed
 FROM
 EVENT INNER JOIN EVENT_TYPE ON e_type = et_id INNER JOIN EVENT_GRADE_FORMAT ON e_egf_id=egf_id
 INNER JOIN EVENT_PARTICIPATION ON event_id=e_id INNER JOIN APPLICATION ON ep_id = event_participation
