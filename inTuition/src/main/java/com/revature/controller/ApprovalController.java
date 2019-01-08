@@ -74,9 +74,8 @@ public class ApprovalController {
 			//everything went according 
 		}
 		System.out.println(approval);
-		System.out.println("bad stuff");
 		
 		
-		return "/Client/html/Home.html";
+		return "/client/html/Home.html";
 	}
 }
