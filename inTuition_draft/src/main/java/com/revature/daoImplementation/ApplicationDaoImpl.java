@@ -372,7 +372,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
 					+ "status_id,"
 					+ "next_approver,"
 					+ "passed "
-					+ "FROM application_view WHERE status = 'Approved by Department Head' ";
+					+ "FROM application_view WHERE status = 'Pending Approval By Benefits Coordinator' ";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

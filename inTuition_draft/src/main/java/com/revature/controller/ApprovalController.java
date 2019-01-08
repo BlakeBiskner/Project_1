@@ -32,7 +32,7 @@ public class ApprovalController {
 		}
 		
 		
-		int appID = Integer.parseInt(request.getParameter("approve"));
+		int appID = Integer.parseInt(request.getParameter("approveId"));
 		app = appDao.getApplication(appID);
 		System.out.println(app);
 		//app.setApplicationID(applicationID);
@@ -48,12 +48,12 @@ public class ApprovalController {
 			app.setStatus("Denied");
 		}
 		else if(applicant.getDeptHeadID()==user.getUserID()) {  //check if approver is dept head
-			app.setStatus("Approved by Department Head");
+			app.setStatus("Pending Approval By Benefits Coordinator");
 			app.setNextApproverID(null);
 		}
 		else if(applicant.getDsID()==user.getUserID()) {
 			//The application is being approved as a direct supervisor
-			app.setStatus("Approved by Direct Supervisor");
+			app.setStatus("Pending Approval By Department Head");
 			app.setNextApproverID(applicant.getDeptHeadID());
 		}
 		else if(user.getJob().equals("Benefits Coordinator")) {

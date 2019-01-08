@@ -20,9 +20,9 @@ public class Application {
 	public Application() {
 		if (statusTypes.size()==0) {
 			statusTypes.put("Denied",0);
-			statusTypes.put("Submitted",1);
-			statusTypes.put("Approved by Direct Supervisor", 2);
-			statusTypes.put("Approved by Department Head",3);
+			statusTypes.put("Pending Approval By Direct Supervisor",1);
+			statusTypes.put("Pending Approval By Department Head", 2);
+			statusTypes.put("Pending Approval By Benefits Coordinator",3);
 			statusTypes.put("Approved",4);
 		}
 	}

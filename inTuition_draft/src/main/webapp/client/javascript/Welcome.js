@@ -39,6 +39,8 @@ function loadDoc(url,cFunction){
 }
 
 function welcomeFunction(xhr){
+	// Clear session
+	
 	console.log("in welcomeFunction xhr");
 	let regInfo=JSON.parse(xhr.responseText);
 	console.log(regInfo);
