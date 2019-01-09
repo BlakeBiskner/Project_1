@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,22 +23,27 @@ public class ApplicationController {
 	
 	public static String Apply(HttpServletRequest request) {
 		System.out.println("in Application Controller");
-		Part fileField;
-		try {
-			fileField = request.getPart("eventRelatedFiles");
-			if(fileField!=null) {
-				String fileName = fileField.getSubmittedFileName();
-				ApplicationMaterial material = new ApplicationMaterial();
-				material.setFileName(fileName);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+//		Part fileField;
+//		try {
+//			fileField = request.getPart("eventRelatedFiles");
+//			if(fileField!=null) {
+//				String fileName = fileField.getSubmittedFileName();
+//				ApplicationMaterial material = new ApplicationMaterial();
+//				material.setFileName(fileName);
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ServletException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		Enumeration<String> paramNames = request.getParameterNames();
+        while(paramNames.hasMoreElements()) {
+            String parName = paramNames.nextElement();
+            System.out.println(parName);
+            System.out.println(request.getParameter(parName));
+        }
 		
 		
 		ReimbursementUser user=(ReimbursementUser)request.getSession().getAttribute("User");

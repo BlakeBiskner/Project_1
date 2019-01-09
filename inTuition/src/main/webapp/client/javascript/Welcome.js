@@ -10,7 +10,7 @@ window.onload= function(){
 
 	///// Callback Functions /////
 	// Home Screen
-	loadDoc("http://localhost:8080/inTuition/client/html/WelcomeJSON.do",welcomeFunction);
+	loadDoc("http://localhost:8080/inTuition_draft/client/html/WelcomeJSON.do",welcomeFunction);
 
 	console.log("completed window.onload");
 }
@@ -39,6 +39,8 @@ function loadDoc(url,cFunction){
 }
 
 function welcomeFunction(xhr){
+	// Clear session
+	
 	console.log("in welcomeFunction xhr");
 	let regInfo=JSON.parse(xhr.responseText);
 	console.log(regInfo);
@@ -75,6 +77,13 @@ function welcomeFunction(xhr){
 	}
 	console.log(txt);
 	document.getElementById("dept").innerHTML=txt;
-
 	
+	// Clear Session
+	if(typeof(Storage)!="undefined"){
+		console.log("Storage Supported");
+		localStorage.removeItem("User");
+		localStorage.removeItem("UserApps");
+		localStorage.removeItem("ReviewApps");
+		localStorage.removeItem("ReviewAppUsers");
+	}
 }

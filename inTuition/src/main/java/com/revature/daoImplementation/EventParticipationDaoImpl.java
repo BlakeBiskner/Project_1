@@ -147,5 +147,48 @@ public class EventParticipationDaoImpl implements EventParticipationDao {
 		}
 		return null;
 	}
+	@Override
+	public Application updateEventParticipation(Application app,Connection con) {
+		String passed = null;
+		if(app.getPassed()!=null) {
+			if(app.getPassed()) {
+				passed = "Y";
+			}
+			else {
+				passed = "N";
+			}	
+		}		
+		// TODO Auto-generated method stub
+		try {
+			
+			conn = con;
+			String sql = "UPDATE EVENT_PARTICIPATION SET ep_grade = ?, ep_desc = ?,ep_cost = ? WHERE ep_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, app.getGrade());
+			if(app.getGrade()==null) {
+				ps.setNull(1, 0);
+			}
+			else {
+				ps.setString(1, app.getGrade());
+			}
+			if(app.getGradeComments()==null) {
+				ps.setNull(2, 0);
+			}
+			else {
+				ps.setString(2, app.getGradeComments());
+			}
+			ps.setDouble(3, app.getCost());
+			ps.setInt(4, app.getParticipationID());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return app;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }

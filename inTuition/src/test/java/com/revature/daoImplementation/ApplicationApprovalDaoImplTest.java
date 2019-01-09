@@ -95,7 +95,7 @@ class ApplicationApprovalDaoImplTest {
 		else if(user.getJob().equals("Benefits Coordinator")) {
 			//The app is being approved as a benco
 			app.setStatus("Approved");
-			app.setReimbursementAmount(99);
+			app.setReimbursementAmount((Double.valueOf(22)));
 		}
 		
 		approval = approvalDao.insertApproval(approval, app);

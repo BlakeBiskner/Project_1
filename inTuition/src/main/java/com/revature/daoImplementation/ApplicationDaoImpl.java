@@ -184,6 +184,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
 		}	
 		
 		try {			
+			conn.setAutoCommit(false);
 //			String sql = "EXECUTE update_application("
 //					+ "new_a_id => ?,"
 //					+ "new_ep_id => ?,"
@@ -194,19 +195,28 @@ public class ApplicationDaoImpl implements ApplicationDao {
 //					+ "new_ep_grade => ?,"
 //					+ "new_ep_desc => ?,"
 //					+ "new_passed => ?)";
-			String sql = "{call update_application(?,?,?,?,?,?,?,?,?)}";
-			CallableStatement cs = conn.prepareCall(sql);
-			cs.setInt(1, app.getApplicationID());
-			cs.setInt(2, app.getParticipationID());
-			cs.setDouble(3, app.getReimbursementAmount());
-			cs.setInt(4, app.getNextApproverID());
-			cs.setInt(5, app.getStatusID());
-			cs.setDouble(6, app.getCost());
-			cs.setString(7, app.getGrade());
-			cs.setString(8, app.getGradeComments());
-			cs.setString(9, passed);
+//			String sql = "{call update_application(?,?,?,?,?,?,?,?,?)}";
+			String sql = "UPDATE APPLICATION SET reimbursement_amount = ?, next_approver = ?, status = ? WHERE a_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(4, app.getApplicationID());
+			//cs.setInt(2, app.getParticipationID());
+			ps.setDouble(1, app.getReimbursementAmount());
+			if(app.getNextApproverID()==null || app.getNextApproverID()==0) {
+				ps.setNull(2, 0);
+			}
+			else {
+				ps.setInt(2, app.getNextApproverID());
+					
+			}
+			ps.setInt(3, app.getStatusID());
 			
-			cs.execute();
+			app = EventParticipationDaoImpl.getInstance().updateEventParticipation(app, conn);
+			if(app==null) {
+				conn.close();
+				return null;
+			}
+			ps.execute();
+			conn.commit();
 			conn.close();
 			return app;
 		} catch (SQLException e) {
@@ -227,7 +237,12 @@ public class ApplicationDaoImpl implements ApplicationDao {
 			String sql = "UPDATE APPLICATION SET reimbursement_amount = ?, next_approver = ?, status = ? "
 					+ "WHERE a_id = ?";
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setDouble(1, app.getReimbursementAmount());
+			if(app.getReimbursementAmount()==null || app.getReimbursementAmount()==0) {
+				ps.setNull(1, 0);
+			}
+			else {
+				ps.setDouble(1, app.getReimbursementAmount());
+			}
 			if(app.getNextApproverID()==null || app.getNextApproverID() == 0) {
 				ps.setNull(2, 0);
 			}
@@ -372,7 +387,7 @@ public class ApplicationDaoImpl implements ApplicationDao {
 					+ "status_id,"
 					+ "next_approver,"
 					+ "passed "
-					+ "FROM application_view WHERE status = 'Approved by Department Head' ";
+					+ "FROM application_view WHERE status = 'Pending Approval by Benefits Coordinator' ";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

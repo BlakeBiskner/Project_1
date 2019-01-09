@@ -40,6 +40,7 @@ public class UserDaoImpl implements UserDao {
 					+ " VALUES(NULL,?,?,?,?,?,?,?,?) RETURNING usr_id INTO ?;  END;";
 //			String sql = "INSERT INTO USR (usr_id,usr_firstname,usr_lastname,usr_username,usr_email,usr_direct_supervisor,usr_department,usr_type,usr_password) VALUES(NULL,?,?,?,?,?,?,?,?)";
 			// PreparedStatement ps = conn.prepareStatement(sql);
+			System.out.println(user);
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setString(1, user.getFirstname());
 			cs.setString(2, user.getLastname());

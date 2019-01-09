@@ -41,8 +41,8 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 		conn = ConnFactory.getInstance().getConnection();
 
 		try {
-			File blob = material.getFile();
-			FileInputStream in = new FileInputStream(blob);
+//			File blob = material.getFile();
+//			FileInputStream in = new FileInputStream(blob);
 
 			
 			String sql = "BEGIN INSERT INTO APPLICATION_MATERIAL (am_id,am_a_id,am_description,am_material,am_filename)"
@@ -51,9 +51,10 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 			CallableStatement cs = conn.prepareCall(sql);
 			cs.setInt(1, material.getAppID());
 			cs.setString(2, material.getDesc());
-			cs.setBinaryStream(3, in, (int)blob.length()); 
+//			cs.setBinaryStream(3, in, (int)blob.length()); 
+			cs.setBlob(3, material.getIs());
 			cs.setString(4, material.getFileName());
-			cs.registerOutParameter(4, OracleTypes.NUMBER); // specifies the index created by the trigger that
+			cs.registerOutParameter(5, OracleTypes.NUMBER); // specifies the index created by the trigger that
 			cs.execute();
 			int id = cs.getInt(5);
 
@@ -68,9 +69,6 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 			}
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -93,18 +91,19 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 				am.setAppID(rs.getInt("am_a_id"));
 				am.setDesc(rs.getString("am_description"));
 				am.setFileName(rs.getString("am_filename"));
-				File file = new File("temp");
+				//File file = new File("temp");
 				Blob blob = rs.getBlob("am_material");//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
 				InputStream in = blob.getBinaryStream();
-				OutputStream out = new FileOutputStream(file);
-				byte[] buff = new byte[4096];  // how much of the blob to read/write at a time
-				int len = 0;
-
-				while ((len = in.read(buff)) != -1) {
-				    out.write(buff, 0, len);
-				}
-				
-				am.setFile(file);
+				//OutputStream out = new FileOutputStream(file);
+//				byte[] buff = new byte[4096];  // how much of the blob to read/write at a time
+//				int len = 0;
+//
+//				while ((len = in.read(buff)) != -1) {
+//				    out.write(buff, 0, len);
+//				}
+//				
+//				am.setFile(file);
+				am.setIs(in);
 				ams.add(am);
 			}
 			conn.close();
@@ -112,13 +111,7 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 

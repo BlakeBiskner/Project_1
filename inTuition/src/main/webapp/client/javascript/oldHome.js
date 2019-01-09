@@ -1,29 +1,66 @@
-/*
- * Application JavaScript
+/* 
+ * AJAX JavaScript
  *
- * author Blake Bisknre
+ * Blake Biskner
  * version 2.0
  */
 
-window.onload=function(){
-    console.log("in window.onload");
-    loadDoc("http://localhost:8080/inTuition_draft/client/html/NewFormJSON.do", formFunction);
+window.onload= function(){
+	console.log("in window.onload start");
+
+	///// Callback Functions /////
+	// Home Screen
+	loadDoc("http://localhost:8080/inTuition_draft/client/html/HomeJSON.do",homeFunction);
+	// Application Form
+	loadDoc("http://localhost:8080/inTuition_draft/client/html/NewFormJSON.do",formFunction);
+	// My Applications
+
+	console.log("completed window.onload");
 }
 
+
+
 function loadDoc(url,cFunction){
-    // 1. Create xhr
-    let xhr=new XMLHttpRequest();
-    //2. Define onreadystatechange
-    xhr.onreadystatechange=function(){
-        console.log("in onreadystatechange");
-        if((xhr.readyState==4)&&(xhr.status==200)){
-            cFunction(xhr);
-        }
-    }
-    // 3. Open request
-    xhr.open("GET",url,true);
-    //4. Sending request
-    xhr.send();
+	// 1. Create xhr object
+	console.log("Creating xhr");
+	let xhr=new XMLHttpRequest();
+	//2. Define onreadystatechange function
+	xhr.onreadystatechange=function() {
+		console.log("in onreadystatechange");
+		if((xhr.readyState==4)&&(xhr.status==200)){
+			 console.log("in if of onreadystatechange (ie status==400 readyState==2)");
+			 cFunction(xhr);
+		}
+	}
+		// 3. Open request
+		console.log("Opening xhr");
+		xhr.open("GET",url,true);
+		//4. Sending Request
+		console.log("Sending xhr");
+		xhr.send();
+		console.log("xhr sent");
+}
+
+function homeFunction(xhr){
+	console.log("in homeFunction xhr");
+	let userInfo=JSON.parse(xhr.responseText);
+	console.log(userInfo);
+	// Split up JSON 
+	let user=userInfo.user;
+	let userApps=userInfo.userApps;
+	// Display Name
+	document.getElementById("dropdownUser").innerHTML=(user.firstname+" "+user.lastname);
+	// Display Reimbursement
+	document.getElementById("availableReimbursement").innerHTML=(user.yearlyReimbursementRemaining);
+	// Display Alerts
+	if(user.hasUrgentEmail==true){
+		document.getElementById("hiddenEmailAlert").style.display="block"; // Change css to display element
+	}
+	// Display Badges
+	if(userApps.length>0){
+		document.getElementById("currAppBadge").style.display="inline";
+		document.getElementById("currAppBadge").innerHTML=userApps.length;
+	}
 }
 
 function formFunction(xhr){
@@ -33,17 +70,15 @@ function formFunction(xhr){
 
 	// Variable Declaration
 	let typeList=formSession.eventTypes;
-    let gradeList=formSession.eventGradeFormats;
-    if(typeof(Storage)!="undefined"){
-        console.log("Storage supported");
-        var user=JSON.parse(localStorage.getItem("User"));
-    } else{
-        console.log("Storage unsupported");
-    }
+	let gradeList=formSession.eventGradeFormats;
+	let user=formSession.user;
 
-    // Display UserInfo
-    document.getElementById("dropdownUser").innerHTML=(user.firstname+" "+user.lastname);
-    document.getElementById("availableReimbursement").innerHTML=(user.yearlyReimbursementRemaining);
+	// Display Name
+	// Displays automatically when last function runs so change tuition reimbursement innerhtml id to match
+	document.getElementById("dropdownUser").innerHTML=(user.firstname+" "+user.lastname);
+	// Display name
+	// document.getElementById("dopdownUser").innerHTML=(formSession.user.firstName+" "+formSession.user.lastName);
+	// Display Remaining Reimbursement
 
 	// Display Type of Event Dropdown
 	var txt="";
@@ -66,13 +101,7 @@ function formFunction(xhr){
 		console.log(gradeList[i]);
 		gradeTxt+="<option>"+gradeList[i].format+"</option>";
 	}
-    document.getElementById("eventGradeFormat").innerHTML=gradeTxt;
-    
-    // Clear Storage
-    localStorage.removeItem("User");
-    localStorage.removeItem("UserApps");
-    localStorage.removeItem("ReviewApps");
-    localStorage.removeItem("ReviewAppUsers");
+	document.getElementById("eventGradeFormat").innerHTML=gradeTxt;
 }
 
 // Handler Functions
@@ -103,6 +132,10 @@ function displayGrades(gradeList){
 			document.getElementById("eventGradeDescription").placeholder=(gradeList[i].desc);
 		}
 	}
+}
+
+function diplayUserApps(userApps){
+	console.log("inUserApps");
 }
 
 function displayCostInCart(){

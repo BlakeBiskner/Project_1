@@ -87,7 +87,12 @@ INSERT INTO APPLICATION_STATUS VALUES(3,'Approved by Department Head');
 
 INSERT INTO APPLICATION_STATUS VALUES(4,'Approved');
 
+UPDATE APPLICATION_STATUS SET AS_STATUS ='Pending Approval by Direct Supervisor' where as_id=1;
 
+UPDATE APPLICATION_STATUS SET AS_STATUS ='Pending Approval by Department Head' where as_id=2;
+
+UPDATE APPLICATION_STATUS SET AS_STATUS ='Pending Approval by Benefits Coordinator' where as_id=3;
 
 COMMIT;
 
+SELECT * FROM USER_JOB_TYPE;

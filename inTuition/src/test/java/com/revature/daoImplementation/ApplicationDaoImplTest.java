@@ -60,9 +60,9 @@ class ApplicationDaoImplTest {
 		System.out.println(app);
 		app.setStatusID(3);
 		app.setGrade("100");
-		app.setGradeComments("WOOT WOOT");
-		app.setReimbursementAmount(300);
-		app.setPassed(true);
+		//app.setGradeComments("WOOT WOOT");
+		app.setReimbursementAmount(Double.valueOf(22));
+		//app.setPassed(true);
 		app = appDao.updateApplication(app);
 		assert(app!=null);
 	}

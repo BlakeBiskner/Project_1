@@ -1,5 +1,7 @@
 package com.revature.daos;
 
+import java.sql.Connection;
+
 import com.revature.models.Application;
 
 public interface EventParticipationDao {
@@ -8,5 +10,7 @@ public interface EventParticipationDao {
 
 	//update
 	public Application updateEventParticipation(Application app);
+
+	public Application updateEventParticipation(Application app, Connection con);
 
 }

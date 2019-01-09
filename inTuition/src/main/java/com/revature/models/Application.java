@@ -7,7 +7,7 @@ import com.revature.exceptions.InvalidInputException;
 
 public class Application {
 	private int applicationID, eventID, userID,participationID;
-	private double reimbursementAmount;
+	private Double reimbursementAmount = null;
 	private String justification,gradeComments,grade = null;
 	private String eventTitle,gradeFormat,passingGrade,typeDescription,gradeTypeDesc,eventGradeFormatDesc,status = null;
 	private double cost;
@@ -20,9 +20,9 @@ public class Application {
 	public Application() {
 		if (statusTypes.size()==0) {
 			statusTypes.put("Denied",0);
-			statusTypes.put("Submitted",1);
-			statusTypes.put("Approved by Direct Supervisor", 2);
-			statusTypes.put("Approved by Department Head",3);
+			statusTypes.put("Pending Approval by Direct Supervisor",1);
+			statusTypes.put("Pending Approval by Department Head", 2);
+			statusTypes.put("Pending Approval by Benefits Coordinator",3);
 			statusTypes.put("Approved",4);
 		}
 	}
@@ -212,10 +212,10 @@ public class Application {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	public double getReimbursementAmount() {
+	public Double getReimbursementAmount() {
 		return reimbursementAmount;
 	}
-	public void setReimbursementAmount(double reimbursementAmount) {
+	public void setReimbursementAmount(Double reimbursementAmount) {
 		this.reimbursementAmount = reimbursementAmount;
 	}
 	public String getJustification() {

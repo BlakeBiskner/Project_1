@@ -10,8 +10,19 @@ public class FormSession{
 	private ArrayList<EventGradeFormat> eventGradeFormats;
 	private ArrayList<Application> reviewApps;
 	private ArrayList<ReimbursementUser> reviewAppUsers;
+	private ArrayList<ApplicationMaterial> mats;
 	
 	
+	
+	public ArrayList<ApplicationMaterial> getMats() {
+		return mats;
+	}
+	public void setMats(ArrayList<ApplicationMaterial> mats) {
+		this.mats = mats;
+	}
+	public void setReviewAppUsers(ArrayList<ReimbursementUser> reviewAppUsers) {
+		this.reviewAppUsers = reviewAppUsers;
+	}
 	public FormSession() {
 		
 	}
