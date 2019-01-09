@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Welcome</title>
+
+    <!-- Bootstrap -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Ensures proper zooming by setting width of page to follow screen width and setting initial zoom level when page first loaded-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="../css/Style.css">
+
+</head>
+
+<body>
+    <!------------------------------------------------------>
+    <!-- Put navbar above container when fixed -->
+    <!-- Navigation Bar -->
+                <nav class="navbar fixed-top navbar-expand-xl bg-info navbar-light">
+                    <!-- Brand -->
+                    <a class="navbar-brand" href="#">tuition</a>
+                    <!-- Collapsible Button -->
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <!-- Connects to div class of collapsibleNavbar -->
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <!-- Navbar Links -->
+                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">success stories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">contact us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+
+        <!------------------------------------------------------>
+        <!-- Jumbotron -->
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container-fluid" align="center">
+                <h1>welcome to trms</h1>
+            </div>
+        </div>
+        
+        <!------------------------------------------------------->
+
+        <!-- Alert -->
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Login Failure</strong> Username or Password is Incorrect
+                </div>
+            </div>
+        </div>
+        <!-- Change width later to something more responsive -->
+        <div class="row">
+            <div class="col" align="center">
+                <img src="../images/clipboard.svg" alt="clipboard" width="50%">
+                <h1>apply</h1>
+            </div>
+            <div class="col" align="center">
+                <img src="../images/pencil.svg" alt="pencil" width="50%">
+                <h1>learn</h1>
+            </div>
+            <div class="col" align="center">
+                <img src="../images/money.svg" alt="money" width="50%">
+                <h1>save</h1>
+            </div>
+        </div>
+
+        <!--------------------------------------------------------->
+        <!-- Login Modal -->
+        <!-- Modal Button -->
+        <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#loginModal">login</button>
+        <!-- Data Target Attribute links to modal div -->
+
+        <!-- Modal Implementation -->
+        <div class="modal" id="loginModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- Styles modal-->
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h3 class="modal-title">login</h3>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <!-- Data dismiss closes modal &times displays x-->
+                    </div>
+
+                    <!-- Modal Body -->
+                    <!-- Form -->
+                    <div class="modal-body">
+                        <form id="login-form" method="POST" action="Login.do" role="form">
+                            <div class="form-group">
+                                <!-- Ensures proper margins -->
+                                <label for="user">username</label>
+                                <input type="text" class="form-control" name="user" id="user" required> <!-- Required ensures user inputs data before submission -->
+                                <!-- id and label are same and form control name is referenced in controllers-->
+                            </div>
+                            <div class="form-group">
+                                <label for="pass">password</label>
+                                <input type="password" class="form-control" name="pass" id="pass" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="form-control btn-primary" id="LoginButton"> <!-- Input type submit denotes a button for submitting form data to a form handler (a form handler is a server page for handling input data) -->
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="container">
+                        <!-- Adds a 1 margin -->
+                        <div class="row">
+                            <div class="col" align="center">
+                                <p>new and want to
+                                    <a data-toggle="modal" href="#registerModal" data-dismiss="modal">register</a>
+                                    <!-- Data toggle opens modal href links it to register modal below and data dismiss closes current modal-->
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Modal -->
+        <div class="modal" id="registerModal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h3 class="modal-title">register</h3>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <form id="registerForm" method="POST" action="Register.do" id="form">
+                            <div class="form-group">
+                                <label for="preUser">username</label>
+                                <input type="text" class="form-control" name="preUser" id="preUser">
+                            </div>
+                            <div class="form-group">
+                                <label for="prePass">password</label>
+                                <input type="password" class="form-control" name="prePass" id="prePass">
+                            </div>
+                            <div class="form group">
+                                <label for="repPass">repeat password</label>
+                                <input type="password" class="form-control" name="repPass" id="repPass">
+                            </div>
+                            <div class="form-group">
+                                <label for="first">first name</label>
+                                <input type="text" class="form-control" name="first" id="first">
+                            </div>
+                            <div class="form-group">
+                                <label for="last">last name</label>
+                                <input type="text" class="form-control" name="last" id="last">
+                            </div>
+                            <div class="form group">
+                                <label for="email">email</label>
+                                <input type="email" class="form-control" name="email" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="dept">department (select one)</label>
+                                <select class="form-control" name="dept" id="dept">
+                                    <!-- Select class is form control for select list (as opposed to text email etc) -->
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="job">job (select one)</label>
+                                <select class="form-control" name="job" id="job">
+                                    <!-- Select class is form control for select list (as opposed to text email etc) -->
+
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="supervisor">direct supervisor</label>
+                                <select class="form-control" name="supervisor" id="supervisor">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="form-control btn-primary" id="RegisterButton">
+                            </div>
+                    </div>
+                    <!-- Modal Footer -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col" align="center">
+                                <p>return to
+                                    <a data-toggle="modal" href="#loginModal" data-dismiss="modal">login</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------>
+    <script src="../javascript/Welcome.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

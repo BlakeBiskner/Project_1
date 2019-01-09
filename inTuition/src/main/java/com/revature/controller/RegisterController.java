@@ -7,6 +7,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.revature.daoImplementation.UserDaoImpl;
 import com.revature.models.ReimbursementUser;
 
+
+
 /**
  * Register Controller
  * 
@@ -19,6 +21,9 @@ public class RegisterController {
 	
 	public static String Register(HttpServletRequest request) {
 		// Obtain data from form
+		UserDaoImpl userDao = UserDaoImpl.getInstance();  //we need to not make new dao objects all the time
+		
+		
 		System.out.println("in RegisterController");
 		
 		String username=request.getParameter("preUser");
@@ -28,9 +33,9 @@ public class RegisterController {
 		String email=request.getParameter("email");
 		String department=request.getParameter("dept");
 		String supervisor=request.getParameter("supervisor");
+		String job = request.getParameter("job");
+		// Add input validation
 		
-//		// Add input validation
-//		
 		System.out.println(username);
 		System.out.println(password);
 		System.out.println(firstName);
@@ -38,9 +43,16 @@ public class RegisterController {
 		System.out.println(email);
 		System.out.println(department);
 		System.out.println(supervisor);
-//		
-		UserDaoImpl userDao = new UserDaoImpl();  //we need to not make new dao objects all the time
-		ReimbursementUser user = new ReimbursementUser(username,password,firstName, lastName, email,department,supervisor);
+		System.out.println(job);
+		ReimbursementUser user = new ReimbursementUser();
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setEmail(email);
+		user.setDeptID(Integer.valueOf(department));
+		user.setFirstname(firstName);
+		user.setLastname(lastName);
+		user.setDsID(Integer.valueOf(supervisor));
+		user.setJobID(Integer.valueOf(job));
 		
 		String hashedpw = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashedpw);
@@ -50,8 +62,6 @@ public class RegisterController {
 			//return true;
 			//WERE GOOD
 		}
-		//return false;
-		//were  bad
 		
 		return "/client/html/Welcome.html";
 	}
