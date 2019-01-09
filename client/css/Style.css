@@ -92,6 +92,10 @@
     padding:0;
 }
 
+.badge{
+	display:none; /* Make none so will pop up and not take up space when gone */
+}
+
 /**************************************************/
 /***** Application Form *****/
 

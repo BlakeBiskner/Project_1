@@ -34,7 +34,7 @@ window.onload=function(){
             appTable+='</a>';
             appTable+='</div>';
             // Get Unique Application id
-            appTable+='<div id="Collapse'+reviewApps[i].applicationID+'" class="collapse" data-parent="#appAccordian" onclick="getAppId('+reviewApps[i].applicationID+')">'//getAppId('+reviewApps[i].applicationID+')">';
+            appTable+='<div id="Collapse'+reviewApps[i].applicationID+'" class="collapse" data-parent="#appAccordian">'//getAppId('+reviewApps[i].applicationID+')">';
             appTable+='<div class="card-body>';
 
             // // Get unique application id
@@ -42,13 +42,29 @@ window.onload=function(){
             // console.log(cardAppId);
             // document.getElementById(cardAppId).addEventListener("click",function(){getAppId(reviewApps[i].applicationID);});
 
+            appTable+='<div class="list-group list-group-flush">';
+            
+            // Grade Information
+            var userGrade=reviewApps[i].grade;
+            // Check if BenCo
+            var userJob=user.jobType;
+            if(userGrade!=null){
+                appTable+='<li class="list-group-item list-group-item-primary"><strong>Grade</strong></li>';
+                appTable+='<li class="list-group-item list-group-item-primary">'+userGrade+'</li>';
+            } else if(userJob=='Benco'){ // If grade is null but user is Benco
+                appTable+='<li class="list-group-item list-group-item-secondary"><strong>Grade</strong></li>';
+                appTable+='<li class="list-group-item list-group-item-secondary">Grade Not Submitted. Cannot Approve or Deny Without Grade</li>';
+            }
 
             // Modal Links
-            appTable+='<div class="list-group list-group-flush">';
-            appTable+='<li class="list-group-item list-group-item-light"><a data-toggle="modal" href="#UserModal'+reviewAppUsers[i].userID+'">Employee Information</a>';
-            appTable+='<li class="list-group-item list-group-item-light"><a data-toggle="modal" href="#AppModal'+reviewApps[i].applicationID+'">Application Information</a>';
-            appTable+='<li class="list-group-item list-group-item-light"><a data-toggle="modal" href="#EmailModal'+reviewAppUsers[i].userID+'">Request More Information</a>';
-            appTable+='<li class="list-group-item list-group-item-light"><a data-toggle="modal" href="#ActionModal'+reviewApps[i].applicationID+'">Approve or Deny Application</a>';
+            appTable+='<li class="list-group-item list-group-item-light"><a data-toggle="modal" href="#UserModal'+reviewAppUsers[i].userID+'">Employee Information</a></li>';
+            appTable+='<li class="list-group-item list-group-item-light"><a data-toggle="modal" href="#AppModal'+reviewApps[i].applicationID+'">Application Information</a></li>';
+            appTable+='<li class="list-group-item list-group-item-light"><a data-toggle="modal" href="#EmailModal'+reviewAppUsers[i].userID+'">Request More Information</a></li>';
+            
+            // Approval with BenCo Considered
+            if((userJob!='Benco')||(userGrade!=null)){ // Can see button if not a Benco or if they are Benco and the grade has been submitted
+                appTable+='<li class="list-group-item list-group-item-light"><a data-toggle="modal" href="#ActionModal'+reviewApps[i].applicationID+'">Approve or Deny Application</a></li>';
+            }
             appTable+='</div>';
             appTable+='</div>'; 
             appTable+='</div>';
@@ -163,12 +179,12 @@ window.onload=function(){
 
             appTable+='<div class="modal-header">';
             // Set name and id of this attribute approveId to change to unique app id which I can get later
-            appTable+='<h3 class="modal-title" name="approveId" id="approveId">Application Actions</h3>';
+            appTable+='<h3 class="modal-title">Application Actions</h3>';
             appTable+='<button type="button" class="close" data-dismiss="modal">&times;</button>';
             appTable+='</div>';
 
             appTable+='<div class="modal-body">';
-            appTable+='<form class="col-12">';
+            appTable+='<form class="col-12" method="POST" action="Approval.do">';
             appTable+='<div class="form-row">';
             appTable+='<div class="form-group col-12">';
             appTable+='<strong>Approve</strong>';
@@ -176,12 +192,14 @@ window.onload=function(){
             appTable+='</div>';
             appTable+='<div class="form-row">';
             appTable+='<div class="form-group col-12">';
+            // Hidden form element
+            appTable+='<input type="text" name="approveId" id="approveId" value="'+reviewApps[i].applicationID+'" style="display:none">'; // I believe you can define value here as I think (and testing has shown) that getParameter only references variable within form tags not whole document. So ig I do getParaamr("gradId") after I hit this button it will select the value of gradeId within this form
             appTable+='<input type="submit" class="form-control btn-success" id="approveButton">';
             appTable+='</div>';
             appTable+='</div>';
             appTable+='</form>';
 
-            appTable+='<form class="col-12">';
+            appTable+='<form class="col-12" method="POST" action="Deny.do">';
             appTable+='<div class="form-row">';
             appTable+='<div class="form-group col-12">';
             appTable+='<strong>Deny</strong>';
@@ -189,7 +207,8 @@ window.onload=function(){
             appTable+='</div>';
             appTable+='<div class="form-row">';
             appTable+='<div class="form-group col-12">';
-            appTable+='<input type="submit" class="form-control btn-danger" id="approveButton">';
+            appTable+='<input type="submit" class="form-control btn-danger" id="denyButton">';
+            appTable+='<input type="text" name="approveId" id="approveId" value="'+reviewApps[i].applicationID+'" style="display:none">';
             appTable+='</div>';
             appTable+='</div>';
             appTable+='</form>';
@@ -204,17 +223,10 @@ window.onload=function(){
         console.log(appTable);
         document.getElementById("appAccordian").innerHTML=appTable;
 
-        // Clear data for next user
-        localStorage.removeItem("User");
-        localStorage.removeItem("UserApps");
-        localStorage.removeItem("ReviewApps");
-        localStorage.removeItem("ReviewAppUsers");
+       // Clear data for next user
+       localStorage.removeItem("User");
+       localStorage.removeItem("UserApps");
+       localStorage.removeItem("ReviewApps");
+       localStorage.removeItem("ReviewAppUsers");
     }
-}
-
-// Handler Functions
-function getAppId(appId){
-    console.log(appId);
-    document.getElementById("approveId").value=appId;
-    console.log("Value of approveId is "+document.getElementById("approveId").value);
 }
