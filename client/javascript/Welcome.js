@@ -78,4 +78,12 @@ function welcomeFunction(xhr){
 	console.log(txt);
 	document.getElementById("dept").innerHTML=txt;
 	
+	// Clear Session
+	if(typeof(Storage)!="undefined"){
+		console.log("Storage Supported");
+		localStorage.removeItem("User");
+		localStorage.removeItem("UserApps");
+		localStorage.removeItem("ReviewApps");
+		localStorage.removeItem("ReviewAppUsers");
+	}
 }

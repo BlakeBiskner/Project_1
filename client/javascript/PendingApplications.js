@@ -53,7 +53,7 @@ window.onload=function(){
                 appTable+='<li class="list-group-item list-group-item-primary">'+userGrade+'</li>';
             } else if(userJob=='Benco'){ // If grade is null but user is Benco
                 appTable+='<li class="list-group-item list-group-item-secondary"><strong>Grade</strong></li>';
-                appTable+='<li class="list-group-item list-group-item-secondary">Grade Not Submitted. Cannot Approve or Deny Without Grade</li>';
+                appTable+='<li class="list-group-item list-group-item-secondary">Cannot Approve or Deny Application Until Grade is Submitted</li>';
             }
 
             // Modal Links

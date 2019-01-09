@@ -76,13 +76,4 @@ function homeFunction(xhr){
 		document.getElementById("currAppReviewBadge").style.display="inline";
 		document.getElementById("currAppReviewBadge").innerHTML=reviewApps.length;
 	}
-
-	// Clear Session
-	if(typeof(Storage)!="undefined"){
-		console.log("Storage supported");
-		localStorage.removeItem("User");
-		localStorage.removeItem("UserApps");
-		localStorage.removeItem("ReviewApps");
-		localStorage.removeItem("ReviewAppUsers");
-	}
 }

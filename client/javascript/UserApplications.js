@@ -63,8 +63,10 @@ window.onload=function(){
             appTable+='<li class="list-group-item list-group-item-light">'+userApps[i].gradeFormat+'</li>';
             appTable+='<li class="list-group-item list-group-item-light"><strong>Estimated Reimbursement</strong></li>';
             appTable+='<li class="list-group-item list-group-item-light">$'+(((0.01*userApps[i].typeCoverage)*userApps[i].cost))+'</li>';
-            // Submit Grade Modal Reference 
-            appTable+='<li class="list-group-item list-group-item-primary" align="center"><strong><a data-toggle="modal" href="#GradeModal'+userApps[i].applicationID+'">Submit Grade</a></strong></li>';
+            // Submit Grade Modal Reference
+            if(userApps[i].grade==null){ // Only display button if have not submitted grade
+                appTable+='<li class="list-group-item list-group-item-primary" align="center"><strong><a data-toggle="modal" href="#GradeModal'+userApps[i].applicationID+'">Submit Grade</a></strong></li>';
+            }
             appTable+="</div>";
             appTable+="</div>";
             appTable+="</div>";
