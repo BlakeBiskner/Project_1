@@ -10,9 +10,9 @@ window.onload= function(){
 
 	///// Callback Functions /////
 	// Home Screen
-	loadDoc("http://localhost:8080/inTuition_draft/client/html/HomeJSON.do",homeFunction);
+	loadDoc("http://localhost:8080/inTuition/client/html/HomeJSON.do",homeFunction);
 	// Application Form
-	loadDoc("http://localhost:8080/inTuition_draft/client/html/NewFormJSON.do",formFunction);
+	loadDoc("http://localhost:8080/inTuition/client/html/NewFormJSON.do",formFunction);
 	// My Applications
 
 	console.log("completed window.onload");

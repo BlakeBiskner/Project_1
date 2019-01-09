@@ -7,7 +7,7 @@
 
 window.onload=function(){
     console.log("in window.onload");
-    loadDoc("http://localhost:8080/inTuition_draft/client/html/NewFormJSON.do", formFunction);
+    loadDoc("http://localhost:8080/inTuition/client/html/NewFormJSON.do", formFunction);
 }
 
 function loadDoc(url,cFunction){

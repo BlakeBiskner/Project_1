@@ -10,7 +10,7 @@ window.onload= function(){
 
 	///// Callback Functions /////
 	// Home Screen
-	loadDoc("http://localhost:8080/inTuition_draft/client/html/WelcomeJSON.do",welcomeFunction);
+	loadDoc("http://localhost:8080/inTuition/client/html/WelcomeJSON.do",welcomeFunction);
 
 	console.log("completed window.onload");
 }

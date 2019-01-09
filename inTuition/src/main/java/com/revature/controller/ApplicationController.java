@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import com.revature.daoImplementation.ApplicationDaoImpl;
+import com.revature.daoImplementation.ApplicationMaterialDaoImpl;
 import com.revature.daoImplementation.EventDaoImpl;
 import com.revature.models.Application;
 import com.revature.models.ApplicationMaterial;
@@ -23,21 +24,7 @@ public class ApplicationController {
 	
 	public static String Apply(HttpServletRequest request) {
 		System.out.println("in Application Controller");
-//		Part fileField;
-//		try {
-//			fileField = request.getPart("eventRelatedFiles");
-//			if(fileField!=null) {
-//				String fileName = fileField.getSubmittedFileName();
-//				ApplicationMaterial material = new ApplicationMaterial();
-//				material.setFileName(fileName);
-//			}
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (ServletException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+
 		Enumeration<String> paramNames = request.getParameterNames();
         while(paramNames.hasMoreElements()) {
             String parName = paramNames.nextElement();
@@ -131,6 +118,24 @@ public class ApplicationController {
 		
 		ApplicationDaoImpl appDao=ApplicationDaoImpl.getInstance();
 		app=appDao.insertApplication(app);
+		Part fileField;
+		try {
+			fileField = request.getPart("eventRelatedFiles");
+			if(fileField!=null) {
+				String fileName = fileField.getSubmittedFileName();
+				ApplicationMaterial material = new ApplicationMaterial();
+				material.setFileName(fileName);
+				material.setAppID(app.getApplicationID());
+				material.setIs(fileField.getInputStream());
+				ApplicationMaterialDaoImpl.getInstance().insertMaterial(material);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(app);
 		
 		return "/client/html/Home.html";

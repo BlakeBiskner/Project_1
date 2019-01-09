@@ -1,9 +1,5 @@
 package com.revature.daoImplementation;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,7 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.revature.connection.ConnFactory;
 import com.revature.daos.ApplicationMaterialDao;
@@ -81,7 +78,7 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 		ArrayList<ApplicationMaterial> ams = new ArrayList<>();
 		try {
 			conn = ConnFactory.getInstance().getConnection();
-			String sql = "SELECT am_id,am_a_id,am_description,am_material,am_filename FROM APPLICATION_MATERIAL WHERE am_a_id = ?";
+			String sql = "SELECT am_id,am_a_id,am_description,am_filename FROM APPLICATION_MATERIAL WHERE am_a_id = ?";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, app.getApplicationID());
 			ResultSet rs = ps.executeQuery();
@@ -92,8 +89,8 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 				am.setDesc(rs.getString("am_description"));
 				am.setFileName(rs.getString("am_filename"));
 				//File file = new File("temp");
-				Blob blob = rs.getBlob("am_material");//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
-				InputStream in = blob.getBinaryStream();
+//				Blob blob = rs.getBlob("am_material");//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
+//				InputStream in = blob.getBinaryStream();
 				//OutputStream out = new FileOutputStream(file);
 //				byte[] buff = new byte[4096];  // how much of the blob to read/write at a time
 //				int len = 0;
@@ -103,7 +100,7 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 //				}
 //				
 //				am.setFile(file);
-				am.setIs(in);
+//				am.setIs(in);
 				ams.add(am);
 			}
 			conn.close();
@@ -115,4 +112,49 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 		return null;
 	}
 
+	
+	
+	public ApplicationMaterial getApplicationMaterials(Application app, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		ArrayList<ApplicationMaterial> ams = new ArrayList<>();
+		try {
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "SELECT am_id,am_a_id,am_description,am_material,am_filename FROM APPLICATION_MATERIAL WHERE am_a_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, app.getApplicationID());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				ApplicationMaterial am = new ApplicationMaterial();
+				am.setAppMatID(rs.getInt("am_id"));
+				am.setAppID(rs.getInt("am_a_id"));
+				am.setDesc(rs.getString("am_description"));
+				am.setFileName(rs.getString("am_filename"));
+				//File file = new File("temp");
+				Blob blob = rs.getBlob("am_material");//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
+				InputStream in = blob.getBinaryStream();
+				
+				OutputStream out = response.getOutputStream();//new FileOutputStream(file);
+				byte[] buff = new byte[4096];  // how much of the blob to read/write at a time
+				int len = 0;
+
+				while ((len = in.read(buff)) != -1) {
+				    out.write(buff, 0, len);
+				}
+				out.flush();
+				out.close();
+				System.out.println("we here");
+				conn.close();
+				return am;
+			}
+			conn.close();
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return null;
+	}
 }
