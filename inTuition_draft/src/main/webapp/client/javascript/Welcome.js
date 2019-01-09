@@ -77,6 +77,5 @@ function welcomeFunction(xhr){
 	}
 	console.log(txt);
 	document.getElementById("dept").innerHTML=txt;
-
 	
 }

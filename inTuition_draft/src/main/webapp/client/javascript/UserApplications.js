@@ -19,7 +19,7 @@ window.onload=function(){
             appTable+="<strong>"+userApps[i].eventTitle+"</strong>";
             appTable+="</a>";
             appTable+="</div>";
-            appTable+='<div id="Collapse'+userApps[i].applicationID+'" class="collapse" data-parent="#appAccordian" onclick="getAppId('+userApps[i].applicationID+')">';
+            appTable+='<div id="Collapse'+userApps[i].applicationID+'" class="collapse" data-parent="#appAccordian">';
 
             // Progress Bar
             appTable+='<div class="card-body">'
@@ -94,7 +94,7 @@ window.onload=function(){
             appTable+='<input type="submit" class="form-control btn-primary" id="gradeButton">';
             
             // Hidden form element
-            appTable+='<input type="text" name="gradeId" id="gradeId" style="display:none">';
+            appTable+='<input type="text" name="gradeId" id="gradeId" value="'+userApps[i].applicationID+'" style="display:none">';
             
             appTable+='</div>';
             appTable+='</div>';
@@ -116,11 +116,4 @@ window.onload=function(){
         localStorage.removeItem("ReviewApps");
         localStorage.removeItem("ReviewAppUsers");
     }
-}
-
-//Handler Functions
-function getAppId(appId){
-    console.log(appId);
-    document.getElementById("gradeId").value=appId;
-    console.log("Value of gradeId is "+document.getElementById("gradeId").value);
 }

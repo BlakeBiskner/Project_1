@@ -34,7 +34,7 @@ window.onload=function(){
             appTable+='</a>';
             appTable+='</div>';
             // Get Unique Application id
-            appTable+='<div id="Collapse'+reviewApps[i].applicationID+'" class="collapse" data-parent="#appAccordian" onclick="getAppId('+reviewApps[i].applicationID+')">'//getAppId('+reviewApps[i].applicationID+')">';
+            appTable+='<div id="Collapse'+reviewApps[i].applicationID+'" class="collapse" data-parent="#appAccordian">'//getAppId('+reviewApps[i].applicationID+')">';
             appTable+='<div class="card-body>';
 
             // // Get unique application id
@@ -193,7 +193,7 @@ window.onload=function(){
             appTable+='<div class="form-row">';
             appTable+='<div class="form-group col-12">';
             // Hidden form element
-            appTable+='<input type="text" name="approveId" id="approveId" style="display:none">';
+            appTable+='<input type="text" name="approveId" id="approveId" value="'+reviewApps[i].applicationID+'" style="display:none">'; // I believe you can define value here as I think (and testing has shown) that getParameter only references variable within form tags not whole document. So ig I do getParaamr("gradId") after I hit this button it will select the value of gradeId within this form
             appTable+='<input type="submit" class="form-control btn-success" id="approveButton">';
             appTable+='</div>';
             appTable+='</div>';
@@ -208,7 +208,7 @@ window.onload=function(){
             appTable+='<div class="form-row">';
             appTable+='<div class="form-group col-12">';
             appTable+='<input type="submit" class="form-control btn-danger" id="denyButton">';
-            appTable+='<input type="text" name="approveId" id="approveId" style="display:none">';
+            appTable+='<input type="text" name="approveId" id="approveId" value="'+reviewApps[i].applicationID+'" style="display:none">';
             appTable+='</div>';
             appTable+='</div>';
             appTable+='</form>';
@@ -223,17 +223,10 @@ window.onload=function(){
         console.log(appTable);
         document.getElementById("appAccordian").innerHTML=appTable;
 
-//        // Clear data for next user
-//        localStorage.removeItem("User");
-//        localStorage.removeItem("UserApps");
-//        localStorage.removeItem("ReviewApps");
-//        localStorage.removeItem("ReviewAppUsers");
+       // Clear data for next user
+       localStorage.removeItem("User");
+       localStorage.removeItem("UserApps");
+       localStorage.removeItem("ReviewApps");
+       localStorage.removeItem("ReviewAppUsers");
     }
-}
-
-// Handler Functions
-function getAppId(appId){
-    console.log(appId);
-    document.getElementById("approveId").value=appId;
-    console.log("Value of approveId is "+document.getElementById("approveId").value);
 }
