@@ -68,12 +68,25 @@ function homeFunction(xhr){
 	}
 	// Display Badges
 	if(userApps.length>0){
-		document.getElementById("currAppBadge").style.display="inline";
-		document.getElementById("currAppBadge").innerHTML=userApps.length;
-	}
-	if(reviewApps.length>0){
-		console.log(reviewApps);
-		document.getElementById("currAppReviewBadge").style.display="inline";
-		document.getElementById("currAppReviewBadge").innerHTML=reviewApps.length;
+		var currUserApps=0;
+		var pastUserApps=0;
+		for(i=0;i<userApps.length;i++){
+			let app=userApps[i];
+			if((app.statusID==0)||(app.statusID==4)){ //Denied or approved
+				pastUserApps++;
+			} else{
+				currUserApps++;
+			}
+		}
+		console.log(pastUserApps);
+		console.log(currUserApps)
+		if(currUserApps>0){
+			document.getElementById("currAppBadge").style.display='inline';
+			document.getElementById("currAppBadge").innerHTML=currUserApps;
+		}
+		if(pastUserApps>0)
+			document.getElementById("pastAppBadge").style.display='inline';
+			document.getElementById("pastAppBadge").innerHTML=pastUserApps;
 	}
 }
+
