@@ -31,7 +31,7 @@ public class MasterServlet extends HttpServlet {
 		System.out.println("in doPost in servlet");
 		System.out.println(request.getRequestURI());
 		String targetUrl=RequestHelper.process(request, response);
-		if(targetUrl!=null) {
+		if(targetUrl!=null && !targetUrl.equals("download")) {
 			request.getRequestDispatcher(targetUrl).forward(request,response);		
 		}
 	

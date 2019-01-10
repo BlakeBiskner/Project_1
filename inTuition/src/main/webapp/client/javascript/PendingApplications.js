@@ -131,15 +131,20 @@ window.onload=function(){
             }
             appTable+='<div class="modal-header"><strong>Justification</strong></div>';
             appTable+='<div class="modal-header"><p>'+reviewApps[i].justification+'</p></div>';
-            appTable+='<div class="modal-header"><strong>File Submitted</strong></div>';
-            appTable+='<div class="modal-header">';
-            appTable+='<form method="POST" action="Download.do">'
-            appTable+='<input type="submit" value ="Download" class="form-control btn-primary" id="downloadfile">';
-            appTable+='</form>';
+          if(reviewApps[i].appMats!=null && reviewApps[i].appMats.length>0){
+        	appTable+='<div class="modal-header"><strong>File Submitted</strong></div>';
+        	appTable+='<form method="POST" action="Download.do">'
+        	appTable+='<p>'+reviewApps[i].appMats[0].fileName+'</p>'
+            appTable+='<button input type="submit" name = "fileID" value ="'+reviewApps[i].appMats[0].appMatID+'" class="form-control btn-primary" id="downloadfile">Download</button>';
+        	appTable+='</form>';
+                 	
+        }
+
+
             appTable+='</div>';
             appTable+='</div>';
             appTable+='</div>';
-            appTable+='</div>';
+
 
             // Request More Info
             appTable+='<div class="modal fade" id="EmailModal'+reviewAppUsers[i].userID+'">';
@@ -234,9 +239,9 @@ window.onload=function(){
         document.getElementById("appAccordian").innerHTML=appTable;
 
        // Clear data for next user
-       localStorage.removeItem("User");
-       localStorage.removeItem("UserApps");
-       localStorage.removeItem("ReviewApps");
-       localStorage.removeItem("ReviewAppUsers");
+//       localStorage.removeItem("User");
+//       localStorage.removeItem("UserApps");
+//       localStorage.removeItem("ReviewApps");
+//       localStorage.removeItem("ReviewAppUsers");
     }
 }

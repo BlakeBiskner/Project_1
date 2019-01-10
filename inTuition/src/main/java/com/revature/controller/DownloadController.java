@@ -16,15 +16,21 @@ import com.revature.models.ReimbursementUser;
 public class DownloadController {
 
 	public static String downloadFile(HttpServletRequest request, HttpServletResponse response) {
-
+		System.out.println("In download controller");
 		Enumeration<String> paramNames = request.getParameterNames();
 		while (paramNames.hasMoreElements()) {
 			String nextName = paramNames.nextElement();
 			System.out.println(nextName);
 			System.out.println(request.getParameter(nextName));
 		}
-		
-		
+		int fileID = Integer.parseInt(request.getParameter("fileID"));
+		ApplicationMaterial mat = ApplicationMaterialDaoImpl.getInstance().getApplicationMaterial(fileID, response);
+		System.out.println(mat);
+		response.setContentType("APPLICATION/OCTET-STREAM");
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + mat.getFileName() + "\"");
+
+
+		return "download";
 		
 		
 		
@@ -48,18 +54,11 @@ public class DownloadController {
 //				break;
 //			}
 //		}
-//		System.out.println(mat);
-//		response.setContentType("APPLICATION/OCTET-STREAM");
-//		response.setHeader("Content-Disposition", "attachment; filename=\"" + mat.getFileName() + "\"");
-//
-//		if (mat != null) {
-//			return null;
-//		}
+
 
 		
 		
 		
 		
-		return null;
 	}
 }

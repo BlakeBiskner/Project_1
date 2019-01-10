@@ -1,6 +1,7 @@
 package com.revature.models;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.revature.exceptions.InvalidInputException;
@@ -16,6 +17,8 @@ public class Application {
 	private Timestamp eventStartDate,eventEndDate = null;
 	private int timeMissed,statusID;
 	private Boolean passed = null;
+	private ArrayList<ApplicationMaterial> appMats = new ArrayList<>();
+	
 	private static HashMap<String,Integer> statusTypes = new HashMap<String,Integer>();
 	public Application() {
 		if (statusTypes.size()==0) {
@@ -26,19 +29,55 @@ public class Application {
 			statusTypes.put("Approved",4);
 		}
 	}
+	
+	
+	
 	@Override
 	public String toString() {
 		return "Application [applicationID=" + applicationID + ", eventID=" + eventID + ", userID=" + userID
 				+ ", participationID=" + participationID + ", reimbursementAmount=" + reimbursementAmount
-				+ ", comments=" + justification + ", gradeComments=" + gradeComments + ", grade=" + grade + ", eventTitle="
-				+ eventTitle + ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade + ", typeDescription="
-				+ typeDescription + ", gradeTypeDesc=" + gradeTypeDesc + ", eventGradeFormatDesc="
-				+ eventGradeFormatDesc + ", status=" + status + ", cost=" + cost + ", typeCoverage=" + typeCoverage
-				+ ", eventTypeID=" + eventTypeID + ", eventGradeFormatID=" + eventGradeFormatID + ", nextApproverID="
-				+ nextApproverID + ", eventStartDate=" + eventStartDate + ", eventEndDate=" + eventEndDate
-				+ ", timeMissed=" + timeMissed + ", statusID=" + statusID + ", passed=" + passed + ", date=" + date
-				+ "]";
+				+ ", justification=" + justification + ", gradeComments=" + gradeComments + ", grade=" + grade
+				+ ", eventTitle=" + eventTitle + ", gradeFormat=" + gradeFormat + ", passingGrade=" + passingGrade
+				+ ", typeDescription=" + typeDescription + ", gradeTypeDesc=" + gradeTypeDesc
+				+ ", eventGradeFormatDesc=" + eventGradeFormatDesc + ", status=" + status + ", cost=" + cost
+				+ ", typeCoverage=" + typeCoverage + ", eventTypeID=" + eventTypeID + ", eventGradeFormatID="
+				+ eventGradeFormatID + ", nextApproverID=" + nextApproverID + ", eventStartDate=" + eventStartDate
+				+ ", eventEndDate=" + eventEndDate + ", timeMissed=" + timeMissed + ", statusID=" + statusID
+				+ ", passed=" + passed + ", appMats=" + appMats + ", date=" + date + "]";
 	}
+
+
+
+	public ArrayList<ApplicationMaterial> getAppMats() {
+		return appMats;
+	}
+
+
+
+	public void setAppMats(ArrayList<ApplicationMaterial> appMats) {
+		this.appMats = appMats;
+	}
+
+
+
+	public static HashMap<String, Integer> getStatusTypes() {
+		return statusTypes;
+	}
+
+
+
+	public static void setStatusTypes(HashMap<String, Integer> statusTypes) {
+		Application.statusTypes = statusTypes;
+	}
+
+
+
+	public void setPassed(Boolean passed) {
+		this.passed = passed;
+	}
+
+
+
 	public int getParticipationID() {
 		return participationID;
 	}

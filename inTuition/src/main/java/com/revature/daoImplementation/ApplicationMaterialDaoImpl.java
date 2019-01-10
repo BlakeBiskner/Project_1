@@ -113,7 +113,52 @@ public class ApplicationMaterialDaoImpl implements ApplicationMaterialDao {
 	}
 
 	
+
+	public ApplicationMaterial getApplicationMaterial(int id, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		ArrayList<ApplicationMaterial> ams = new ArrayList<>();
+		try {
+			conn = ConnFactory.getInstance().getConnection();
+			String sql = "SELECT am_a_id,am_description,am_material,am_filename FROM APPLICATION_MATERIAL WHERE am_id = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				ApplicationMaterial am = new ApplicationMaterial();
+				am.setAppID(rs.getInt("am_a_id"));
+				am.setDesc(rs.getString("am_description"));
+				am.setFileName(rs.getString("am_filename"));
+				//File file = new File("temp");
+				Blob blob = rs.getBlob("am_material");//cast with (Blob) if required. Blob from resultSet as rs.getBlob(index). 
+				InputStream in = blob.getBinaryStream();
+				
+				OutputStream out = response.getOutputStream();//new FileOutputStream(file);
+				byte[] buff = new byte[4096];  // how much of the blob to read/write at a time
+				int len = 0;
+
+				while ((len = in.read(buff)) != -1) {
+				    out.write(buff, 0, len);
+				}
+				out.flush();
+				out.close();
+				System.out.println("we here");
+				conn.close();
+				return am;
+			}
+			conn.close();
+			return null;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return null;
+	}
 	
+	
+	//This method was just used in testing things.
 	public ApplicationMaterial getApplicationMaterials(Application app, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		ArrayList<ApplicationMaterial> ams = new ArrayList<>();

@@ -54,6 +54,12 @@ public class HomeController {
 				ReimbursementUser user=userDao.getApplicant(app);
 				System.out.println(user);
 				reviewUsers.add(user);
+				ArrayList<ApplicationMaterial> apMats = appMatDao.getApplicationMaterials(app);
+				if (apMats != null && apMats.size()>0) {
+					for(ApplicationMaterial am : apMats) {
+						app.getAppMats().add(am);
+					}
+				}
 //				ArrayList<ApplicationMaterial> thisAppMats = appMatDao.getApplicationMaterials(app);
 //				if(thisAppMats.size()>0) {
 //					appMats.addAll(thisAppMats);
