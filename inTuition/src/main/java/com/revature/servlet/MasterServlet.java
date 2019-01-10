@@ -23,11 +23,13 @@ public class MasterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		System.out.println("in doGet in servlet");
 		String jsonStuff=RequestHelper.process(request, response);
+		
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		System.out.println("in doPost in servlet");
+		System.out.println(request.getRequestURI());
 		String targetUrl=RequestHelper.process(request, response);
 		if(targetUrl!=null) {
 			request.getRequestDispatcher(targetUrl).forward(request,response);		

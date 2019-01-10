@@ -64,6 +64,7 @@ public class HomeController {
 			request.getSession().setAttribute("ReviewAppUsers", reviewUsers);
 		
 		}
+		System.out.println(reviewApps);
 		System.out.println(userApps);
 		FormSession session=new FormSession(actualUser,userApps,reviewApps, reviewUsers);
 		session.setMats(appMats);

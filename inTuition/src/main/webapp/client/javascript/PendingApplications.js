@@ -26,7 +26,11 @@ window.onload=function(){
             console.log(reviewApps[i]);
             console.log("User to review");
             console.log(reviewAppUsers[i]);
-
+//            var newDate = new Date();
+//            newDate.setTime(reviewApps[i].eventStartDate*1000);
+//            dateString = newDate.toUTCString();
+//            console.log(newDate);
+//            reviewApps[i].eventStartDate = dateString;
             appTable+='<div class="card">';
             appTable+='<div class="card-header">';
             appTable+='<a class="collapsed card-link" data-toggle="collapse" href="#Collapse'+reviewApps[i].applicationID+'">';
@@ -115,11 +119,11 @@ window.onload=function(){
             appTable+='<div class="modal-header"><strong>Passing Grade</strong></div>';
             appTable+='<div class="modal-header"><p>'+reviewApps[i].passingGrade+'</p></div>';
             appTable+='<div class="modal-header"><strong>Start Date</strong></div>';
-            appTable+='<div class="modal-header"><p>'+reviewApps[i].date+'</p></div>';
+            appTable+='<div class="modal-header"><p>'+new Date(reviewApps[i].eventStartDate).toDateString()+'</p></div>';
             // Optional Fields
             if(reviewApps[i].eventEndDate!=null){
                 appTable+='<div class="modal-header"><strong>Event End Date</strong></div>';
-                appTable+='<div class="modal-header"><p>'+reviewApps[i].eventEndDate+'</p></div>';
+                appTable+='<div class="modal-header"><p>'+new Date(reviewApps[i].eventEndDate).toDateString()+'</p></div>';
             }
             if(reviewApps[i].timeMissed!=null){
                 appTable+='<div class="modal-header"><strong>Work Time Missed</strong></div>';
@@ -127,6 +131,12 @@ window.onload=function(){
             }
             appTable+='<div class="modal-header"><strong>Justification</strong></div>';
             appTable+='<div class="modal-header"><p>'+reviewApps[i].justification+'</p></div>';
+            appTable+='<div class="modal-header"><strong>File Submitted</strong></div>';
+            appTable+='<div class="modal-header">';
+            appTable+='<form method="POST" action="Download.do">'
+            appTable+='<input type="submit" value ="Download" class="form-control btn-primary" id="downloadfile">';
+            appTable+='</form>';
+            appTable+='</div>';
             appTable+='</div>';
             appTable+='</div>';
             appTable+='</div>';

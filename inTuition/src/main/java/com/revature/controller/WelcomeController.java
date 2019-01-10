@@ -27,31 +27,6 @@ public class WelcomeController {
 	public static String welcomeJSON(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("In Welcome Controller");
 
-		//ArrayList<ReimbursementUser> users = UserDaoImpl.getInstance().getAllUsers();
-//		ApplicationMaterial mat = null;
-//
-//		ApplicationDaoImpl appDao = ApplicationDaoImpl.getInstance();
-////		for (ReimbursementUser user : users) {
-//			ArrayList<Application> apps = appDao.getUserApplications(UserDaoImpl.getInstance().getUser("sansa"));
-//			for (int i = 0; i < apps.size() && mat == null; i++) {
-//				mat = ApplicationMaterialDaoImpl.getInstance().getApplicationMaterials(apps.get(i), response);
-////				System.out.println(appMats.size());
-////				if (appMats.size() > 0) {
-////					mat = appMats.get(0);
-////					System.out.println(mat);
-////				}
-//		//	}
-////			if(mat!=null) {
-////				break;
-////			}
-//		}
-//		System.out.println(mat);
-//		response.setContentType("APPLICATION/OCTET-STREAM");
-//		response.setHeader("Content-Disposition", "attachment; filename=\"" + mat.getFileName() + "\"");
-//
-//		if (mat != null) {
-//			return null;
-//		}
 
 		DeptDaoImpl deptDao = DeptDaoImpl.getInstance();
 		ArrayList<Department> depts = deptDao.getDepartmentsAndIds();

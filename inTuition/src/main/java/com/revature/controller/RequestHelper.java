@@ -21,14 +21,6 @@ public class RequestHelper {
 	public static String process(HttpServletRequest request, HttpServletResponse response) {
 		switch (request.getRequestURI()) {
 		case (BASE_URI + "Login.do"):
-			Enumeration<String> paramNames = request.getParameterNames();
-			while (paramNames.hasMoreElements()) {
-				System.out.println(paramNames.nextElement());
-				System.out.println(request.getParameter(paramNames.nextElement()));
-			}
-			if (request.getMethod().equals("GET")) {
-				return DEFAULT_URI;
-			}
 			System.out.println("in Login.do case");
 			return LoginController.Login(request);
 		case (BASE_URI + "Register.do"):
@@ -79,6 +71,9 @@ public class RequestHelper {
 				return DEFAULT_URI;
 			}
 			return GradeController.grade(request, response);
+		case(BASE_URI + "Download.do"):
+			System.out.println("In Download.do");
+			return DownloadController.downloadFile(request, response);
 		default:
 			return DEFAULT_URI;
 		}
